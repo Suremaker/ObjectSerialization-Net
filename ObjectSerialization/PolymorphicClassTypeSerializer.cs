@@ -3,14 +3,14 @@ using System.Linq.Expressions;
 
 namespace ObjectSerialization
 {
-    internal class PolymorphicClassTypeSerializer : BaseTypeSerializer
+    internal class PolymorphicClassTypeSerializer : BaseTypeSerializer, ISerializer
     {
-        public static bool IsSupported(Type type)
+        public bool IsSupported(Type type)
         {
             return type == typeof(object) || type.IsAbstract || type.IsInterface;
         }
 
-        public static Expression Write(Expression writerObject, Expression value, Type expectedValueType)
+        public Expression Write(Expression writerObject, Expression value, Type expectedValueType)
         {
             /*BinaryWriter w;
             object o;
@@ -30,7 +30,7 @@ namespace ObjectSerialization
 
         }
 
-        public static Expression Read(Expression readerObject, Type expectedValueType)
+        public Expression Read(Expression readerObject, Type expectedValueType)
         {
             /*BinaryReader r;
             T o;

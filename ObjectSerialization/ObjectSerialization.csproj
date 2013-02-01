@@ -36,6 +36,7 @@
     <Compile Include="ClassTypeSerializer.cs" />
     <Compile Include="CollectionTypeSerializer.cs" />
     <Compile Include="IObjectSerializer.cs" />
+    <Compile Include="ISerializer.cs" />
     <Compile Include="ObjectSerializer.cs" />
     <Compile Include="PolymorphicClassTypeSerializer.cs" />
     <Compile Include="PredefinedTypeSerializer.cs" />

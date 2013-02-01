@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace ObjectSerialization
 {
-    internal class PredefinedTypeSerializer : BaseTypeSerializer
+    internal class PredefinedTypeSerializer : BaseTypeSerializer, ISerializer
     {
         private static readonly IEnumerable<Type> _predefinedTypes = new[]
         {
@@ -14,12 +14,12 @@ namespace ObjectSerialization
             typeof(string)
         };
 
-        public static bool IsSupported(Type type)
+        public bool IsSupported(Type type)
         {
             return _predefinedTypes.Contains(type);
         }
 
-        public static Expression Write(Expression writerObject, Expression value)
+        public Expression Write(Expression writerObject, Expression value,Type expectedValueType)
         {
             /*BinaryWriter w;   
             object o;
@@ -27,7 +27,7 @@ namespace ObjectSerialization
             return GetWriteExpression(value, writerObject);
         }
 
-        public static Expression Read(ParameterExpression readerObject, Type expectedValueType)
+        public Expression Read(Expression readerObject, Type expectedValueType)
         {
             /*T o;
             BinaryReader r;

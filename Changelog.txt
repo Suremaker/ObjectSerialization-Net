@@ -7,6 +7,7 @@ Version 1.0.3
 + added verification of serialized object
 + added test for array serialization
 + extracted serialization logic into several classes
++ finished serialization classes refactoring
 
 Version 1.0.2
 -------------------------------------------

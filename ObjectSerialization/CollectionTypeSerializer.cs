@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace ObjectSerialization
 {
-    internal class CollectionTypeSerializer : BaseTypeSerializer
+    internal class CollectionTypeSerializer : BaseTypeSerializer, ISerializer
     {
         private static bool HasAddMethod(Type propType, Type itemType)
         {
@@ -22,18 +22,18 @@ namespace ObjectSerialization
             return def != null;
         }
 
-        public static bool IsSupported(Type type)
+        public bool IsSupported(Type type)
         {
             Type itemType;
             return IsEnumerable(type, out itemType) && HasAddMethod(type, itemType);
         }
 
-        public static Expression Write(Expression writerObject, Expression value, Type propertyType)
+        public Expression Write(Expression writerObject, Expression value, Type propertyType)
         {
             throw new NotImplementedException();
         }
 
-        public static Expression Read(ParameterExpression readerObject, Type expectedValueType)
+        public Expression Read(Expression readerObject, Type expectedValueType)
         {
             throw new NotImplementedException();
         }

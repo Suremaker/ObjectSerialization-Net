@@ -7,7 +7,20 @@ using System.Reflection;
 
 namespace ObjectSerialization
 {
-    internal class TypeSerializerBuilder<T> : BaseTypeSerializer
+    class TypeSerializerBuilder
+    {
+        protected static readonly IEnumerable<ISerializer> Serializers = new ISerializer[]
+            {
+                new ArrayTypeSerializer(),                
+                new PredefinedTypeSerializer(),
+                new CollectionTypeSerializer(),
+                new PolymorphicClassTypeSerializer(),
+                new ValueTypeSerializer(),
+                new ClassTypeSerializer()
+            };
+    }
+
+    internal class TypeSerializerBuilder<T> : TypeSerializerBuilder
     {
         #region Type: Context
 
@@ -61,61 +74,18 @@ namespace ObjectSerialization
                                  .OrderBy(p => p.Name);
 
             foreach (PropertyInfo property in properties)
-            {
-                Type propType = property.PropertyType;
-                if (PredefinedTypeSerializer.IsSupported(propType))
-                    BuildPredefined(property, ctx);
-                else if (ArrayTypeSerializer.IsSupported(propType))
-                    BuildArray(property, ctx);
-                else if (CollectionTypeSerializer.IsSupported(propType))
-                    BuildCollection(property, ctx);
-                else if (PolymorphicClassTypeSerializer.IsSupported(propType))
-                    BuildPolymorphic(property, ctx);
-                else if (ValueTypeSerializer.IsSupported(propType))
-                    BuildValueType(property, ctx);
-                else
-                    BuildClass(property, ctx);
-            }
+                BuildPropertySerializer(property,ctx);
 
             SerializeFn = ctx.GetSerializeFn();
             DeserializeFn = ctx.GetDeserializeFn();
 
         }
 
-        private static void BuildArray(PropertyInfo property, Context ctx)
+        private static void BuildPropertySerializer(PropertyInfo property, Context ctx)
         {
-            ctx.WriteExpressions.Add(ArrayTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
-            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, ArrayTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
-        }
-
-        private static void BuildClass(PropertyInfo property, Context ctx)
-        {
-            ctx.WriteExpressions.Add(ClassTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
-            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, ClassTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
-        }
-
-        private static void BuildPolymorphic(PropertyInfo property, Context ctx)
-        {
-            ctx.WriteExpressions.Add(PolymorphicClassTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
-            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, PolymorphicClassTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
-        }
-
-        private static void BuildCollection(PropertyInfo property, Context ctx)
-        {
-            ctx.WriteExpressions.Add(CollectionTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
-            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, CollectionTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
-        }
-
-        private static void BuildPredefined(PropertyInfo property, Context ctx)
-        {
-            ctx.WriteExpressions.Add(PredefinedTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property)));
-            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, PredefinedTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
-        }
-
-        private static void BuildValueType(PropertyInfo property, Context ctx)
-        {
-            ctx.WriteExpressions.Add(ValueTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
-            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, ValueTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
+            var serializer = Serializers.First(s => s.IsSupported(property.PropertyType));
+            ctx.WriteExpressions.Add(serializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
+            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, serializer.Read(ctx.ReaderObject, property.PropertyType)));
         }
 
         private static Expression GetGetPropertyValue(ParameterExpression instance, PropertyInfo property)

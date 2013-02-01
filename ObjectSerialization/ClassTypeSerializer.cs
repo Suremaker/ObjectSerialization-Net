@@ -3,14 +3,14 @@ using System.Linq.Expressions;
 
 namespace ObjectSerialization
 {
-    internal class ClassTypeSerializer : BaseTypeSerializer
+    internal class ClassTypeSerializer : BaseTypeSerializer, ISerializer
     {
-        public static bool IsSupported(Type type)
+        public bool IsSupported(Type type)
         {
             return type.IsClass && !type.IsArray;
         }
 
-        public static Expression Write(Expression writerObject, Expression value, Type expectedValueType)
+        public Expression Write(Expression writerObject, Expression value, Type expectedValueType)
         {
             /*BinaryWriter w;
             object o;
@@ -26,7 +26,7 @@ namespace ObjectSerialization
                 Expression.IfThen(isNullExpression, writeExpression));
         }
 
-        public static Expression Read(Expression readerObject, Type expectedValueType)
+        public Expression Read(Expression readerObject, Type expectedValueType)
         {
             /*BinaryReader r;
             T o;
@@ -34,8 +34,8 @@ namespace ObjectSerialization
                 o.Prop = TypeSerializer.GetDeserializer(typeof(T)).Invoke(r);*/
 
             var readBool = GetReadExpression("ReadBoolean", readerObject);
-            var readValue = CallDeserialize(GetDeserializer(Expression.Constant(expectedValueType)), expectedValueType,readerObject);
-            return Expression.Condition(readBool,readValue,Expression.Constant(null,expectedValueType));
+            var readValue = CallDeserialize(GetDeserializer(Expression.Constant(expectedValueType)), expectedValueType, readerObject);
+            return Expression.Condition(readBool, readValue, Expression.Constant(null, expectedValueType));
         }
     }
 }
