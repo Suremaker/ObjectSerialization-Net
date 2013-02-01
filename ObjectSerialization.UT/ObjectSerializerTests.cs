@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
+using System.Collections.Generic;
 using ObjectSerialization.UT.Helpers;
 
 namespace ObjectSerialization.UT
@@ -34,6 +36,41 @@ namespace ObjectSerialization.UT
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<SimpleType>(serialized);
             AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void SerializedObjectCannotBeNull()
+        {
+            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(null));
+            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
+        }
+
+        [Test]
+        public void SerializedObjectCannotBeStruct()
+        {
+            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(new DateTime(2000,10,10)));
+            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
+        }
+
+        [Test]
+        public void SerializedObjectCannotBeString()
+        {
+            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize("sss"));
+            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
+        }
+
+        [Test]
+        public void SerializedObjectCannotBeArray()
+        {
+            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(new byte[5]));
+            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
+        }
+
+        [Test]
+        public void SerializedObjectCannotBeCollection()
+        {
+            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(new List<SimpleType>()));
+            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
         }
 
         [Test]

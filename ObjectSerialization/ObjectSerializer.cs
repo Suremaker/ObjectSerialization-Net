@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Text;
 
@@ -20,6 +21,9 @@ namespace ObjectSerialization
 
         public byte[] SerializeAs(object value, Type type)
         {
+            if (value == null || value.GetType().IsArray || !value.GetType().IsClass || value is ICollection || value is string)
+                throw new ArgumentException("Serialized type has to be instance of simple POCO type.", "value");
+
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream, Encoding.UTF8))
             {
@@ -40,6 +44,6 @@ namespace ObjectSerialization
             }
         }
 
-        #endregion        
+        #endregion
     }
 }
