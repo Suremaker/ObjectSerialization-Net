@@ -4,3 +4,4 @@ ObjectSerialization
 Version 1.0.0
 -------------------------------------------
 + created project structure
++ implemented basic string property serializers
