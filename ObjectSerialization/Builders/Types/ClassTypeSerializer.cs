@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq.Expressions;
 using ObjectSerialization.Factories;
 
@@ -16,24 +17,24 @@ namespace ObjectSerialization.Builders.Types
         public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
             /*BinaryWriter w;
-            object o;
-            if(((T)o).Prop!=null)
+            T v;
+            if(v != null)
             {
-                if(((T)o).Prop.GetType() == typeof(T))
+                if(v.GetType() == typeof(T))
                 {
                     w.Write((byte)1);
-                    ClassMembersSerializerFactory.GetSerializer(type).Invoke(w, ((T)o).Prop);
+					ClassMembersSerializerBuilder<T>.SerializeFn.Invoke(w, v);
                 }
                 else
                 {
                     w.Write((byte)2);
-                    w.Write(((T)o).Prop.GetType().FullName);
-                    TypeSerializerFactory.GetSerializer(((T)o).Prop.GetType()).Invoke(w, ((T)o).Prop);
+                    w.Write(v.GetType().FullName);
+                    TypeSerializerFactory.GetSerializer(v.GetType()).Invoke(w, v);
                 }
             }
             else
-                w.Write((byte)0);
-             */
+                w.Write((byte)0);*/
+             
 
             Expression checkNotNull = CheckNotNull(value, valueType);
             BlockExpression serializeClass = Expression.Block(
@@ -60,14 +61,13 @@ namespace ObjectSerialization.Builders.Types
         public Expression Read(Expression readerObject, Type expectedValueType)
         {
             /*BinaryReader r;
-            T o;
             byte b = r.ReadByte();
             return (b == 0)
                 ? null
                 : ((b == 1)
-                    ? ClassMembersSerializerFactory.GetDeserializer(typeof(T)).Invoke(r)
-                    : TypeSerializerFactory.GetDeserializer(TypeSerializer.LoadType(r.ReadString())).Invoke(r));
-            */
+					? ClassMembersSerializerBuilder<T>.DeserializeFn.Invoke(r)
+                    : TypeSerializerFactory.GetDeserializer(r.ReadString()).Invoke(r));*/
+            
             ParameterExpression flag = Expression.Variable(typeof(byte), "b");
             BinaryExpression readFlag = Expression.Assign(flag, GetReadExpression("ReadByte", readerObject));
             Expression deserializeClass = CallDeserialize(GetDirectDeserializer(typeof(ClassMembersSerializerBuilder<>), expectedValueType), expectedValueType, readerObject);

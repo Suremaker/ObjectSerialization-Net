@@ -5,45 +5,46 @@ using System.Linq.Expressions;
 
 namespace ObjectSerialization.Builders.Types
 {
-    internal class NullablePredefinedTypeSerializer : BaseTypeSerializer, ISerializer
-    {
-        private static readonly IEnumerable<Type> _predefinedTypes = new[] { typeof(string) };
+	internal class NullablePredefinedTypeSerializer : BaseTypeSerializer, ISerializer
+	{
+		private static readonly IEnumerable<Type> _predefinedTypes = new[] { typeof(string) };
 
-        #region ISerializer Members
+		#region ISerializer Members
 
-        public bool IsSupported(Type type)
-        {
-            return _predefinedTypes.Contains(type);
-        }
+		public bool IsSupported(Type type)
+		{
+			return _predefinedTypes.Contains(type);
+		}
 
-        public Expression Write(Expression writerObject, Expression value, Type valueType)
-        {
-            /*BinaryWriter w;   
-            object o;
-            w.Write(o!=null);
-            if(o!=null)
-                w.Write(((T)o).Prop);*/
-            Expression notNull = CheckNotNull(value, valueType);
+		public Expression Write(Expression writerObject, Expression value, Type valueType)
+		{
+			/*BinaryWriter w;   
+			stirng v;
+			w.Write(v!=null);
+			if(v!=null)
+				w.Write(v);*/
 
-            return Expression.Block(
-                GetWriteExpression(notNull, writerObject),
-                Expression.IfThen(
-                    notNull,
-                    GetWriteExpression(value, writerObject)));
-        }
+			Expression notNull = CheckNotNull(value, valueType);
 
-        public Expression Read(Expression readerObject, Type expectedValueType)
-        {
-            /*
-            BinaryReader r;
-            return r.ReadBoolean()?r.ReadString():null;*/
+			return Expression.Block(
+				GetWriteExpression(notNull, writerObject),
+				Expression.IfThen(
+					notNull,
+					GetWriteExpression(value, writerObject)));
+		}
 
-            return Expression.Condition(
-                GetReadExpression("ReadBoolean", readerObject),
-                GetReadExpression("Read" + expectedValueType.Name, readerObject),
-                Expression.Constant(null, expectedValueType));
-        }
+		public Expression Read(Expression readerObject, Type expectedValueType)
+		{
+			/*
+			BinaryReader r;
+			return r.ReadBoolean()?r.ReadString():null;*/
 
-        #endregion
-    }
+			return Expression.Condition(
+				GetReadExpression("ReadBoolean", readerObject),
+				GetReadExpression("Read" + expectedValueType.Name, readerObject),
+				Expression.Constant(null, expectedValueType));
+		}
+
+		#endregion
+	}
 }

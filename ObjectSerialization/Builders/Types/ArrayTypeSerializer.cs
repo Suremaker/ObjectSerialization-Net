@@ -16,20 +16,19 @@ namespace ObjectSerialization.Builders.Types
 
         public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
-            /*BinaryWriter w;
-            object o;
-            if (((T) o) == null)
+			/*BinaryWriter w;
+            T[] v;
+            if (v != null)
             {
-                w.Write((int) -1);
+				w.Write(v.Length);
+				int c = v.Length;
+				int s = TypeSerializerFactory.GetSerializer(typeof(T));
+				for (var i = 0; i < c; ++i)
+					s.Invoke(w, v[i]);                
             }
             else
-            {
-                w.Write(((T)o).Length);                
-                int c = ((T) o).Length;
-                int s = TypeSerializerFactory.GetSerializer(typeof (T).GetElementType());
-                for(var i=0 ; i < c; ++i)
-                    s.Invoke(w, ((T)o)[i]);
-            }*/
+				w.Write(-1);*/
+
             Expression checkNotNull = CheckNotNull(value, valueType);
 
             BlockExpression forLoop = CreateWriteLoop(writerObject, value, valueType);
@@ -42,16 +41,15 @@ namespace ObjectSerialization.Builders.Types
         {
             /*BinaryReader r;
             int c = r.ReadInt32();
-            return (c == -1)
-                ? null
-                :
-            {
-                T[]o=new T[c];
-                int s = TypeSerializerFactory.GetDeserializer(typeof (T).GetElementType());
-                for(var i=0 ; i < c; ++i)
-                    ((T)o)[i] = s.Invoke(r);
-                return o;
-            }*/
+	        if (c == -1)
+		        return null;
+            
+            T[]v=new T[c];
+            int s = TypeSerializerFactory.GetDeserializer(typeof (T));
+            for(var i=0 ; i < c; ++i)
+                v[i] = s.Invoke(r);
+            return v;
+            */
 
             ParameterExpression count = Expression.Variable(typeof(int), "c");
             BinaryExpression countRead = Expression.Assign(count, GetReadExpression("ReadInt32", readerObject));

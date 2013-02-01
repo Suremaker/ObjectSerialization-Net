@@ -14,8 +14,9 @@ namespace ObjectSerialization.Builders
         public readonly ParameterExpression ReadResultObject = Expression.Variable(typeof(T), "o");
         public readonly ParameterExpression ReaderObject = Expression.Parameter(typeof(BinaryReader), "r");
         private readonly List<Expression> _writeExpressions = new List<Expression>();
+
         private readonly ParameterExpression WriteParameter = Expression.Parameter(typeof(object), "o");
-        public readonly ParameterExpression WriteObject = Expression.Variable(typeof(T), "i");
+        public readonly ParameterExpression WriteObject = Expression.Variable(typeof(T), "v");
         public readonly ParameterExpression WriterObject = Expression.Parameter(typeof(BinaryWriter), "w");
 
 

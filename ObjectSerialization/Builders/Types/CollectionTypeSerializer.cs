@@ -20,26 +20,28 @@ namespace ObjectSerialization.Builders.Types
         public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
             /*BinaryWriter w;
-            object o;
-            if (((T) o) == null)
+            TCollection<T> v;
+            if (v!= null)
             {
-                w.Write((int) -1);
+				w.Write(v.Count);
+	            int s = TypeSerializerFactory.GetSerializer(typeof(T));
+	            IEnumerator<T> e = v.GetEnumerator();
+
+	            try
+				{
+					while (e.MoveNext())
+						s.Invoke(w, e.Current);
+				}
+				finally
+				{
+					e.Dispose();
+				}
             }
             else
             {
-                w.Write(((T)o).Count);                                
-                int s = TypeSerializerFactory.GetSerializer(elementType);
-                IEnumerator e = ((T) o).GetEnumerator();
-                try
-                {
-                    while (e.MoveNext())
-                        s.Invoke(w, e.Current);
-                }
-                finally
-                {
-                    e.Dispose();
-                }
+				w.Write(-1);
             }*/
+
             Expression checkNotNull = CheckNotNull(value, valueType);
 
             BlockExpression collectionWrite = Expression.Block(
@@ -53,16 +55,15 @@ namespace ObjectSerialization.Builders.Types
         {
             /*BinaryReader r;
             int c = r.ReadInt32();
-            return (c == -1)
-                ? null
-                :
-            {
-                T o=new T();
-                int s = TypeSerializerFactory.GetDeserializer(elementType);
-                for(var i=0 ; i < c; ++i)
-                    o.Add(s.Invoke(r));
-                return o;
-            }*/
+            if (c == -1)
+                return null;
+                
+            TCollection<T> v=new TCollection<T>();
+            int s = TypeSerializerFactory.GetDeserializer(typeof(T));
+            for(var i=0 ; i < c; ++i)
+                v.Add(s.Invoke(r));
+            return v;*/
+
             ParameterExpression count = Expression.Variable(typeof(int), "c");
             BinaryExpression countRead = Expression.Assign(count, GetReadExpression("ReadInt32", readerObject));
 
@@ -79,7 +80,7 @@ namespace ObjectSerialization.Builders.Types
         {
             ParameterExpression index = Expression.Parameter(typeof(int), "i");
             ParameterExpression deserializer = Expression.Parameter(typeof(Func<BinaryReader, object>), "s");
-            ParameterExpression result = Expression.Parameter(expectedValueType, "r");
+            ParameterExpression result = Expression.Parameter(expectedValueType, "v");
             LabelTarget loopEndLabel = Expression.Label(expectedValueType);
 
             BlockExpression forLoop = Expression.Block(

@@ -23,16 +23,15 @@ namespace ObjectSerialization.Builders.Types
         public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
             /*BinaryWriter w;   
-            object o;
-            w.Write(((T)o).Prop);*/
+            T v;
+            w.Write(v);*/
             return GetWriteExpression(value, writerObject);
         }
 
         public Expression Read(Expression readerObject, Type expectedValueType)
-        {
-            /*T o;
-            BinaryReader r;
-            o.Prop = r.ReadString();*/
+        {            
+            /*BinaryReader r;
+            return r.ReadTTT();*/
             return GetReadExpression("Read" + expectedValueType.Name, readerObject);
         }
 

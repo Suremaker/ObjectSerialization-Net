@@ -14,20 +14,20 @@ namespace ObjectSerialization.Builders.Types
 
         public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
-            /*BinaryWriter w;
-            object o;
-            StructMembersSerializerFactory.GetSerializer(type).Invoke(w, ((T)o).Prop);
-            */
+			/*BinaryWriter w;
+			T v;
+			StructMembersSerializerBuilder<T>.SerializeFn.Invoke(w, v);
+			*/
 
-            return CallSerializeWithConvert(GetDirectSerializer(typeof(StructMembersSerializerBuilder<>),valueType), value, writerObject);
+			return CallSerializeWithConvert(GetDirectSerializer(typeof(StructMembersSerializerBuilder<>),valueType), value, writerObject);
         }
 
         public Expression Read(Expression readerObject, Type expectedValueType)
         {
-            /*BinaryReader r;
-            StructMembersSerializerFactory.GetDeserializer(typeof(T)).Invoke(r)
-            */
-            return CallDeserialize(GetDirectDeserializer(typeof(StructMembersSerializerBuilder<>), expectedValueType), expectedValueType, readerObject);
+			/*BinaryReader r;
+			return StructMembersSerializerBuilder<T>.DeserializeFn.Invoke(r)
+			*/
+			return CallDeserialize(GetDirectDeserializer(typeof(StructMembersSerializerBuilder<>), expectedValueType), expectedValueType, readerObject);
         }
 
         #endregion
