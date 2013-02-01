@@ -19,9 +19,12 @@ MyClass deserialized = serializer.Deserialize<MyClass>(serializedData);
 ```
 
 Performance and serialized data size:
+
 The ObjectSerializer performs serialization/deserialization faster than standard BinaryFormatter and produces smaller data.
-Solution contains [ObjectSerialization.Performance](ObjectSerialization-Net/tree/master/ObjectSerialization.Performance) project that allows to compare ObjectSerializer performance with other serializers like (BinaryFormatter or Protobuf).
-The last performance comparison can be found here: [Performance test results](ObjectSerialization-Net/tree/master/PerformanceResults/results_2013-02-01_17.55.51.html)
+
+Solution contains [ObjectSerialization.Performance](tree/master/ObjectSerialization.Performance) project that allows to compare ObjectSerializer performance with other serializers like (BinaryFormatter or Protobuf).
+
+The last performance comparison can be found here: [Performance test results](tree/master/PerformanceResults/results_2013-02-01_17.55.51.html)
 
 
  
