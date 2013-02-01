@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Diagnostics;
 using System.Linq;
 using ObjectSerialization.Performance.Serializers;
@@ -48,9 +48,14 @@ namespace ObjectSerialization.Performance.TestCases
         private void ValidateSerializer(ISerializer serializer)
         {
             var deserialized = Deserialize(serializer, Serialize(serializer));
-            var deserializedEnumerable = deserialized as IEnumerable<object>;
+            var deserializedEnumerable = deserialized as IEnumerable;
 
-            if (deserializedEnumerable != null && !deserializedEnumerable.SequenceEqual((IEnumerable<object>)GetValue()) && !Equals(deserialized, GetValue()))
+            if (deserializedEnumerable != null)
+            {
+                if (!deserializedEnumerable.OfType<object>().SequenceEqual(((IEnumerable)GetValue()).OfType<object>()))
+                    throw new Exception("Deserialized object does not equal expected one");
+            }
+            else if (!Equals(deserialized, GetValue()))
                 throw new Exception("Deserialized object does not equal expected one");
         }
 

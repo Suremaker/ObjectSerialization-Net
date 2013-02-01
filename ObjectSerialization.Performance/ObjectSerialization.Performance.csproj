@@ -57,10 +57,14 @@
     <Compile Include="TestObjects\BaseType.cs" />
     <Compile Include="TestObjects\BasicTypes.cs" />
     <Compile Include="TestObjects\ComplexType.cs" />
+    <Compile Include="TestObjects\CustomStruct.cs" />
     <Compile Include="TestObjects\Derived.cs" />
+    <Compile Include="TestObjects\Derived2.cs" />
     <Compile Include="TestObjects\IInterface.cs" />
     <Compile Include="TestObjects\Impl.cs" />
+    <Compile Include="TestObjects\PolymorphicHolder.cs" />
     <Compile Include="TestObjects\SimpleClass.cs" />
+    <Compile Include="TestObjects\StructureHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ObjectSerialization\ObjectSerialization.csproj">

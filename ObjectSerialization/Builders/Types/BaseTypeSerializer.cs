@@ -25,7 +25,7 @@ namespace ObjectSerialization.Builders.Types
         {
             return Expression.ReferenceNotEqual(value, Expression.Constant(null, valueType));
         }
-        
+
         protected static Expression GetActualValueType(Expression value)
         {
             return Expression.Call(Expression.TypeAs(value, typeof(object)), "GetType", null);
@@ -44,6 +44,16 @@ namespace ObjectSerialization.Builders.Types
         protected static Expression GetSerializer<TSerializerFactory>(Expression type)
         {
             return Expression.Call(typeof(TSerializerFactory), "GetSerializer", null, type);
+        }
+
+        protected Expression GetDirectSerializer(Type builderType, Type valueType)
+        {
+            return Expression.Property(null, builderType.MakeGenericType(valueType), "SerializeFn");
+        }
+
+        protected Expression GetDirectDeserializer(Type builderType, Type valueType)
+        {
+            return Expression.Property(null, builderType.MakeGenericType(valueType), "DeserializeFn");
         }
 
         protected static Expression GetWriteExpression(Expression valueExpression, Expression writer)

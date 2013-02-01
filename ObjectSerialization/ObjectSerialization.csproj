@@ -44,9 +44,7 @@
     <Compile Include="Builders\Types\PredefinedTypeSerializer.cs" />
     <Compile Include="Builders\Types\StringTypeSerializer.cs" />
     <Compile Include="Builders\Types\ValueTypeSerializer.cs" />
-    <Compile Include="Factories\ClassMembersSerializerFactory.cs" />
     <Compile Include="Factories\GenericSerializerFactory.cs" />
-    <Compile Include="Factories\StructMembersSerializerFactory.cs" />
     <Compile Include="Factories\TypeSerializerFactory.cs" />
     <Compile Include="IObjectSerializer.cs" />
     <Compile Include="ObjectSerializer.cs" />

@@ -1,6 +1,5 @@
 using System;
 using System.Linq.Expressions;
-using ObjectSerialization.Factories;
 
 namespace ObjectSerialization.Builders.Types
 {
@@ -20,7 +19,7 @@ namespace ObjectSerialization.Builders.Types
             StructMembersSerializerFactory.GetSerializer(type).Invoke(w, ((T)o).Prop);
             */
 
-            return CallSerializeWithConvert(GetSerializer<StructMembersSerializerFactory>(Expression.Constant(valueType)), value, writerObject);
+            return CallSerializeWithConvert(GetDirectSerializer(typeof(StructMembersSerializerBuilder<>),valueType), value, writerObject);
         }
 
         public Expression Read(Expression readerObject, Type expectedValueType)
@@ -28,7 +27,7 @@ namespace ObjectSerialization.Builders.Types
             /*BinaryReader r;
             StructMembersSerializerFactory.GetDeserializer(typeof(T)).Invoke(r)
             */
-            return CallDeserialize(GetDeserializer<StructMembersSerializerFactory>(Expression.Constant(expectedValueType)), expectedValueType, readerObject);
+            return CallDeserialize(GetDirectDeserializer(typeof(StructMembersSerializerBuilder<>), expectedValueType), expectedValueType, readerObject);
         }
 
         #endregion

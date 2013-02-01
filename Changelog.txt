@@ -1,6 +1,11 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.11
+-------------------------------------------
++ optimized struct and class members serialization
++ added more performance monitor cases
+
 Version 1.0.10
 -------------------------------------------
 + added serialization performance project to compare serialization times/serialized data size for various object graphs and serializer implementations
