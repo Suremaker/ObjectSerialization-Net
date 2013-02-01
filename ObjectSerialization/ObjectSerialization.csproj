@@ -48,6 +48,12 @@
     <Compile Include="IObjectSerializer.cs" />
     <Compile Include="ObjectSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\TypeInfo.cs" />
+    <Compile Include="Types\TypeInfoRepository.cs" />
+    <Compile Include="Types\TypeInfoWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

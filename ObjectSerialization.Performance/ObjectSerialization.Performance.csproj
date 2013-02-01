@@ -70,6 +70,7 @@
     <Compile Include="TestObjects\IInterface.cs" />
     <Compile Include="TestObjects\Impl.cs" />
     <Compile Include="TestObjects\PolymorphicHolder.cs" />
+    <Compile Include="TestObjects\RegisteredSimpleClass.cs" />
     <Compile Include="TestObjects\SimpleClass.cs" />
     <Compile Include="TestObjects\StructureHolder.cs" />
   </ItemGroup>

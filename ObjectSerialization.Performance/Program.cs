@@ -5,6 +5,7 @@ using ObjectSerialization.Performance.Results;
 using ObjectSerialization.Performance.Serializers;
 using ObjectSerialization.Performance.TestCases;
 using ObjectSerialization.Performance.TestObjects;
+using ObjectSerialization.Types;
 
 namespace ObjectSerialization.Performance
 {
@@ -87,18 +88,18 @@ namespace ObjectSerialization.Performance
 
 			monitor.MeasureFor(Case.For("Mixed array", new object[] { 55, 3.15, null, "test", DateTime.Now, new SimpleClass { Text = "test" } }));
 
-			monitor.MeasureFor(Case.For("List<SimpleClass>", new List<SimpleClass>
+			monitor.MeasureFor(Case.For("List[SimpleClass]", new List<SimpleClass>
             {
                 new SimpleClass {Double = 5, Number = 32, Text = "a"},
                 new SimpleClass {Double = 45, Number = 332, Text = "bb"}
             }));
 
-			monitor.MeasureFor(Case.For("Dictionary<int,string>", new Dictionary<int, string> { { 3, "3" }, { 55, "fifty five" } }));
+			monitor.MeasureFor(Case.For("Dictionary[int,string]", new Dictionary<int, string> { { 3, "3" }, { 55, "fifty five" } }));
 
 			var linkedList = new LinkedList<SimpleClass>();
 			linkedList.AddLast(new SimpleClass { Double = 5, Number = 32, Text = "a" });
 			linkedList.AddLast(new SimpleClass { Double = 45, Number = 332, Text = "bb" });
-			monitor.MeasureFor(Case.For("LinkedList<SimpleClass>", linkedList));
+			monitor.MeasureFor(Case.For("LinkedList[SimpleClass]", linkedList));
 
 
 			monitor.MeasureFor(Case.For(new PolymorphicHolder
@@ -114,6 +115,13 @@ namespace ObjectSerialization.Performance
 				hugeObject[i] = new KeyValuePair<StructureHolder, BasicTypes>(new StructureHolder(), new BasicTypes());
 
 			monitor.MeasureFor(Case.For("huge object", hugeObject));
+
+
+			monitor.MeasureFor(Case.For("object array", new object[] { new SimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new SimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new SimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new SimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new SimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue } }));
+
+			TypeInfoRepository.RegisterPredefined(typeof(RegisteredSimpleClass));
+			monitor.MeasureFor(Case.For("object array with registered type", new object[] { new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue } }));
+
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Text;
-using ObjectSerialization.Factories;
+using ObjectSerialization.Types;
 
 namespace ObjectSerialization
 {
@@ -19,10 +19,12 @@ namespace ObjectSerialization
 
 		public void Serialize(Stream stream, object value)
 		{
-			var type = value != null ? value.GetType() : typeof(object);
+			var type = (value != null) ? value.GetType() : typeof(object);
+
 			var writer = new BinaryWriter(stream, Encoding.UTF8);
-			writer.Write(type.FullName);
-			TypeSerializerFactory.GetSerializer(type).Invoke(writer, value);
+			
+			var typeInfo = TypeInfoWriter.WriteInfo(writer, type);
+			typeInfo.Serializer.Invoke(writer, value);
 			writer.Flush();
 		}
 
@@ -35,8 +37,8 @@ namespace ObjectSerialization
 		public T Deserialize<T>(Stream stream)
 		{
 			var reader = new BinaryReader(stream, Encoding.UTF8);
-			string typeFullName = reader.ReadString();
-			return (T)TypeSerializerFactory.GetDeserializer(typeFullName).Invoke(reader);
+			var typeInfo = TypeInfoWriter.ReadInfo(reader);
+			return (T)typeInfo.Deserializer.Invoke(reader);
 		}
 
 		#endregion

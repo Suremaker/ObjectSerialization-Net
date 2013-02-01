@@ -1,6 +1,10 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.16
+-------------------------------------------
++ introduced TypeInfoRepository class with ability to register type (to decrease size of serialized data)
+
 Version 1.0.15
 -------------------------------------------
 + extended IObjectSerializer interface to support streams
