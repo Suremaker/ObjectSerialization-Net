@@ -15,7 +15,7 @@ namespace ObjectSerialization.Types
 
 		static TypeInfoRepository()
 		{
-			Type[] predefinedTypes = new[]
+			var predefinedTypes = new[]
 			{
 				typeof (string),
 				typeof (bool),
@@ -42,7 +42,19 @@ namespace ObjectSerialization.Types
 			}
 		}
 
-		internal static TypeInfo GetTypeInfo(Type type)
+	    public static void RegisterPredefined(Type type)
+	    {
+	        TypeInfo info = LoadTypeInfo(type);
+	        if (!_typeDictionary.TryAdd(type.FullName, info))
+	            throw new ArgumentException("Type {0} cannot be registered as predefined one, because it already exist in repository", type.FullName);
+	        lock (_predefinedTypeList)
+	        {
+	            info.ShortTypeId = _predefinedTypeList.Count;
+	            _predefinedTypeList.Add(info);
+	        }
+	    }
+
+	    internal static TypeInfo GetTypeInfo(Type type)
 		{
 			TypeInfo info;
 			if (_typeDictionary.TryGetValue(type.FullName, out info))
@@ -71,19 +83,7 @@ namespace ObjectSerialization.Types
 			return _predefinedTypeList[shortTypeId];
 		}
 
-		public static void RegisterPredefined(Type type)
-		{
-			var info = LoadTypeInfo(type);
-			if (!_typeDictionary.TryAdd(type.FullName, info))
-				throw new ArgumentException("Type {0} cannot be registered as predefined one, because it already exist in repository", type.FullName);
-			lock (_predefinedTypeList)
-			{
-				info.ShortTypeId = _predefinedTypeList.Count;
-				_predefinedTypeList.Add(info);
-			}
-		}
-
-		private static Type FindType(string type)
+	    private static Type FindType(string type)
 		{
 			return AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(type, false)).First(t => t != null);
 		}

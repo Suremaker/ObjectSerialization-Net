@@ -12,11 +12,6 @@ namespace ObjectSerialization.Performance.TestObjects
         [ProtoMember(1)]
         public double Value { get; set; }
 
-        protected bool Equals(BaseType other)
-        {
-            return Value.Equals(other.Value);
-        }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -28,6 +23,11 @@ namespace ObjectSerialization.Performance.TestObjects
         public override int GetHashCode()
         {
             return Value.GetHashCode();
+        }
+
+        protected bool Equals(BaseType other)
+        {
+            return Value.Equals(other.Value);
         }
     }
 }

@@ -5,19 +5,16 @@ namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
     [ProtoContract]
+    [ProtoInclude(4, typeof(RegisteredSimpleClass))]
     class SimpleClass
     {
+        [ProtoMember(3)]
+        public double Double { get; set; }
+
         [ProtoMember(1)]
         public int Number { get; set; }
         [ProtoMember(2)]
         public string Text { get; set; }
-        [ProtoMember(3)]
-        public double Double { get; set; }
-
-        protected bool Equals(SimpleClass other)
-        {
-            return Number == other.Number && string.Equals(Text, other.Text) && Double.Equals(other.Double);
-        }
 
         public override bool Equals(object obj)
         {
@@ -36,6 +33,11 @@ namespace ObjectSerialization.Performance.TestObjects
                 hashCode = (hashCode * 397) ^ Double.GetHashCode();
                 return hashCode;
             }
+        }
+
+        protected bool Equals(SimpleClass other)
+        {
+            return Number == other.Number && string.Equals(Text, other.Text) && Double.Equals(other.Double);
         }
     }
 }

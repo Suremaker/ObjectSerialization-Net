@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 using ObjectSerialization.UT.Helpers;
@@ -10,17 +9,17 @@ namespace ObjectSerialization.UT
 	[TestFixture]
 	public class ObjectSerializerTests
 	{
-		#region Setup/Teardown
+	    #region Setup/Teardown
 
-		[SetUp]
+	    [SetUp]
 		public void SetUp()
 		{
 			_serializer = new ObjectSerializer();
 		}
 
-		#endregion
+	    #endregion
 
-		private IObjectSerializer _serializer;
+	    private IObjectSerializer _serializer;
 
 		private void AssertProperties<T>(T expected, T actual)
 		{
@@ -86,7 +85,17 @@ namespace ObjectSerialization.UT
 			AssertProperties(expected, actual);
 		}
 
-		[Test]
+	    [Test]
+	    public void CollectionAssignedToObjectMemberSerializationTest()
+	    {
+	        var dictionary = new Dictionary<string, int> { { "a", 1 }, { "b", 2 }, { "c", 3 } };
+	        var expected = new ObjectHolder { Value = dictionary };
+	        byte[] serialized = _serializer.Serialize(expected);
+	        var actual = _serializer.Deserialize<ObjectHolder>(serialized);
+	        Assert.That(actual.Value, Is.EqualTo(expected.Value));
+	    }
+
+	    [Test]
 		public void CollectionSerializationTest()
 		{
 			var expected = new List<SimpleType> { new SimpleType { TextA = "a" }, new SimpleType2 { TextB = "b" } };
@@ -94,7 +103,39 @@ namespace ObjectSerialization.UT
 			Assert.That(_serializer.Deserialize<object>(serialized), Is.EquivalentTo(expected));
 		}
 
-		[Test]
+	    [Test]
+	    public void EmptyClassMemberSerializationTest()
+	    {
+	        var expected = new ObjectHolder { Value = new EmptyClass() };
+	        byte[] serialized = _serializer.Serialize(expected);
+	        AssertProperties(expected, _serializer.Deserialize<object>(serialized));
+	    }
+
+	    [Test]
+	    public void EmptyClassSerializationTest()
+	    {
+	        var expected = new EmptyClass();
+	        byte[] serialized = _serializer.Serialize(expected);
+	        Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
+	    }
+
+	    [Test]
+	    public void EmptyStructMemberSerializationTest()
+	    {
+	        var expected = new ObjectHolder { Value = new EmptyStruct() };
+	        byte[] serialized = _serializer.Serialize(expected);
+	        AssertProperties(expected, _serializer.Deserialize<object>(serialized));
+	    }
+
+	    [Test]
+	    public void EmptyStructSerializationTest()
+	    {
+	        var expected = new EmptyStruct();
+	        byte[] serialized = _serializer.Serialize(expected);
+	        Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
+	    }
+
+	    [Test]
 		public void IntSerializationTest()
 		{
 			const int expected = 5;
@@ -220,7 +261,7 @@ namespace ObjectSerialization.UT
 		{
 			object expected = new StructHolder { Date = new DateTime(2005, 05, 07), Int = 5, Int2 = null, Complex = new ComplexStruct { Text = "test", Span = new TimeSpan(1, 2, 3) } };
 			byte[] serialized = _serializer.Serialize(expected);
-			object actual = _serializer.Deserialize<object>(serialized);
+			var actual = _serializer.Deserialize<object>(serialized);
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
@@ -232,52 +273,10 @@ namespace ObjectSerialization.UT
 			Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
 		}
 
-		[Test]
-		public void EmptyClassSerializationTest()
-		{
-			var expected = new EmptyClass();
-			byte[] serialized = _serializer.Serialize(expected);
-			Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
-		}
-
-		[Test]
-		public void EmptyClassMemberSerializationTest()
-		{
-			var expected = new ObjectHolder { Value = new EmptyClass() };
-			byte[] serialized = _serializer.Serialize(expected);
-			AssertProperties(expected, _serializer.Deserialize<object>(serialized));
-		}
-
-		[Test]
-		public void EmptyStructSerializationTest()
-		{
-			var expected = new EmptyStruct();
-			byte[] serialized = _serializer.Serialize(expected);
-			Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
-		}
-
-		[Test]
-		public void EmptyStructMemberSerializationTest()
-		{
-			var expected = new ObjectHolder { Value = new EmptyStruct() };
-			byte[] serialized = _serializer.Serialize(expected);
-			AssertProperties(expected, _serializer.Deserialize<object>(serialized));
-		}
-
-		[Test]
+	    [Test]
 		public void ValueTypeAssignedToObjectMemberSerializationTest()
 		{
 			var expected = new ObjectHolder { Value = 5 };
-			byte[] serialized = _serializer.Serialize(expected);
-			var actual = _serializer.Deserialize<ObjectHolder>(serialized);
-			Assert.That(actual.Value, Is.EqualTo(expected.Value));
-		}
-
-		[Test]
-		public void CollectionAssignedToObjectMemberSerializationTest()
-		{
-			var dictionary = new Dictionary<string, int> { { "a", 1 }, { "b", 2 }, { "c", 3 } };
-			var expected = new ObjectHolder { Value = dictionary };
 			byte[] serialized = _serializer.Serialize(expected);
 			var actual = _serializer.Deserialize<ObjectHolder>(serialized);
 			Assert.That(actual.Value, Is.EqualTo(expected.Value));

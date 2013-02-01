@@ -5,9 +5,9 @@ namespace ObjectSerialization
 	public interface IObjectSerializer
 	{
 		T Deserialize<T>(byte[] serialized);
-		byte[] Serialize(object value);
 
-		T Deserialize<T>(Stream stream);
-		void Serialize(Stream stream, object value);
+	    T Deserialize<T>(Stream stream);
+	    byte[] Serialize(object value);
+	    void Serialize(Stream stream, object value);
 	}
 }

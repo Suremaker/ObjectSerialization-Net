@@ -6,9 +6,9 @@ namespace ObjectSerialization.Builders.Types
 {
 	internal class ClassTypeSerializer : BaseTypeSerializer, ISerializer
 	{
-		#region ISerializer Members
+	    #region ISerializer Members
 
-		public bool IsSupported(Type type)
+	    public bool IsSupported(Type type)
 		{
 			return type.IsClass || type.IsAbstract || type.IsInterface;
 		}
@@ -81,26 +81,26 @@ namespace ObjectSerialization.Builders.Types
 			return Expression.Block(new[] { flag }, readFlag, deserialization);
 		}
 
-		private Expression GetSerializerField(Expression typeInfo)
-		{
-			return Expression.Field(typeInfo, "Serializer");
-		}
+	    #endregion
 
-		private Expression GetDeserializerField(Expression typeInfo)
+	    private Expression GetDeserializerField(Expression typeInfo)
 		{
 			return Expression.Field(typeInfo, "Deserializer");
 		}
 
-		private Expression WriteTypeInfo(Expression writerObject, Expression value)
-		{
-			return Expression.Call(typeof(TypeInfoWriter), "WriteInfo", null, writerObject, GetActualValueType(value));
-		}
+	    private Expression GetSerializerField(Expression typeInfo)
+	    {
+	        return Expression.Field(typeInfo, "Serializer");
+	    }
 
-		private MethodCallExpression ReadTypeInfo(Expression readerObject)
+	    private MethodCallExpression ReadTypeInfo(Expression readerObject)
 		{
 			return Expression.Call(typeof(TypeInfoWriter), "ReadInfo", null, readerObject);
 		}
 
-		#endregion
+	    private Expression WriteTypeInfo(Expression writerObject, Expression value)
+	    {
+	        return Expression.Call(typeof(TypeInfoWriter), "WriteInfo", null, writerObject, GetActualValueType(value));
+	    }
 	}
 }

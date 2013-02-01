@@ -7,15 +7,20 @@ namespace ObjectSerialization.Performance.TestCases
         private readonly string _name;
         private readonly T _value;
 
+        public override string Name
+        {
+            get { return _name; }
+        }
+
         public GenericCase(string name, T value)
         {
             _name = name;
             _value = value;
         }
 
-        public override string Name
+        protected override object Deserialize(ISerializerAdapter serializer, byte[] data)
         {
-            get { return _name; }
+            return serializer.Deserialize<T>(data);
         }
 
         protected override object GetValue()
@@ -26,11 +31,6 @@ namespace ObjectSerialization.Performance.TestCases
         protected override byte[] Serialize(ISerializerAdapter serializer)
         {
             return serializer.Serialize(_value);
-        }
-
-        protected override object Deserialize(ISerializerAdapter serializer, byte[] data)
-        {
-            return serializer.Deserialize<T>(data);
         }
     }
 }

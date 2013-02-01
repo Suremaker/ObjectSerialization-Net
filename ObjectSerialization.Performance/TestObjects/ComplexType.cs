@@ -7,23 +7,20 @@ namespace ObjectSerialization.Performance.TestObjects
     [ProtoContract]
     internal class ComplexType
     {
-        [ProtoMember(1)]
-        public DateTime Date { get; set; }
-        [ProtoMember(2)]
-        public int? NullableInt { get; set; }
-        [ProtoMember(3)]
-        public IInterface InterfaceHolder { get; set; }
-        [ProtoMember(4)]
-        public object ObjectHolder { get; set; }
         [ProtoMember(5)]
         public BaseType BaseType { get; set; }
 
-        protected bool Equals(ComplexType other)
-        {
-            return Date.Equals(other.Date) && NullableInt == other.NullableInt &&
-                   Equals(InterfaceHolder, other.InterfaceHolder) && Equals(ObjectHolder, other.ObjectHolder) &&
-                   Equals(BaseType, other.BaseType);
-        }
+        [ProtoMember(1)]
+        public DateTime Date { get; set; }
+
+        [ProtoMember(3)]
+        public IInterface InterfaceHolder { get; set; }
+
+        [ProtoMember(2)]
+        public int? NullableInt { get; set; }
+
+        [ProtoMember(4)]
+        public object ObjectHolder { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -44,6 +41,13 @@ namespace ObjectSerialization.Performance.TestObjects
                 hashCode = (hashCode * 397) ^ (BaseType != null ? BaseType.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        protected bool Equals(ComplexType other)
+        {
+            return Date.Equals(other.Date) && NullableInt == other.NullableInt &&
+                   Equals(InterfaceHolder, other.InterfaceHolder) && Equals(ObjectHolder, other.ObjectHolder) &&
+                   Equals(BaseType, other.BaseType);
         }
     }
 }

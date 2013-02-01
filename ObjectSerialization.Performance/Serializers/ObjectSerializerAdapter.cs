@@ -4,6 +4,8 @@
     {
         private readonly IObjectSerializer _serializer = new ObjectSerializer();
 
+        #region ISerializerAdapter Members
+
         public byte[] Serialize<T>(T value)
         {
             return _serializer.Serialize(value);
@@ -15,5 +17,7 @@
         }
 
         public string Name { get { return "ObjectSerializer"; } }
+
+        #endregion
     }
 }

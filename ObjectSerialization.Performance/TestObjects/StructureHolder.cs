@@ -8,22 +8,20 @@ namespace ObjectSerialization.Performance.TestObjects
     [ProtoContract]
     internal class StructureHolder
     {
-        [ProtoMember(1)]
-        public DateTime Date { get; set; }
-        [ProtoMember(2)]
-        public TimeSpan Span { get; set; }
-        [ProtoMember(3)]
-        public KeyValuePair<DateTime, decimal> Pair { get; set; }
         [ProtoMember(4)]
         public CustomStruct Custom { get; set; }
+
+        [ProtoMember(1)]
+        public DateTime Date { get; set; }
+
         [ProtoMember(5)]
         public Guid Guid { get; set; }
 
-        protected bool Equals(StructureHolder other)
-        {
-            return Date.Equals(other.Date) && Span.Equals(other.Span) && Pair.Equals(other.Pair) &&
-                   Custom.Equals(other.Custom) && Guid.Equals(other.Guid);
-        }
+        [ProtoMember(3)]
+        public KeyValuePair<DateTime, decimal> Pair { get; set; }
+
+        [ProtoMember(2)]
+        public TimeSpan Span { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -44,6 +42,12 @@ namespace ObjectSerialization.Performance.TestObjects
                 hashCode = (hashCode * 397) ^ Guid.GetHashCode();
                 return hashCode;
             }
+        }
+
+        protected bool Equals(StructureHolder other)
+        {
+            return Date.Equals(other.Date) && Span.Equals(other.Span) && Pair.Equals(other.Pair) &&
+                   Custom.Equals(other.Custom) && Guid.Equals(other.Guid);
         }
     }
 }

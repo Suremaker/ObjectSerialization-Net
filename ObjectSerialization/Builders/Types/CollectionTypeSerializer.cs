@@ -76,6 +76,19 @@ namespace ObjectSerialization.Builders.Types
             return expression;
         }
 
+        #endregion
+
+        private static Type GetCollectionItemType(Type type)
+        {
+            Type collection = GetCollectionType(type);
+            return collection != null ? collection.GetGenericArguments()[0] : null;
+        }
+
+        private static Type GetCollectionType(Type type)
+        {
+            return type.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICollection<>));
+        }
+
         private Expression CreateReadLoop(Expression readerObject, Type expectedValueType, ParameterExpression count)
         {
             ParameterExpression index = Expression.Parameter(typeof(int), "i");
@@ -124,19 +137,6 @@ namespace ObjectSerialization.Builders.Types
         private Type GetEnumeratorType(Type collectionType)
         {
             return typeof(IEnumerator<>).MakeGenericType(GetCollectionItemType(collectionType));
-        }
-
-        #endregion
-
-        private static Type GetCollectionItemType(Type type)
-        {
-            Type collection = GetCollectionType(type);
-            return collection != null ? collection.GetGenericArguments()[0] : null;
-        }
-
-        private static Type GetCollectionType(Type type)
-        {
-            return type.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICollection<>));
         }
     }
 }

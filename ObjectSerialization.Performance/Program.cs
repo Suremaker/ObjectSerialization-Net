@@ -20,7 +20,7 @@ namespace ObjectSerialization.Performance
 
 			PerformMeasurement(monitor);
 
-			var date = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
+			string date = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
 			WriteResult(date, new CsvResultPresenter(monitor.GetResults()));
 			WriteResult(date, new HtmlResultPresenter(monitor.GetResults()));
 
@@ -28,12 +28,7 @@ namespace ObjectSerialization.Performance
 			Console.ReadKey();
 		}
 
-		private static void WriteResult(string date, ResultPresenter presenter)
-		{
-			File.WriteAllText(string.Format("results {0}.{1}", date, presenter.Extension), presenter.Present());
-		}
-
-		private static void PerformMeasurement(PerformanceMonitor monitor)
+	    private static void PerformMeasurement(PerformanceMonitor monitor)
 		{
 			monitor.MeasureFor(Case.For(new SimpleClass { Number = 32, Double = 3.14, Text = "test" }));
 			monitor.MeasureFor(Case.For("SimpleClass null text", new SimpleClass { Number = 32, Double = 3.14 }));
@@ -123,5 +118,10 @@ namespace ObjectSerialization.Performance
 			monitor.MeasureFor(Case.For("object array with registered type", new object[] { new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue }, new RegisteredSimpleClass { Text = "test", Double = Double.MaxValue, Number = int.MaxValue } }));
 
 		}
+
+	    private static void WriteResult(string date, ResultPresenter presenter)
+	    {
+	        File.WriteAllText(string.Format("results {0}.{1}", date, presenter.Extension), presenter.Present());
+	    }
 	}
 }

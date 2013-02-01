@@ -12,6 +12,16 @@ namespace ObjectSerialization.Performance.Results
         {
         }
 
+        private static string GetColor(Func<PerformanceResult, double> valueGetter, PerformanceResult result, double min)
+        {
+            string color = null;
+            if (result.Failure != null)
+                color = "red";
+            else if (Equals(valueGetter(result), min))
+                color = "DarkSeaGreen";
+            return color;
+        }
+
         public override string Present()
         {
             var sb = new StringBuilder();
@@ -24,10 +34,9 @@ namespace ObjectSerialization.Performance.Results
             return sb.ToString();
         }
 
-        private void WriteCases(StringBuilder sb)
+        private string GetPercent(double value, double max)
         {
-            foreach (var testCase in TestCases)
-                WriteCase(sb, testCase, GetResultsFor(testCase).ToArray());
+            return string.Format("{0:0} %", value * 100 / max);
         }
 
         private void WriteCase(StringBuilder sb, string testCase, PerformanceResult[] results)
@@ -48,25 +57,31 @@ namespace ObjectSerialization.Performance.Results
             double max = results.Where(c => c.Failure == null).Select(valueGetter).Max();
             double min = results.Where(c => c.Failure == null).Select(valueGetter).Min();
 
-            foreach (var result in results)
+            foreach (PerformanceResult result in results)
             {
-                var text = result.Failure == null
+                string text = result.Failure == null
                     ? formatter(valueGetter(result))
                     : "error";
-                var color = GetColor(valueGetter, result, min);
+                string color = GetColor(valueGetter, result, min);
                 WriteCell(sb, text, color);
             }
 
-            foreach (var result in results)
+            foreach (PerformanceResult result in results)
             {
-                var text = result.Failure == null
+                string text = result.Failure == null
                     ? GetPercent(valueGetter(result), max)
                     : "error";
-                var color = GetColor(valueGetter, result, min);
+                string color = GetColor(valueGetter, result, min);
                 WriteCell(sb, text, color);
             }
 
             sb.Append("</tr>");
+        }
+
+        private void WriteCases(StringBuilder sb)
+        {
+            foreach (string testCase in TestCases)
+                WriteCase(sb, testCase, GetResultsFor(testCase).ToArray());
         }
 
         private void WriteCell(StringBuilder sb, string text, string color = null)
@@ -77,19 +92,9 @@ namespace ObjectSerialization.Performance.Results
                 sb.AppendFormat("<td style=\"background-color: {1}\">{0}</td>", text, color);
         }
 
-        private string GetPercent(double value, double max)
+        private void WriteHead(StringBuilder sb, string name)
         {
-            return string.Format("{0:0} %", value * 100 / max);
-        }
-
-        private static string GetColor(Func<PerformanceResult, double> valueGetter, PerformanceResult result, double min)
-        {
-            string color = null;
-            if (result.Failure != null)
-                color = "red";
-            else if (Equals(valueGetter(result), min))
-                color = "DarkSeaGreen";
-            return color;
+            sb.AppendFormat("<th>{0}</th>", name);
         }
 
         private void WriteHeader(StringBuilder sb)
@@ -97,16 +102,11 @@ namespace ObjectSerialization.Performance.Results
             sb.Append("<tr>");
             WriteHead(sb, "Case");
             WriteHead(sb, "Category");
-            foreach (var name in SerializerNames)
+            foreach (string name in SerializerNames)
                 WriteHead(sb, name);
-            foreach (var name in SerializerNames)
+            foreach (string name in SerializerNames)
                 WriteHead(sb, name + " %");
             sb.Append("</tr>");
-        }
-
-        private void WriteHead(StringBuilder sb, string name)
-        {
-            sb.AppendFormat("<th>{0}</th>", name);
         }
     }
 }

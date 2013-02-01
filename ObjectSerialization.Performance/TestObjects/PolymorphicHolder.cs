@@ -12,11 +12,6 @@ namespace ObjectSerialization.Performance.TestObjects
         [ProtoMember(2)]
         public BaseType B { get; set; }
 
-        protected bool Equals(PolymorphicHolder other)
-        {
-            return Equals(A, other.A) && Equals(B, other.B);
-        }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -31,6 +26,11 @@ namespace ObjectSerialization.Performance.TestObjects
             {
                 return ((A != null ? A.GetHashCode() : 0) * 397) ^ (B != null ? B.GetHashCode() : 0);
             }
+        }
+
+        protected bool Equals(PolymorphicHolder other)
+        {
+            return Equals(A, other.A) && Equals(B, other.B);
         }
     }
 }

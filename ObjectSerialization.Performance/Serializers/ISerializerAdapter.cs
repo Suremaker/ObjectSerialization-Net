@@ -2,8 +2,8 @@
 {
     internal interface ISerializerAdapter
     {
-        byte[] Serialize<T>(T value);
-        T Deserialize<T>(byte[] data);
         string Name { get; }
+        T Deserialize<T>(byte[] data);
+        byte[] Serialize<T>(T value);
     }
 }

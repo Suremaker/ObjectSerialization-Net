@@ -7,12 +7,17 @@ namespace ObjectSerialization.Performance
 {
     internal class PerformanceMonitor
     {
-        private readonly ISerializerAdapter[] _serializers;
         private readonly List<PerformanceResult> _results = new List<PerformanceResult>();
+        private readonly ISerializerAdapter[] _serializers;
 
         public PerformanceMonitor(params ISerializerAdapter[] serializers)
         {
             _serializers = serializers;
+        }
+
+        public IEnumerable<PerformanceResult> GetResults()
+        {
+            return _results;
         }
 
         public void MeasureFor(TestCase testCase)
@@ -27,11 +32,6 @@ namespace ObjectSerialization.Performance
         {
             Console.WriteLine(measure);
             _results.Add(measure);
-        }
-
-        public IEnumerable<PerformanceResult> GetResults()
-        {
-            return _results;
         }
     }
 }

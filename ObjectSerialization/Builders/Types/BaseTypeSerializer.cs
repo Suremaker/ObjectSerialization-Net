@@ -45,16 +45,6 @@ namespace ObjectSerialization.Builders.Types
             return Expression.Call(typeof(TSerializerFactory), "GetSerializer", null, type);
         }
 
-        protected Expression GetDirectSerializer(Type builderType, Type valueType)
-        {
-            return Expression.Property(null, builderType.MakeGenericType(valueType), "SerializeFn");
-        }
-
-        protected Expression GetDirectDeserializer(Type builderType, Type valueType)
-        {
-            return Expression.Property(null, builderType.MakeGenericType(valueType), "DeserializeFn");
-        }
-
         protected static Expression GetWriteExpression(Expression valueExpression, Expression writer)
         {
             return Expression.Call(writer, "Write", null, valueExpression);
@@ -70,6 +60,16 @@ namespace ObjectSerialization.Builders.Types
             Expression valueType = GetActualValueType(value);
             MemberExpression typeFullName = Expression.Property(valueType, "FullName");
             return GetWriteExpression(typeFullName, objectWriter);
+        }
+
+        protected Expression GetDirectDeserializer(Type builderType, Type valueType)
+        {
+            return Expression.Property(null, builderType.MakeGenericType(valueType), "DeserializeFn");
+        }
+
+        protected Expression GetDirectSerializer(Type builderType, Type valueType)
+        {
+            return Expression.Property(null, builderType.MakeGenericType(valueType), "SerializeFn");
         }
     }
 }

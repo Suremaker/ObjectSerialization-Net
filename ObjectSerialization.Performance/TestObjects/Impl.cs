@@ -10,11 +10,6 @@ namespace ObjectSerialization.Performance.TestObjects
         [ProtoMember(1)]
         public string Text { get; set; }
 
-        protected bool Equals(Impl other)
-        {
-            return string.Equals(Text, other.Text);
-        }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -26,6 +21,11 @@ namespace ObjectSerialization.Performance.TestObjects
         public override int GetHashCode()
         {
             return (Text != null ? Text.GetHashCode() : 0);
+        }
+
+        protected bool Equals(Impl other)
+        {
+            return string.Equals(Text, other.Text);
         }
     }
 }

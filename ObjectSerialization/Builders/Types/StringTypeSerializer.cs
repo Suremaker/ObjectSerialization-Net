@@ -9,9 +9,9 @@ namespace ObjectSerialization.Builders.Types
 	{
 		private static readonly IEnumerable<Type> _predefinedTypes = new[] { typeof(string) };
 
-		#region ISerializer Members
+	    #region ISerializer Members
 
-		public bool IsSupported(Type type)
+	    public bool IsSupported(Type type)
 		{
 			return _predefinedTypes.Contains(type);
 		}
@@ -45,6 +45,6 @@ namespace ObjectSerialization.Builders.Types
 				Expression.Constant(null, expectedValueType));
 		}
 
-		#endregion
+	    #endregion
 	}
 }

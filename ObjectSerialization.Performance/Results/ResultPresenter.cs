@@ -6,6 +6,11 @@ namespace ObjectSerialization.Performance.Results
 {
     internal abstract class ResultPresenter
     {
+        public string Extension { get; private set; }
+        protected PerformanceResult[] Results { get; private set; }
+        protected string[] SerializerNames { get; private set; }
+        protected string[] TestCases { get; private set; }
+
         protected ResultPresenter(string ext, IEnumerable<PerformanceResult> results)
         {
             Extension = ext;
@@ -14,26 +19,21 @@ namespace ObjectSerialization.Performance.Results
             SerializerNames = Results.Select(r => r.SerializerName).Distinct().OrderBy(c => c).ToArray();
         }
 
-        public string Extension { get; private set; }
-        public abstract string Present();
-        protected string[] SerializerNames { get; private set; }
-        protected string[] TestCases { get; private set; }
-        protected PerformanceResult[] Results { get; private set; }
-
-        protected IEnumerable<PerformanceResult> GetResultsFor(string testCase)
+        protected static string FormatSize(double size)
         {
-            return Results.Where(r => r.TestCase == testCase).OrderBy(r => r.SerializerName);
+            return string.Format("{0} b", size);
         }
+
+        public abstract string Present();
 
         protected string FormatTimeSpan(double value)
         {
             return string.Format("{0:0.00} ms", new TimeSpan((long)value).TotalMilliseconds);
         }
 
-        protected static string FormatSize(double size)
+        protected IEnumerable<PerformanceResult> GetResultsFor(string testCase)
         {
-            return string.Format("{0} b", size);
+            return Results.Where(r => r.TestCase == testCase).OrderBy(r => r.SerializerName);
         }
-
     }
 }

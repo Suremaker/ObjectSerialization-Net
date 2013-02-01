@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using ObjectSerialization.Types;
 
@@ -6,9 +7,9 @@ namespace ObjectSerialization
 {
 	public class ObjectSerializer : IObjectSerializer
 	{
-		#region IObjectSerializer Members
+	    #region IObjectSerializer Members
 
-		public byte[] Serialize(object value)
+	    public byte[] Serialize(object value)
 		{
 			using (var stream = new MemoryStream())
 			{
@@ -19,11 +20,11 @@ namespace ObjectSerialization
 
 		public void Serialize(Stream stream, object value)
 		{
-			var type = (value != null) ? value.GetType() : typeof(object);
+			Type type = (value != null) ? value.GetType() : typeof(object);
 
 			var writer = new BinaryWriter(stream, Encoding.UTF8);
 			
-			var typeInfo = TypeInfoWriter.WriteInfo(writer, type);
+			TypeInfo typeInfo = TypeInfoWriter.WriteInfo(writer, type);
 			typeInfo.Serializer.Invoke(writer, value);
 			writer.Flush();
 		}
@@ -37,10 +38,10 @@ namespace ObjectSerialization
 		public T Deserialize<T>(Stream stream)
 		{
 			var reader = new BinaryReader(stream, Encoding.UTF8);
-			var typeInfo = TypeInfoWriter.ReadInfo(reader);
+			TypeInfo typeInfo = TypeInfoWriter.ReadInfo(reader);
 			return (T)typeInfo.Deserializer.Invoke(reader);
 		}
 
-		#endregion
+	    #endregion
 	}
 }

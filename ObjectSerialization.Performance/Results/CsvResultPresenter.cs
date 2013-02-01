@@ -11,12 +11,17 @@ namespace ObjectSerialization.Performance.Results
         public CsvResultPresenter(IEnumerable<PerformanceResult> results)
             : base("csv", results) { }
 
+        private static void WriteCell(StringBuilder sb, object value)
+        {
+            sb.Append(value).Append(';');
+        }
+
         public override string Present()
         {
             var sb = new StringBuilder();
 
             WriteHeaders(sb);
-            foreach (var testCase in TestCases)
+            foreach (string testCase in TestCases)
                 WriteCase(sb, testCase, GetResultsFor(testCase).ToArray());
             return sb.ToString();
         }
@@ -35,21 +40,16 @@ namespace ObjectSerialization.Performance.Results
         {
             WriteCell(sb, testCase);
             WriteCell(sb, category);
-            foreach (var result in results)
+            foreach (PerformanceResult result in results)
                 WriteCell(sb, result.Failure == null ? valueGetter(result).ToString(CultureInfo.InvariantCulture) : "error");
             sb.Append("\n");
-        }
-
-        private static void WriteCell(StringBuilder sb, object value)
-        {
-            sb.Append(value).Append(';');
         }
 
         private void WriteHeaders(StringBuilder sb)
         {
             WriteCell(sb, "Test Case");
             WriteCell(sb, "Category");
-            foreach (var serializer in SerializerNames)
+            foreach (string serializer in SerializerNames)
                 WriteCell(sb, serializer);
             sb.Append("\n");
         }

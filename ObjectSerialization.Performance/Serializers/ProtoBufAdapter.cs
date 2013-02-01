@@ -5,6 +5,8 @@ namespace ObjectSerialization.Performance.Serializers
 {
     internal class ProtoBufAdapter : ISerializerAdapter
     {
+        #region ISerializerAdapter Members
+
         public byte[] Serialize<T>(T value)
         {
             using (var stream = new MemoryStream())
@@ -21,5 +23,7 @@ namespace ObjectSerialization.Performance.Serializers
         }
 
         public string Name { get { return "ProtoBuf"; } }
+
+        #endregion
     }
 }

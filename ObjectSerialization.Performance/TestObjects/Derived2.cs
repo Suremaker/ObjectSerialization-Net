@@ -10,11 +10,6 @@ namespace ObjectSerialization.Performance.TestObjects
         [ProtoMember(1)]
         public int Other { get; set; }
 
-        protected bool Equals(Derived2 other)
-        {
-            return base.Equals(other) && Other == other.Other;
-        }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -29,6 +24,11 @@ namespace ObjectSerialization.Performance.TestObjects
             {
                 return (base.GetHashCode() * 397) ^ Other;
             }
+        }
+
+        protected bool Equals(Derived2 other)
+        {
+            return base.Equals(other) && Other == other.Other;
         }
     }
 }

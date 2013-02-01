@@ -2,13 +2,13 @@
 {
     class PerformanceResult
     {
-        public string TestCase { get; private set; }
-        public string SerializerName { get; private set; }
-        public Measurement SerializeTime { get; private set; }
         public Measurement DeserializeTime { get; private set; }
-        public long Size { get; set; }
 
         public string Failure { get; set; }
+        public Measurement SerializeTime { get; private set; }
+        public string SerializerName { get; private set; }
+        public long Size { get; set; }
+        public string TestCase { get; private set; }
 
         public PerformanceResult(string testCase, string serializerName)
         {

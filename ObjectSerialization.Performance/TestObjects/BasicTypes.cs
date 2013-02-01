@@ -36,15 +36,6 @@ namespace ObjectSerialization.Performance.TestObjects
         [ProtoMember(14)]
         public ushort UShort { get; set; }
 
-        protected bool Equals(BasicTypes other)
-        {
-            return Bool.Equals(other.Bool) && Byte == other.Byte && Character == other.Character &&
-                   Decimal == other.Decimal && Double.Equals(other.Double) && Float.Equals(other.Float) &&
-                   Int == other.Int && Long == other.Long && SByte == other.SByte && Short == other.Short &&
-                   string.Equals(String, other.String) && UInt == other.UInt && UShort == other.UShort &&
-                   ULong == other.ULong;
-        }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -73,6 +64,15 @@ namespace ObjectSerialization.Performance.TestObjects
                 hashCode = (hashCode * 397) ^ ULong.GetHashCode();
                 return hashCode;
             }
+        }
+
+        protected bool Equals(BasicTypes other)
+        {
+            return Bool.Equals(other.Bool) && Byte == other.Byte && Character == other.Character &&
+                   Decimal == other.Decimal && Double.Equals(other.Double) && Float.Equals(other.Float) &&
+                   Int == other.Int && Long == other.Long && SByte == other.SByte && Short == other.Short &&
+                   string.Equals(String, other.String) && UInt == other.UInt && UShort == other.UShort &&
+                   ULong == other.ULong;
         }
     }
 }

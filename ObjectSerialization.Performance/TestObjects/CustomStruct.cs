@@ -17,11 +17,6 @@ namespace ObjectSerialization.Performance.TestObjects
             _value = value;
         }
 
-        public override string ToString()
-        {
-            return _value.ToString(CultureInfo.InvariantCulture);
-        }
-
         public bool Equals(CustomStruct other)
         {
             return _value == other._value;
@@ -36,6 +31,11 @@ namespace ObjectSerialization.Performance.TestObjects
         public override int GetHashCode()
         {
             return _value.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString(CultureInfo.InvariantCulture);
         }
     }
 }
