@@ -1,12 +1,8 @@
-﻿using System;
-
-namespace ObjectSerialization
+﻿namespace ObjectSerialization
 {
-    public interface IObjectSerializer
-    {
-        object Deserialize(byte[] serialized);
-        T Deserialize<T>(byte[] serialized);
-        byte[] Serialize(object value);
-        byte[] SerializeAs(object value, Type type);
-    }
+	public interface IObjectSerializer
+	{
+		T Deserialize<T>(byte[] serialized);
+		byte[] Serialize(object value);
+	}
 }

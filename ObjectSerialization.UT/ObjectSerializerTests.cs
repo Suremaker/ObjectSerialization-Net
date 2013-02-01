@@ -56,7 +56,7 @@ namespace ObjectSerialization.UT
         {
             var expected = new byte[] { 1, 2, 3, 4, 5 };
             byte[] serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EquivalentTo(expected));
+            Assert.That(_serializer.Deserialize<object>(serialized), Is.EquivalentTo(expected));
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace ObjectSerialization.UT
         {
             var expected = new List<SimpleType> { new SimpleType { TextA = "a" }, new SimpleType2 { TextB = "b" } };
             byte[] serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EquivalentTo(expected));
+			Assert.That(_serializer.Deserialize<object>(serialized), Is.EquivalentTo(expected));
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace ObjectSerialization.UT
         {
             const int expected = 5;
             byte[] serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
+			Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
         }
 
         [Test]
@@ -157,7 +157,7 @@ namespace ObjectSerialization.UT
         public void NullSerializationTest()
         {
             byte[] serialized = _serializer.Serialize(null);
-            Assert.That(_serializer.Deserialize(serialized), Is.Null);
+			Assert.That(_serializer.Deserialize<object>(serialized), Is.Null);
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace ObjectSerialization.UT
         {
             const string expected = "sss";
             byte[] serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
+			Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace ObjectSerialization.UT
         {
             object expected = new StructHolder { Date = new DateTime(2005, 05, 07), Int = 5, Int2 = null, Complex = new ComplexStruct { Text = "test", Span = new TimeSpan(1, 2, 3) } };
             byte[] serialized = _serializer.Serialize(expected);
-            object actual = _serializer.Deserialize(serialized);
+			object actual = _serializer.Deserialize<object>(serialized);
             Assert.That(actual, Is.EqualTo(expected));
         }
 
@@ -228,7 +228,7 @@ namespace ObjectSerialization.UT
         {
             object expected = new DateTime(2000, 10, 10);
             byte[] serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
+			Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
         }
 
         [Test]
