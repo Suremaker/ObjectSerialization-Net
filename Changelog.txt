@@ -1,6 +1,10 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.1
+-------------------------------------------
++ added support for built-in types serialization
+
 Version 1.0.0
 -------------------------------------------
 + created project structure

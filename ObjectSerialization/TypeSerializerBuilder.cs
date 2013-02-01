@@ -7,6 +7,15 @@ using System.Reflection;
 
 namespace ObjectSerialization
 {
+    internal static class TypeSerializerBuilder
+    {
+        public static Type[] PredefinedTypes = new[]
+            {
+                typeof (bool), typeof (byte), typeof (sbyte), typeof (char), typeof (ushort), typeof (short), typeof (int),
+                typeof (uint), typeof (long), typeof (ulong), typeof (float), typeof (double), typeof (decimal),
+                typeof(string)
+            };
+    }
     internal static class TypeSerializerBuilder<T>
     {
         #region Type: Context
@@ -63,8 +72,8 @@ namespace ObjectSerialization
             foreach (PropertyInfo property in properties)
             {
                 Type propType = property.PropertyType;
-                if (propType == typeof(string))
-                    BuildString(property, ctx);
+                if (TypeSerializerBuilder.PredefinedTypes.Contains(propType))
+                    BuildPredefined(property, ctx);
                 else if (propType.IsArray)
                     BuildArray(property);
                 else if (IsCollection(propType))
@@ -102,9 +111,9 @@ namespace ObjectSerialization
             throw new NotImplementedException();
         }
 
-        private static void BuildString(PropertyInfo property, Context ctx)
+        private static void BuildPredefined(PropertyInfo property, Context ctx)
         {
-            /*BinaryWriter w;
+            /*BinaryWriter w;   
             object o;
             wr.Write(((T)obj).Prop);*/
             ctx.WriteExpressions.Add(GetWriteExpression(GetGetPropertyValue(ctx.WriteObject, property), ctx.WriterObject));
@@ -112,7 +121,7 @@ namespace ObjectSerialization
             /*T o;
             BinaryReader r;
             o.Prop = r.ReadString();*/
-            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, GetReadExpression("ReadString", ctx.ReaderObject)));
+            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, GetReadExpression("Read" + property.PropertyType.Name, ctx.ReaderObject)));
         }
 
         private static void BuildValueType(PropertyInfo property)

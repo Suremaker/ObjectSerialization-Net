@@ -2,12 +2,6 @@
 
 namespace ObjectSerialization.UT
 {
-    class SimpleType
-    {
-        public string TextA { get; set; }
-        public string TextB { get; set; }
-    }
-
     [TestFixture]
     public class ObjectSerializerTests
     {
@@ -29,9 +23,41 @@ namespace ObjectSerialization.UT
             var expected = new SimpleType { TextA = "test", TextB = "other" };
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<SimpleType>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void BasicTypeSerializationTests()
+        {
+            var expected = new BasicTypes
+            {
+                Character = 'a',
+                Int = 3,
+                Short = 2,
+                Byte = 1,
+                Long = 6,
+                Double = 4.4,
+                Float = 3.2f,
+                UShort = 2,
+                ULong = 3,
+                UInt = 4,
+                Decimal = 44,
+                SByte = 3,
+                Bool = false,
+                String = "test"
+            };
+
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<BasicTypes>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        private void AssertProperties<T>(T expected, T actual)
+        {
             Assert.That(actual, Is.Not.Null);
-            Assert.That(actual.TextA, Is.EqualTo(expected.TextA));
-            Assert.That(actual.TextB, Is.EqualTo(expected.TextB));
+            foreach (var prop in typeof(T).GetProperties())
+                Assert.That(prop.GetValue(actual, null), Is.EqualTo(prop.GetValue(expected, null)), prop.Name);
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace ObjectSerialization
 {
@@ -21,7 +22,7 @@ namespace ObjectSerialization
         public byte[] SerializeAs(object value, Type type)
         {
             using (var stream = new MemoryStream())
-            using (var writer = new BinaryWriter(stream))
+            using (var writer = new BinaryWriter(stream, Encoding.UTF8))
             {
                 writer.Write(type.FullName);
                 TypeSerializer.GetSerializer(type).Invoke(writer, value);
@@ -33,7 +34,7 @@ namespace ObjectSerialization
         public object Deserialize(byte[] serialized)
         {
             using (var stream = new MemoryStream(serialized))
-            using (var reader = new BinaryReader(stream))
+            using (var reader = new BinaryReader(stream, Encoding.UTF8))
             {
                 string type = reader.ReadString();
                 return TypeSerializer.GetDeserializer(LoadType(type)).Invoke(reader);
