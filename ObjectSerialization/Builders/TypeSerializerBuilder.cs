@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using ObjectSerialization.Builders.Types;
 
 namespace ObjectSerialization.Builders
@@ -30,7 +29,7 @@ namespace ObjectSerialization.Builders
 			ISerializer serializer = Serializers.First(s => s.IsSupported(type));
 
 			ctx.AddWriteExpression(serializer.Write(ctx.WriterObject, ctx.WriteObject, type));
-			ctx.AddReadExpression(Expression.Assign(ctx.ReadResultObject, serializer.Read(ctx.ReaderObject, type)));
+			ctx.AddReadExpression(ctx.ReturnValue(serializer.Read(ctx.ReaderObject, type)));
 		}
 	}
 }
