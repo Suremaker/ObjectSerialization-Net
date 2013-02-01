@@ -7,16 +7,7 @@ using System.Reflection;
 
 namespace ObjectSerialization
 {
-    internal static class TypeSerializerBuilder
-    {
-        public static Type[] PredefinedTypes = new[]
-            {
-                typeof (bool), typeof (byte), typeof (sbyte), typeof (char), typeof (ushort), typeof (short), typeof (int),
-                typeof (uint), typeof (long), typeof (ulong), typeof (float), typeof (double), typeof (decimal),
-                typeof(string)
-            };
-    }
-    internal static class TypeSerializerBuilder<T>
+    internal class TypeSerializerBuilder<T> : BaseTypeSerializer
     {
         #region Type: Context
 
@@ -72,16 +63,16 @@ namespace ObjectSerialization
             foreach (PropertyInfo property in properties)
             {
                 Type propType = property.PropertyType;
-                if (TypeSerializerBuilder.PredefinedTypes.Contains(propType))
+                if (PredefinedTypeSerializer.IsSupported(propType))
                     BuildPredefined(property, ctx);
-                else if (propType.IsArray)
-                    BuildArray(property);
-                else if (IsCollection(propType))
-                    BuildCollection(property);
-                else if (propType == typeof(object) || propType.IsAbstract || propType.IsInterface)
+                else if (ArrayTypeSerializer.IsSupported(propType))
+                    BuildArray(property, ctx);
+                else if (CollectionTypeSerializer.IsSupported(propType))
+                    BuildCollection(property, ctx);
+                else if (PolymorphicClassTypeSerializer.IsSupported(propType))
                     BuildPolymorphic(property, ctx);
-                else if (propType.IsValueType)
-                    BuildValueType(property);
+                else if (ValueTypeSerializer.IsSupported(propType))
+                    BuildValueType(property, ctx);
                 else
                     BuildClass(property, ctx);
             }
@@ -91,154 +82,40 @@ namespace ObjectSerialization
 
         }
 
-        private static void BuildArray(PropertyInfo property)
+        private static void BuildArray(PropertyInfo property, Context ctx)
         {
-            throw new NotImplementedException();
+            ctx.WriteExpressions.Add(ArrayTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
+            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, ArrayTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
         }
 
         private static void BuildClass(PropertyInfo property, Context ctx)
         {
-            WriteClass(property, ctx);
-            ReadClass(property, ctx);
-        }
-
-        private static void ReadClass(PropertyInfo property, Context ctx)
-        {
-            /*BinaryReader r;
-            T o;
-            if (r.ReadBoolean())
-                o.Prop = TypeSerializer.GetDeserializer(typeof(T)).Invoke(r);*/
-
-            var readBool = GetReadExpression("ReadBoolean", ctx.ReaderObject);
-            var readValue = CallDeserialize(GetDeserializer(GetPropertyType(property)), property.PropertyType, ctx);
-
-            var setProperty = GetSetPropertyValue(ctx.ReadResultObject, property, readValue);
-            ctx.ReadExpressions.Add(Expression.IfThen(readBool, setProperty));
-        }
-
-        private static UnaryExpression CallDeserialize(Expression deserializer, Type propertyType, Context ctx)
-        {
-            return Expression.TypeAs(Expression.Call(deserializer, "Invoke", null, ctx.ReaderObject), propertyType);
-        }
-
-        private static void WriteClass(PropertyInfo property, Context ctx)
-        {
-            /*BinaryWriter w;
-            object o;
-            w.Write(((T)o).Prop!=null);
-            if(((T)o).Prop!=null)
-                TypeSerializer.GetSerializer(type).Invoke(w, ((T)o).Prop);*/
-
-            var isNullExpression = CheckNotNull(property, ctx);
-            var writeExpression = CallSerialize(GetSerializer(GetPropertyType(property)), property, ctx);
-
-            ctx.WriteExpressions.Add(GetWriteExpression(isNullExpression, ctx.WriterObject));
-            ctx.WriteExpressions.Add(Expression.IfThen(isNullExpression, writeExpression));
-        }
-
-        private static MethodCallExpression CallSerialize(Expression serializer, PropertyInfo property, Context ctx)
-        {
-            return Expression.Call(serializer, "Invoke", null, ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property));
+            ctx.WriteExpressions.Add(ClassTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
+            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, ClassTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
         }
 
         private static void BuildPolymorphic(PropertyInfo property, Context ctx)
         {
-            WritePolymorphicClass(property, ctx);
-            ReadPolymorphicClass(property, ctx);
+            ctx.WriteExpressions.Add(PolymorphicClassTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
+            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, PolymorphicClassTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
         }
 
-        private static void ReadPolymorphicClass(PropertyInfo property, Context ctx)
+        private static void BuildCollection(PropertyInfo property, Context ctx)
         {
-            /*BinaryReader r;
-            T o;
-            if (r.ReadBoolean())            
-                o.Prop = TypeSerializer.GetDeserializer(TypeSerializer.LoadType(r.ReadString())).Invoke(r);*/
-            var readBool = GetReadExpression("ReadBoolean", ctx.ReaderObject);
-            var readValue = CallDeserialize(GetDeserializer(LoadPropertyType(ctx)), property.PropertyType, ctx);
-
-            var setProperty = GetSetPropertyValue(ctx.ReadResultObject, property, readValue);
-            ctx.ReadExpressions.Add(Expression.IfThen(readBool, setProperty));
-        }
-
-        private static Expression LoadPropertyType(Context ctx)
-        {
-            return Expression.Call(typeof(TypeSerializer), "LoadType", null, GetReadExpression("ReadString", ctx.ReaderObject));
-        }
-
-        private static void WritePolymorphicClass(PropertyInfo property, Context ctx)
-        {
-            /*BinaryWriter w;
-            object o;
-            w.Write(((T)o).Prop!=null);
-            if(((T)o).Prop!=null)
-            {
-                w.Write(((T)o).Prop.GetType().FullName);
-                TypeSerializer.GetSerializer(((T)o).Prop.GetType()).Invoke(w, ((T)o).Prop);
-            }*/
-            var isNullExpression = CheckNotNull(property, ctx);
-            var writeExpression = CallSerialize(GetSerializer(GetActualValueType(property, ctx)), property, ctx);
-
-            ctx.WriteExpressions.Add(GetWriteExpression(isNullExpression, ctx.WriterObject));
-            var blockExpression = Expression.Block(WriteObjectType(property, ctx), writeExpression);
-            ctx.WriteExpressions.Add(Expression.IfThen(isNullExpression, blockExpression));
-        }
-
-        private static Expression WriteObjectType(PropertyInfo property, Context ctx)
-        {
-            var valueType = GetActualValueType(property, ctx);
-            var typeFullName = Expression.Property(valueType, "FullName");
-            return GetWriteExpression(typeFullName, ctx.WriterObject);
-        }
-
-        private static MethodCallExpression GetActualValueType(PropertyInfo property, Context ctx)
-        {
-            var value = GetGetPropertyValue(ctx.WriteObject, property);
-            var valueType = Expression.Call(Expression.TypeAs(value, typeof(object)), "GetType", null);
-            return valueType;
-        }
-
-        private static MethodCallExpression GetSerializer(Expression type)
-        {
-            return Expression.Call(typeof(TypeSerializer), "GetSerializer", null, type);
-        }
-
-        private static MethodCallExpression GetDeserializer(Expression type)
-        {
-            return Expression.Call(typeof(TypeSerializer), "GetDeserializer", null, type);
-        }
-
-        private static ConstantExpression GetPropertyType(PropertyInfo property)
-        {
-            return Expression.Constant(property.PropertyType);
-        }
-
-        private static Expression CheckNotNull(PropertyInfo property, Context ctx)
-        {
-            return Expression.ReferenceNotEqual(GetGetPropertyValue(ctx.WriteObject, property), Expression.Constant(null, property.PropertyType));
-        }
-
-
-        private static void BuildCollection(PropertyInfo property)
-        {
-            throw new NotImplementedException();
+            ctx.WriteExpressions.Add(CollectionTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
+            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, CollectionTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
         }
 
         private static void BuildPredefined(PropertyInfo property, Context ctx)
         {
-            /*BinaryWriter w;   
-            object o;
-            w.Write(((T)o).Prop);*/
-            ctx.WriteExpressions.Add(GetWriteExpression(GetGetPropertyValue(ctx.WriteObject, property), ctx.WriterObject));
-
-            /*T o;
-            BinaryReader r;
-            o.Prop = r.ReadString();*/
-            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, GetReadExpression("Read" + property.PropertyType.Name, ctx.ReaderObject)));
+            ctx.WriteExpressions.Add(PredefinedTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property)));
+            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, PredefinedTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
         }
 
-        private static void BuildValueType(PropertyInfo property)
+        private static void BuildValueType(PropertyInfo property, Context ctx)
         {
-            throw new NotImplementedException();
+            ctx.WriteExpressions.Add(ValueTypeSerializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
+            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, ValueTypeSerializer.Read(ctx.ReaderObject, property.PropertyType)));
         }
 
         private static Expression GetGetPropertyValue(ParameterExpression instance, PropertyInfo property)
@@ -247,39 +124,9 @@ namespace ObjectSerialization
             return Expression.Property(castedInstance, property);
         }
 
-        private static Expression GetReadExpression(string method, ParameterExpression reader)
-        {
-            return Expression.Call(reader, method, new Type[0]);
-        }
-
         private static Expression GetSetPropertyValue(Expression instance, PropertyInfo property, Expression valueExpression)
         {
             return Expression.Call(instance, property.GetSetMethod(), valueExpression);
-        }
-
-        private static Expression GetWriteExpression(Expression valueExpression, ParameterExpression writer)
-        {
-            return Expression.Call(writer, "Write", null, valueExpression);
-        }
-
-        private static bool HasAddMethod(Type propType, Type itemType)
-        {
-            return propType.GetMethod("Add", BindingFlags.Instance | BindingFlags.Public, null, new[] { itemType }, null) != null;
-        }
-
-        private static bool IsCollection(Type propType)
-        {
-            Type itemType;
-            return IsEnumerable(propType, out itemType) && HasAddMethod(propType, itemType);
-        }
-
-        private static bool IsEnumerable(Type type, out Type itemType)
-        {
-            itemType = null;
-            Type def = type.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
-            if (def != null)
-                itemType = def.GetGenericArguments()[0];
-            return def != null;
         }
     }
 }

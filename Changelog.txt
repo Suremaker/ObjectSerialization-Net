@@ -6,6 +6,7 @@ Version 1.0.3
 + added support for nested polymorphic classes serialization
 + added verification of serialized object
 + added test for array serialization
++ extracted serialization logic into several classes
 
 Version 1.0.2
 -------------------------------------------

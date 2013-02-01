@@ -31,11 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArrayTypeSerializer.cs" />
+    <Compile Include="BaseTypeSerializer.cs" />
+    <Compile Include="ClassTypeSerializer.cs" />
+    <Compile Include="CollectionTypeSerializer.cs" />
     <Compile Include="IObjectSerializer.cs" />
     <Compile Include="ObjectSerializer.cs" />
+    <Compile Include="PolymorphicClassTypeSerializer.cs" />
+    <Compile Include="PredefinedTypeSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeSerializer.cs" />
     <Compile Include="TypeSerializerBuilder.cs" />
+    <Compile Include="ValueTypeSerializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
