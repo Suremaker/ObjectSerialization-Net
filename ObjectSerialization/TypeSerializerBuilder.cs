@@ -83,7 +83,7 @@ namespace ObjectSerialization
                 else if (propType.IsValueType)
                     BuildValueType(property);
                 else
-                    BuildClass(property);
+                    BuildClass(property, ctx);
             }
 
             SerializeFn = ctx.GetSerializeFn();
@@ -96,10 +96,59 @@ namespace ObjectSerialization
             throw new NotImplementedException();
         }
 
-        private static void BuildClass(PropertyInfo property)
+        private static void BuildClass(PropertyInfo property, Context ctx)
         {
-            throw new NotImplementedException();
+            WriteClass(property, ctx);
+            ReadClass(property, ctx);
         }
+
+        private static void ReadClass(PropertyInfo property, Context ctx)
+        {
+            /*BinaryReader r;
+            T o;
+            if (r.ReadBoolean())
+                o.Prop = TypeSerializer.GetDeserializer(typeof(T)).Invoke(r);*/
+
+            var readBool = GetReadExpression("ReadBoolean", ctx.ReaderObject);
+            var deserializer = GetDeserializer(property);
+            var readValue = Expression.TypeAs(Expression.Call(deserializer, "Invoke", null, ctx.ReaderObject), property.PropertyType);
+
+            var setProperty = GetSetPropertyValue(ctx.ReadResultObject, property, readValue);
+            ctx.ReadExpressions.Add(Expression.IfThen(readBool, setProperty));
+        }
+
+        private static void WriteClass(PropertyInfo property, Context ctx)
+        {
+            /*BinaryWriter w;
+            object o;
+            w.Write(((T)o).Prop!=null);
+            if(((T)o).Prop!=null)
+            TypeSerializer.GetSerializer(type).Invoke(w, ((T)o).Prop);*/
+
+            var propertyValue = GetGetPropertyValue(ctx.WriteObject, property);
+            var isNullExpression = CheckNotNull(propertyValue, property.PropertyType);
+            var getSerializer = GetSerializer(property);
+            var writeExpression = Expression.Call(getSerializer, "Invoke", null, ctx.WriterObject, propertyValue);
+
+            ctx.WriteExpressions.Add(GetWriteExpression(isNullExpression, ctx.WriterObject));
+            ctx.WriteExpressions.Add(Expression.IfThen(isNullExpression, writeExpression));
+        }
+
+        private static MethodCallExpression GetSerializer(PropertyInfo property)
+        {
+            return Expression.Call(typeof(TypeSerializer), "GetSerializer", null, Expression.Constant(property.PropertyType));
+        }
+
+        private static MethodCallExpression GetDeserializer(PropertyInfo property)
+        {
+            return Expression.Call(typeof(TypeSerializer), "GetDeserializer", null, Expression.Constant(property.PropertyType));
+        }
+
+        private static Expression CheckNotNull(Expression value, Type propertyType)
+        {
+            return Expression.ReferenceNotEqual(value, Expression.Constant(null, propertyType));
+        }
+
 
         private static void BuildCollection(PropertyInfo property)
         {
@@ -115,7 +164,7 @@ namespace ObjectSerialization
         {
             /*BinaryWriter w;   
             object o;
-            wr.Write(((T)obj).Prop);*/
+            w.Write(((T)o).Prop);*/
             ctx.WriteExpressions.Add(GetWriteExpression(GetGetPropertyValue(ctx.WriteObject, property), ctx.WriterObject));
 
             /*T o;
@@ -131,7 +180,7 @@ namespace ObjectSerialization
 
         private static Expression GetGetPropertyValue(ParameterExpression instance, PropertyInfo property)
         {
-            UnaryExpression castedInstance = Expression.TypeAs(instance, property.DeclaringType);
+            var castedInstance = Expression.TypeAs(instance, property.DeclaringType);
             return Expression.Property(castedInstance, property);
         }
 

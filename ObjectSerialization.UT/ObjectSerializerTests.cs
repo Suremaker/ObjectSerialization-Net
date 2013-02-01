@@ -18,7 +18,7 @@ namespace ObjectSerialization.UT
         private ObjectSerializer _serializer;
 
         [Test]
-        public void SimpleStringPropertiesTest()
+        public void StringSerializationTest()
         {
             var expected = new SimpleType { TextA = "test", TextB = "other" };
             byte[] serialized = _serializer.Serialize(expected);
@@ -26,8 +26,17 @@ namespace ObjectSerialization.UT
             AssertProperties(expected, actual);
         }
 
+        [Test,Ignore("Not implemented")]
+        public void NullStringSerializationTest()
+        {
+            var expected = new SimpleType { TextA = "test", TextB = null };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<SimpleType>(serialized);
+            AssertProperties(expected, actual);
+        }
+
         [Test]
-        public void BasicTypeSerializationTests()
+        public void BasicTypeSerializationTest()
         {
             var expected = new BasicTypes
             {
@@ -49,6 +58,32 @@ namespace ObjectSerialization.UT
 
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<BasicTypes>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void NestedTypeSerializationTest()
+        {
+            var expected = new NestedType
+            {
+                Int = 32,
+                Simple = new SimpleType { TextA = "test", TextB = "test2" }
+            };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<NestedType>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void NestedTypeSerializationTestWhereNestedElementIsNull()
+        {
+            var expected = new NestedType
+            {
+                Int = 32,
+                Simple = null
+            };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<NestedType>(serialized);
             AssertProperties(expected, actual);
         }
 

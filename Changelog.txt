@@ -1,6 +1,11 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.2
+-------------------------------------------
++ added support for nested classes serialization
++ added BSD 2-Clause License file
+
 Version 1.0.1
 -------------------------------------------
 + added support for built-in types serialization
