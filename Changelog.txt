@@ -1,6 +1,10 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.7
+-------------------------------------------
++ added support for null string serialization
+
 Version 1.0.6
 -------------------------------------------
 + added support for array serialization at root and class member level

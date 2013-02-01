@@ -29,7 +29,7 @@ namespace ObjectSerialization.UT
             AssertProperties(expected, actual);
         }
 
-        [Test, Ignore("Not implemented")]
+        [Test]
         public void NullStringMemberSerializationTest()
         {
             var expected = new SimpleType { TextA = "test", TextB = null };
@@ -109,8 +109,21 @@ namespace ObjectSerialization.UT
             var expected = new ArrayHolder
             {
                 ByteArray = new byte[] { 1, 2, 3 },
-                SimpleTypeArray = new[] { new SimpleType { TextA = "11", TextB = "12" }, new SimpleType2 { TextA = "21", TextB = "22" } },
+                SimpleTypeArray = new[] { new SimpleType { TextA = "11", TextB = "12" }, new SimpleType2 { TextA = "21" } },
                 ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test" }
+            };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ArrayHolder>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void NullArrayMemberSerializationTest()
+        {
+            var expected = new ArrayHolder
+            {
+                ByteArray = new byte[] { 1, 2, 3 },
+                ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test", null }
             };
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<ArrayHolder>(serialized);

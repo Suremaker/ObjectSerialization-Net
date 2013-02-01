@@ -10,8 +10,7 @@ namespace ObjectSerialization.Builders.Types
         private static readonly IEnumerable<Type> _predefinedTypes = new[]
         {
             typeof (bool), typeof (byte), typeof (sbyte), typeof (char), typeof (ushort), typeof (short), typeof (int),
-            typeof (uint), typeof (long), typeof (ulong), typeof (float), typeof (double), typeof (decimal),
-            typeof(string)
+            typeof (uint), typeof (long), typeof (ulong), typeof (float), typeof (double), typeof (decimal)
         };
 
         public bool IsSupported(Type type)
@@ -19,7 +18,7 @@ namespace ObjectSerialization.Builders.Types
             return _predefinedTypes.Contains(type);
         }
 
-        public Expression Write(Expression writerObject, Expression value,Type valueType)
+        public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
             /*BinaryWriter w;   
             object o;

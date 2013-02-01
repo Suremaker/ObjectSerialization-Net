@@ -8,6 +8,7 @@ namespace ObjectSerialization.Builders
         protected static readonly IEnumerable<ISerializer> Serializers = new ISerializer[]
         {
             new ArrayTypeSerializer(),                
+            new NullablePredefinedTypeSerializer(),
             new PredefinedTypeSerializer(),
             new CollectionTypeSerializer(),
             new ClassTypeSerializer(),
