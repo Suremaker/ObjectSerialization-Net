@@ -9,17 +9,17 @@ namespace ObjectSerialization.Performance.TestObjects
     internal struct CustomStruct
     {
         [ProtoMember(1)]
-        private long _value;
+        public long Value { get; private set; }
 
         public CustomStruct(int value)
             : this()
         {
-            _value = value;
+            Value = value;
         }
 
         public bool Equals(CustomStruct other)
         {
-            return _value == other._value;
+            return Value == other.Value;
         }
 
         public override bool Equals(object obj)
@@ -30,12 +30,12 @@ namespace ObjectSerialization.Performance.TestObjects
 
         public override int GetHashCode()
         {
-            return _value.GetHashCode();
+            return Value.GetHashCode();
         }
 
         public override string ToString()
         {
-            return _value.ToString(CultureInfo.InvariantCulture);
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

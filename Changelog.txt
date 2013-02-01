@@ -1,6 +1,11 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.17
+-------------------------------------------
++ modified class serializer to serialize public properties and fields that are not static and not readonly
++ modified struct serializer to omit readonly fields (Expression.Assign() method does not allow to overwrite readonly fields)
+
 Version 1.0.16
 -------------------------------------------
 + introduced TypeInfoRepository class with ability to register type (to decrease size of serialized data)
