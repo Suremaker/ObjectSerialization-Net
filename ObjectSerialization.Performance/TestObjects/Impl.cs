@@ -1,10 +1,13 @@
 ﻿using System;
+using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
+    [ProtoContract]
     internal class Impl : IInterface
     {
+        [ProtoMember(1)]
         public string Text { get; set; }
 
         protected bool Equals(Impl other)
@@ -16,8 +19,8 @@ namespace ObjectSerialization.Performance.TestObjects
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Impl) obj);
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Impl)obj);
         }
 
         public override int GetHashCode()

@@ -1,6 +1,11 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.13
+-------------------------------------------
++ added ProtoBuf-net serializer for performance comparison
++ annotated TestObjects with ProtoBuf attributes
+
 Version 1.0.12
 -------------------------------------------
 + optimized TypeSerializerFactory to cache type information

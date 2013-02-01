@@ -1,11 +1,15 @@
 ﻿using System;
+using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
+    [ProtoContract]
     internal class PolymorphicHolder
     {
+        [ProtoMember(1)]
         public BaseType A { get; set; }
+        [ProtoMember(2)]
         public BaseType B { get; set; }
 
         protected bool Equals(PolymorphicHolder other)

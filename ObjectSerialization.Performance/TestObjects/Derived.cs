@@ -1,10 +1,13 @@
 ﻿using System;
+using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
+    [ProtoContract]
     internal class Derived : BaseType
     {
+        [ProtoMember(1)]
         public char Other { get; set; }
 
         protected bool Equals(Derived other)

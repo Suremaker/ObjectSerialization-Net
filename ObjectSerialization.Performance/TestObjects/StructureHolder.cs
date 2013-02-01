@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
+    [ProtoContract]
     internal class StructureHolder
     {
+        [ProtoMember(1)]
         public DateTime Date { get; set; }
-
+        [ProtoMember(2)]
         public TimeSpan Span { get; set; }
-
+        [ProtoMember(3)]
         public KeyValuePair<DateTime, decimal> Pair { get; set; }
+        [ProtoMember(4)]
         public CustomStruct Custom { get; set; }
+        [ProtoMember(5)]
         public Guid Guid { get; set; }
 
         protected bool Equals(StructureHolder other)
@@ -32,7 +37,7 @@ namespace ObjectSerialization.Performance.TestObjects
         {
             unchecked
             {
-                var hashCode = Date.GetHashCode();
+                int hashCode = Date.GetHashCode();
                 hashCode = (hashCode * 397) ^ Span.GetHashCode();
                 hashCode = (hashCode * 397) ^ Pair.GetHashCode();
                 hashCode = (hashCode * 397) ^ Custom.GetHashCode();

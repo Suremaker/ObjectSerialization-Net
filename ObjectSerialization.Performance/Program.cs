@@ -11,7 +11,7 @@ namespace ObjectSerialization.Performance
     {
         static void Main(string[] args)
         {
-            var monitor = new PerformanceMonitor(new DCSerializer(), new BFSerializer());
+            var monitor = new PerformanceMonitor(new DCSerializer(), new BFSerializer(), new ProtoBufSerializer());
 
             monitor.MeasureFor(Case.For(new SimpleClass { Number = 32, Double = 3.14, Text = "test" }));
             monitor.MeasureFor(Case.For("SimpleClass null text", new SimpleClass { Number = 32, Double = 3.14 }));

@@ -101,7 +101,7 @@ namespace ObjectSerialization.Builders.Types
 
         private Expression CreateWriteLoop(Expression writerObject, Expression value, Type valueType)
         {
-            var enumeratorType = GetEnumeratorType(valueType);
+            Type enumeratorType = GetEnumeratorType(valueType);
             ParameterExpression enumerator = Expression.Parameter(enumeratorType, "e");
             ParameterExpression serializer = Expression.Parameter(typeof(Action<BinaryWriter, object>), "s");
             LabelTarget loopEndLabel = Expression.Label();
@@ -129,7 +129,7 @@ namespace ObjectSerialization.Builders.Types
 
         private static Type GetCollectionItemType(Type type)
         {
-            var collection = GetCollectionType(type);
+            Type collection = GetCollectionType(type);
             return collection != null ? collection.GetGenericArguments()[0] : null;
         }
 

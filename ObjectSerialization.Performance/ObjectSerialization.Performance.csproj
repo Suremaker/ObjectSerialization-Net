@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="protobuf-net">
+      <HintPath>..\packages\protobuf-net.2.0.0.621\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,6 +54,7 @@
     <Compile Include="Serializers\BFSerializer.cs" />
     <Compile Include="Serializers\DCSerializer.cs" />
     <Compile Include="Serializers\ISerializer.cs" />
+    <Compile Include="Serializers\ProtoBufSerializer.cs" />
     <Compile Include="TestCases\Case.cs" />
     <Compile Include="TestCases\GenericCase.cs" />
     <Compile Include="TestCases\TestCase.cs" />
@@ -71,6 +75,9 @@
       <Project>{32D2BED8-AE96-4E80-A981-5188FEB260D4}</Project>
       <Name>ObjectSerialization</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

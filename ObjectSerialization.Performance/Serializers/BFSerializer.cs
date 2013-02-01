@@ -6,6 +6,7 @@ namespace ObjectSerialization.Performance.Serializers
     internal class BFSerializer : ISerializer
     {
         readonly BinaryFormatter _formatter = new BinaryFormatter();
+        
         public byte[] Serialize<T>(T value)
         {
             using (var stream = new MemoryStream())

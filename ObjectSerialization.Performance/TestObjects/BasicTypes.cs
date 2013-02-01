@@ -1,27 +1,39 @@
 ﻿using System;
+using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
+    [ProtoContract]
     class BasicTypes
     {
+        [ProtoMember(1)]
         public bool Bool { get; set; }
+        [ProtoMember(2)]
         public byte Byte { get; set; }
+        [ProtoMember(3)]
         public char Character { get; set; }
+        [ProtoMember(4)]
         public decimal Decimal { get; set; }
-
+        [ProtoMember(5)]
         public double Double { get; set; }
-
+        [ProtoMember(6)]
         public float Float { get; set; }
+        [ProtoMember(7)]
         public int Int { get; set; }
+        [ProtoMember(8)]
         public long Long { get; set; }
-
+        [ProtoMember(9)]
         public sbyte SByte { get; set; }
+        [ProtoMember(10)]
         public short Short { get; set; }
-
+        [ProtoMember(11)]
         public string String { get; set; }
+        [ProtoMember(12)]
         public uint UInt { get; set; }
+        [ProtoMember(13)]
         public ulong ULong { get; set; }
+        [ProtoMember(14)]
         public ushort UShort { get; set; }
 
         protected bool Equals(BasicTypes other)
@@ -45,7 +57,7 @@ namespace ObjectSerialization.Performance.TestObjects
         {
             unchecked
             {
-                var hashCode = Bool.GetHashCode();
+                int hashCode = Bool.GetHashCode();
                 hashCode = (hashCode * 397) ^ Byte.GetHashCode();
                 hashCode = (hashCode * 397) ^ Character.GetHashCode();
                 hashCode = (hashCode * 397) ^ Decimal.GetHashCode();

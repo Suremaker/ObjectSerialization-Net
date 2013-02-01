@@ -1,18 +1,21 @@
 ﻿using System;
+using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
+    [ProtoContract]
     internal class ComplexType
     {
+        [ProtoMember(1)]
         public DateTime Date { get; set; }
-
+        [ProtoMember(2)]
         public int? NullableInt { get; set; }
-
+        [ProtoMember(3)]
         public IInterface InterfaceHolder { get; set; }
-
+        [ProtoMember(4)]
         public object ObjectHolder { get; set; }
-
+        [ProtoMember(5)]
         public BaseType BaseType { get; set; }
 
         protected bool Equals(ComplexType other)
@@ -27,18 +30,18 @@ namespace ObjectSerialization.Performance.TestObjects
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((ComplexType) obj);
+            return Equals((ComplexType)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                var hashCode = Date.GetHashCode();
-                hashCode = (hashCode*397) ^ NullableInt.GetHashCode();
-                hashCode = (hashCode*397) ^ (InterfaceHolder != null ? InterfaceHolder.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (ObjectHolder != null ? ObjectHolder.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (BaseType != null ? BaseType.GetHashCode() : 0);
+                int hashCode = Date.GetHashCode();
+                hashCode = (hashCode * 397) ^ NullableInt.GetHashCode();
+                hashCode = (hashCode * 397) ^ (InterfaceHolder != null ? InterfaceHolder.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ObjectHolder != null ? ObjectHolder.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (BaseType != null ? BaseType.GetHashCode() : 0);
                 return hashCode;
             }
         }

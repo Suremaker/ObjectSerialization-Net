@@ -1,12 +1,17 @@
 using System;
+using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
+    [ProtoContract]
     class SimpleClass
     {
+        [ProtoMember(1)]
         public int Number { get; set; }
+        [ProtoMember(2)]
         public string Text { get; set; }
+        [ProtoMember(3)]
         public double Double { get; set; }
 
         protected bool Equals(SimpleClass other)
@@ -26,7 +31,7 @@ namespace ObjectSerialization.Performance.TestObjects
         {
             unchecked
             {
-                var hashCode = Number;
+                int hashCode = Number;
                 hashCode = (hashCode * 397) ^ (Text != null ? Text.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ Double.GetHashCode();
                 return hashCode;

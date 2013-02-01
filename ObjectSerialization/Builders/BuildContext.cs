@@ -56,7 +56,7 @@ namespace ObjectSerialization.Builders
 
         public Action<BinaryWriter, object> GetSerializeFn()
         {
-            var blockExpression = Expression.Block(new[] { WriteObject }, _writeExpressions);
+            BlockExpression blockExpression = Expression.Block(new[] { WriteObject }, _writeExpressions);
             Expression<Action<BinaryWriter, object>> expression = Expression.Lambda<Action<BinaryWriter, object>>(blockExpression, WriterObject, WriteParameter);
 #if DEBUG
             DumpExpression("Serialize", expression);

@@ -1,10 +1,15 @@
 ﻿using System;
+using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
+    [ProtoContract]
+    [ProtoInclude(2, typeof(Derived))]
+    [ProtoInclude(3, typeof(Derived2))]
     internal class BaseType
     {
+        [ProtoMember(1)]
         public double Value { get; set; }
 
         protected bool Equals(BaseType other)

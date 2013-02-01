@@ -32,7 +32,7 @@ namespace ObjectSerialization.Performance.TestCases
             for (int i = 0; i < 10000; ++i)
             {
                 watch.Start();
-                var data = Serialize(serializer);
+                byte[] data = Serialize(serializer);
                 watch.Stop();
                 result.SerializeTime.Add(watch.ElapsedTicks);
 
@@ -47,7 +47,7 @@ namespace ObjectSerialization.Performance.TestCases
 
         private void ValidateSerializer(ISerializer serializer)
         {
-            var deserialized = Deserialize(serializer, Serialize(serializer));
+            object deserialized = Deserialize(serializer, Serialize(serializer));
             var deserializedEnumerable = deserialized as IEnumerable;
 
             if (deserializedEnumerable != null)

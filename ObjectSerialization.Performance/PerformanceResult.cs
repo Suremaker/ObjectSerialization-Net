@@ -22,7 +22,7 @@
         public override string ToString()
         {
             if (!string.IsNullOrWhiteSpace(Failure))
-                return string.Format("{0}[{1}]: {2}", SerializerName, TestCase, Failure);
+                return string.Format("{0}[{1}]: {2}\n\n", SerializerName, TestCase, Failure);
 
             return string.Format("{0}[{1}]:\n Serialization Time: {2},\n Deserialization Time: {3},\n Serialized Data Size: {4}\n\n",
                 SerializerName, TestCase, SerializeTime, DeserializeTime, Size);

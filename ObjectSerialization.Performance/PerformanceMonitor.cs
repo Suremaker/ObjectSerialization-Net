@@ -19,20 +19,20 @@ namespace ObjectSerialization.Performance
 
         public void MeasureFor(TestCase testCase)
         {
-            foreach (var serializer in _serializers)
+            foreach (ISerializer serializer in _serializers)
                 Store(testCase.Measure(serializer));
         }
 
         public string GetResults()
         {
-            var tests = _results.Select(r => r.TestCase).Distinct().OrderBy(c => c).ToArray();
-            StringBuilder sb = new StringBuilder();
+            string[] tests = _results.Select(r => r.TestCase).Distinct().OrderBy(c => c).ToArray();
+            var sb = new StringBuilder();
 
             WriteHeaders(sb);
-            foreach (var test in tests)
+            foreach (string test in tests)
             {
                 WriteCell(sb, test);
-                foreach (var serializer in _serializers)
+                foreach (ISerializer serializer in _serializers)
                     WriteResult(sb, _results.Single(r => r.TestCase == test && r.SerializerName == serializer.Name));
                 sb.Append("\n");
             }
@@ -61,7 +61,7 @@ namespace ObjectSerialization.Performance
         private void WriteHeaders(StringBuilder sb)
         {
             WriteCell(sb, "Test Name");
-            foreach (var serializer in _serializers)
+            foreach (ISerializer serializer in _serializers)
             {
                 WriteCell(sb, serializer.Name + " data avg size");
                 WriteCell(sb, "Ser. Min Time");
