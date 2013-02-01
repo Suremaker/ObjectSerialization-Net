@@ -18,7 +18,7 @@ namespace ObjectSerialization.Builders
 
         private static void Build()
         {
-            var ctx = new BuildContext<T>(Expression.Default(typeof(T)));
+            var ctx = new BuildContext<T>();
             BuildTypeSerializer(typeof(T), ctx);
             SerializeFn = ctx.GetSerializeFn();
             DeserializeFn = ctx.GetDeserializeFn();
@@ -29,10 +29,8 @@ namespace ObjectSerialization.Builders
         {
             ISerializer serializer = Serializers.First(s => s.IsSupported(type));
 
-            Expression writeObject = type.IsValueType ? Expression.Convert(ctx.WriteObject, type) : Expression.TypeAs(ctx.WriteObject, type);
-
-            ctx.WriteExpressions.Add(serializer.Write(ctx.WriterObject, writeObject, type));
-            ctx.ReadExpressions.Add(Expression.Assign(ctx.ReadResultObject, serializer.Read(ctx.ReaderObject, type)));
+            ctx.AddWriteExpression(serializer.Write(ctx.WriterObject, ctx.WriteObject, type));
+            ctx.AddReadExpression(Expression.Assign(ctx.ReadResultObject, serializer.Read(ctx.ReaderObject, type)));
         }
     }
 }

@@ -5,6 +5,7 @@ Version 1.0.10
 -------------------------------------------
 + added serialization performance project to compare serialization times/serialized data size for various object graphs and serializer implementations
 + optimized GenericSerializerFactory to cache loaded types
++ optimized serialization by reduced objects casting into one helper variable
 
 Version 1.0.9
 -------------------------------------------

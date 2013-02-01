@@ -34,13 +34,13 @@ namespace ObjectSerialization.Builders
         private static void BuildFieldSerializer(FieldInfo field, BuildContext<T> ctx)
         {
             ISerializer serializer = Serializers.First(s => s.IsSupported(field.FieldType));
-            ctx.WriteExpressions.Add(serializer.Write(ctx.WriterObject, GetFieldAccess(ctx.WriteObject, field), field.FieldType));
-            ctx.ReadExpressions.Add(GetSetFieldValue(ctx.ReadResultObject, field, serializer.Read(ctx.ReaderObject, field.FieldType)));
+            ctx.AddWriteExpression(serializer.Write(ctx.WriterObject, GetFieldAccess(ctx.WriteObject, field), field.FieldType));
+            ctx.AddReadExpression(GetSetFieldValue(ctx.ReadResultObject, field, serializer.Read(ctx.ReaderObject, field.FieldType)));
         }
 
         private static Expression GetFieldAccess(Expression instance, FieldInfo field)
         {
-            return Expression.Field(Expression.Convert(instance, field.DeclaringType), field);
+            return Expression.Field(instance, field);
         }
 
         private static Expression GetSetFieldValue(Expression instance, FieldInfo field, Expression valueExpression)

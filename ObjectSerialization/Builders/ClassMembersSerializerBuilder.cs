@@ -36,14 +36,13 @@ namespace ObjectSerialization.Builders
         private static void BuildPropertySerializer(PropertyInfo property, BuildContext<T> ctx)
         {
             ISerializer serializer = Serializers.First(s => s.IsSupported(property.PropertyType));
-            ctx.WriteExpressions.Add(serializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
-            ctx.ReadExpressions.Add(GetSetPropertyValue(ctx.ReadResultObject, property, serializer.Read(ctx.ReaderObject, property.PropertyType)));
+            ctx.AddWriteExpression(serializer.Write(ctx.WriterObject, GetGetPropertyValue(ctx.WriteObject, property), property.PropertyType));
+            ctx.AddReadExpression(GetSetPropertyValue(ctx.ReadResultObject, property, serializer.Read(ctx.ReaderObject, property.PropertyType)));
         }
 
         private static Expression GetGetPropertyValue(ParameterExpression instance, PropertyInfo property)
-        {
-            UnaryExpression castedInstance = Expression.TypeAs(instance, property.DeclaringType);
-            return Expression.Property(castedInstance, property);
+        {            
+            return Expression.Property(instance, property);
         }
 
         private static Expression GetSetPropertyValue(Expression instance, PropertyInfo property, Expression valueExpression)
