@@ -1,4 +1,3 @@
-known types (reduce type identifier size in serialized data)
 struct readonly serializer or ignore readonly fields
 sealed class optimization
 interface class and object class optimization
