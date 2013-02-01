@@ -10,25 +10,33 @@ namespace ObjectSerialization
 
 		public byte[] Serialize(object value)
 		{
-			var type = value != null ? value.GetType() : typeof(object);
 			using (var stream = new MemoryStream())
-			using (var writer = new BinaryWriter(stream, Encoding.UTF8))
 			{
-				writer.Write(type.FullName);
-				TypeSerializerFactory.GetSerializer(type).Invoke(writer, value);
-				writer.Flush();
+				Serialize(stream, value);
 				return stream.ToArray();
 			}
+		}
+
+		public void Serialize(Stream stream, object value)
+		{
+			var type = value != null ? value.GetType() : typeof(object);
+			var writer = new BinaryWriter(stream, Encoding.UTF8);
+			writer.Write(type.FullName);
+			TypeSerializerFactory.GetSerializer(type).Invoke(writer, value);
+			writer.Flush();
 		}
 
 		public T Deserialize<T>(byte[] serialized)
 		{
 			using (var stream = new MemoryStream(serialized))
-			using (var reader = new BinaryReader(stream, Encoding.UTF8))
-			{
-				string typeFullName = reader.ReadString();
-				return (T)TypeSerializerFactory.GetDeserializer(typeFullName).Invoke(reader);
-			}
+				return Deserialize<T>(stream);
+		}
+
+		public T Deserialize<T>(Stream stream)
+		{
+			var reader = new BinaryReader(stream, Encoding.UTF8);
+			string typeFullName = reader.ReadString();
+			return (T)TypeSerializerFactory.GetDeserializer(typeFullName).Invoke(reader);
 		}
 
 		#endregion

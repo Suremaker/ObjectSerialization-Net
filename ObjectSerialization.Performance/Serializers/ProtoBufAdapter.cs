@@ -1,17 +1,15 @@
 ﻿using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using ProtoBuf;
 
 namespace ObjectSerialization.Performance.Serializers
 {
-    internal class BFSerializer : ISerializer
+    internal class ProtoBufAdapter : ISerializerAdapter
     {
-        readonly BinaryFormatter _formatter = new BinaryFormatter();
-        
         public byte[] Serialize<T>(T value)
         {
             using (var stream = new MemoryStream())
             {
-                _formatter.Serialize(stream, value);
+                Serializer.Serialize(stream, value);
                 return stream.ToArray();
             }
         }
@@ -19,9 +17,9 @@ namespace ObjectSerialization.Performance.Serializers
         public T Deserialize<T>(byte[] data)
         {
             using (var stream = new MemoryStream(data))
-                return (T)_formatter.Deserialize(stream);
+                return Serializer.Deserialize<T>(stream);
         }
 
-        public string Name { get { return "BinaryFormatter"; } }
+        public string Name { get { return "ProtoBuf"; } }
     }
 }

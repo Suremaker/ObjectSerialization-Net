@@ -35,6 +35,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\APoly.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Helpers\SimpleType2.cs" />
     <Compile Include="Helpers\StructHolder.cs" />
     <Compile Include="ObjectSerializerTests.cs" />
+    <Compile Include="ObjectSerializerToStreamTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

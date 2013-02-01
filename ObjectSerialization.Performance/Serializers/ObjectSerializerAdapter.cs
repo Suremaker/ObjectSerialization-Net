@@ -1,6 +1,6 @@
 ﻿namespace ObjectSerialization.Performance.Serializers
 {
-    internal class DCSerializer : ISerializer
+    internal class ObjectSerializerAdapter : ISerializerAdapter
     {
         private readonly IObjectSerializer _serializer = new ObjectSerializer();
 

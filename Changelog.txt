@@ -1,6 +1,12 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.15
+-------------------------------------------
++ extended IObjectSerializer interface to support streams
++ added performance test for huge object
++ refactored adapter classes in performance tests
+
 Version 1.0.14
 -------------------------------------------
 + simplified IObjectSerializer interface

@@ -54,10 +54,10 @@
     <Compile Include="Results\CsvResultPresenter.cs" />
     <Compile Include="Results\HtmlResultPresenter.cs" />
     <Compile Include="Results\ResultPresenter.cs" />
-    <Compile Include="Serializers\BFSerializer.cs" />
-    <Compile Include="Serializers\DCSerializer.cs" />
-    <Compile Include="Serializers\ISerializer.cs" />
-    <Compile Include="Serializers\ProtoBufSerializer.cs" />
+    <Compile Include="Serializers\BinaryFormatterAdapter.cs" />
+    <Compile Include="Serializers\ObjectSerializerAdapter.cs" />
+    <Compile Include="Serializers\ISerializerAdapter.cs" />
+    <Compile Include="Serializers\ProtoBufAdapter.cs" />
     <Compile Include="TestCases\Case.cs" />
     <Compile Include="TestCases\GenericCase.cs" />
     <Compile Include="TestCases\TestCase.cs" />

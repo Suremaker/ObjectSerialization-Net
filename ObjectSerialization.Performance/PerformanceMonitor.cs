@@ -7,17 +7,17 @@ namespace ObjectSerialization.Performance
 {
     internal class PerformanceMonitor
     {
-        private readonly ISerializer[] _serializers;
+        private readonly ISerializerAdapter[] _serializers;
         private readonly List<PerformanceResult> _results = new List<PerformanceResult>();
 
-        public PerformanceMonitor(params ISerializer[] serializers)
+        public PerformanceMonitor(params ISerializerAdapter[] serializers)
         {
             _serializers = serializers;
         }
 
         public void MeasureFor(TestCase testCase)
         {
-            foreach (ISerializer serializer in _serializers)
+            foreach (ISerializerAdapter serializer in _serializers)
                 Store(testCase.Measure(serializer));
         }
 

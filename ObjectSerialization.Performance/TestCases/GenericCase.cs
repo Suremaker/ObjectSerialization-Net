@@ -23,12 +23,12 @@ namespace ObjectSerialization.Performance.TestCases
             return _value;
         }
 
-        protected override byte[] Serialize(ISerializer serializer)
+        protected override byte[] Serialize(ISerializerAdapter serializer)
         {
             return serializer.Serialize(_value);
         }
 
-        protected override object Deserialize(ISerializer serializer, byte[] data)
+        protected override object Deserialize(ISerializerAdapter serializer, byte[] data)
         {
             return serializer.Deserialize<T>(data);
         }

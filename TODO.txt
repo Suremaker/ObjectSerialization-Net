@@ -4,3 +4,4 @@ sealed class optimization
 interface class and object class optimization
 DataContract support
 add public read-write fields serialization in class class
+add meaningful exceptions for cases when it is not possible to generate serialization code

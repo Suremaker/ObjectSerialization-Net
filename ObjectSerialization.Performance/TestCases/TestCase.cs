@@ -9,7 +9,7 @@ namespace ObjectSerialization.Performance.TestCases
     abstract class TestCase
     {
         public abstract string Name { get; }
-        public PerformanceResult Measure(ISerializer serializer)
+        public PerformanceResult Measure(ISerializerAdapter serializer)
         {
             var result = new PerformanceResult(Name, serializer.Name);
             try
@@ -23,7 +23,7 @@ namespace ObjectSerialization.Performance.TestCases
             return result;
         }
 
-        private void Measure(ISerializer serializer, PerformanceResult result)
+        private void Measure(ISerializerAdapter serializer, PerformanceResult result)
         {
             ValidateSerializer(serializer, result);
 
@@ -44,7 +44,7 @@ namespace ObjectSerialization.Performance.TestCases
             }
         }
 
-        private void ValidateSerializer(ISerializer serializer, PerformanceResult result)
+        private void ValidateSerializer(ISerializerAdapter serializer, PerformanceResult result)
         {
             var serializedData = Serialize(serializer);
             result.Size = serializedData.Length;
@@ -61,7 +61,7 @@ namespace ObjectSerialization.Performance.TestCases
         }
 
         protected abstract object GetValue();
-        protected abstract byte[] Serialize(ISerializer serializer);
-        protected abstract object Deserialize(ISerializer serializer, byte[] data);
+        protected abstract byte[] Serialize(ISerializerAdapter serializer);
+        protected abstract object Deserialize(ISerializerAdapter serializer, byte[] data);
     }
 }
