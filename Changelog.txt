@@ -1,6 +1,11 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.10
+-------------------------------------------
++ added serialization performance project to compare serialization times/serialized data size for various object graphs and serializer implementations
++ optimized GenericSerializerFactory to cache loaded types
+
 Version 1.0.9
 -------------------------------------------
 + added support for collection serialization (any implementing ICollection)
@@ -8,6 +13,7 @@ Version 1.0.9
 Version 1.0.8
 -------------------------------------------
 + added support for struct serialization
++ modified BuildContext to display generated serialization code for classes on console if project is compiled in DEBUG mode
 
 Version 1.0.7
 -------------------------------------------
