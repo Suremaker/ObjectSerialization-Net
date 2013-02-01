@@ -1,6 +1,7 @@
 ﻿using System;
-using NUnit.Framework;
 using System.Collections.Generic;
+using System.Reflection;
+using NUnit.Framework;
 using ObjectSerialization.UT.Helpers;
 
 namespace ObjectSerialization.UT
@@ -20,87 +21,20 @@ namespace ObjectSerialization.UT
 
         private ObjectSerializer _serializer;
 
-        [Test]
-        public void StringMemberSerializationTest()
+        private void AssertProperties<T>(T expected, T actual)
         {
-            var expected = new SimpleType { TextA = "test", TextB = "other" };
-            byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<SimpleType>(serialized);
-            AssertProperties(expected, actual);
-        }
-
-        [Test]
-        public void NullStringMemberSerializationTest()
-        {
-            var expected = new SimpleType { TextA = "test", TextB = null };
-            byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<SimpleType>(serialized);
-            AssertProperties(expected, actual);
-        }
-
-        [Test]
-        public void NullSerializationTest()
-        {
-            var serialized = _serializer.Serialize(null);
-            Assert.That(_serializer.Deserialize(serialized), Is.Null);
-        }
-
-        [Test, Ignore("Not implemented yet")]
-        public void StructSerializationTest()
-        {
-            var expected = new DateTime(2000, 10, 10);
-            var serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
-        }
-
-        [Test]
-        public void StringSerializationTest()
-        {
-            const string expected = "sss";
-            var serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
-        }
-
-        [Test]
-        public void IntSerializationTest()
-        {
-            const int expected = 5;
-            var serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
-        }
-
-        [Test]
-        public void ValueTypeAssignedToObjectMemberSerializationTest()
-        {
-            var expected = new ObjectHolder { Value = 5 };
-            var serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
-            Assert.That(actual.Value, Is.EqualTo(expected.Value));
+            Assert.That(actual, Is.Not.Null);
+            foreach (PropertyInfo prop in typeof(T).GetProperties())
+                Assert.That(prop.GetValue(actual, null), Is.EqualTo(prop.GetValue(expected, null)), prop.Name);
         }
 
         [Test]
         public void ArrayAssignedToObjectMemberSerializationTest()
         {
             var expected = new ObjectHolder { Value = new[] { 1, 2, 3, 4, 5 } };
-            var serialized = _serializer.Serialize(expected);
+            byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<ObjectHolder>(serialized);
             Assert.That(actual.Value, Is.EqualTo(expected.Value));
-        }
-
-        [Test]
-        public void ArraySerializationTest()
-        {
-            var expected = new byte[] { 1, 2, 3, 4, 5 };
-            var serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EquivalentTo(expected));
-        }
-
-        [Test, Ignore("Not implemented yet")]
-        public void CollectionSerializationTest()
-        {
-            var expected = new List<SimpleType> { new SimpleType { TextA = "a" }, new SimpleType2 { TextB = "b" } };
-            var serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize(serialized), Is.EquivalentTo(expected));
         }
 
         [Test]
@@ -118,16 +52,11 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void NullArrayMemberSerializationTest()
+        public void ArraySerializationTest()
         {
-            var expected = new ArrayHolder
-            {
-                ByteArray = new byte[] { 1, 2, 3 },
-                ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test", null }
-            };
+            var expected = new byte[] { 1, 2, 3, 4, 5 };
             byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<ArrayHolder>(serialized);
-            AssertProperties(expected, actual);
+            Assert.That(_serializer.Deserialize(serialized), Is.EquivalentTo(expected));
         }
 
         [Test]
@@ -156,17 +85,20 @@ namespace ObjectSerialization.UT
             AssertProperties(expected, actual);
         }
 
-        [Test]
-        public void NestedTypeSerializationTest()
+        [Test, Ignore("Not implemented yet")]
+        public void CollectionSerializationTest()
         {
-            var expected = new NestedType
-            {
-                Int = 32,
-                Simple = new SimpleType { TextA = "test", TextB = "test2" }
-            };
+            var expected = new List<SimpleType> { new SimpleType { TextA = "a" }, new SimpleType2 { TextB = "b" } };
             byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<NestedType>(serialized);
-            AssertProperties(expected, actual);
+            Assert.That(_serializer.Deserialize(serialized), Is.EquivalentTo(expected));
+        }
+
+        [Test]
+        public void IntSerializationTest()
+        {
+            const int expected = 5;
+            byte[] serialized = _serializer.Serialize(expected);
+            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
         }
 
         [Test]
@@ -183,6 +115,19 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
+        public void NestedTypeSerializationTest()
+        {
+            var expected = new NestedType
+                {
+                    Int = 32,
+                    Simple = new SimpleType { TextA = "test", TextB = "test2" }
+                };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<NestedType>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
         public void NestedTypeSerializationTestWhereNestedElementIsNull()
         {
             var expected = new NestedType
@@ -192,6 +137,35 @@ namespace ObjectSerialization.UT
             };
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<NestedType>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void NullArrayMemberSerializationTest()
+        {
+            var expected = new ArrayHolder
+                {
+                    ByteArray = new byte[] { 1, 2, 3 },
+                    ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test", null }
+                };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ArrayHolder>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void NullSerializationTest()
+        {
+            byte[] serialized = _serializer.Serialize(null);
+            Assert.That(_serializer.Deserialize(serialized), Is.Null);
+        }
+
+        [Test]
+        public void NullStringMemberSerializationTest()
+        {
+            var expected = new SimpleType { TextA = "test", TextB = null };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<SimpleType>(serialized);
             AssertProperties(expected, actual);
         }
 
@@ -223,11 +197,47 @@ namespace ObjectSerialization.UT
             AssertProperties(expected, actual);
         }
 
-        private void AssertProperties<T>(T expected, T actual)
+        [Test]
+        public void StringMemberSerializationTest()
         {
-            Assert.That(actual, Is.Not.Null);
-            foreach (var prop in typeof(T).GetProperties())
-                Assert.That(prop.GetValue(actual, null), Is.EqualTo(prop.GetValue(expected, null)), prop.Name);
+            var expected = new SimpleType { TextA = "test", TextB = "other" };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<SimpleType>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void StringSerializationTest()
+        {
+            const string expected = "sss";
+            byte[] serialized = _serializer.Serialize(expected);
+            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void StructMemberSerializationTest()
+        {
+            object expected = new StructHolder { Date = new DateTime(2005, 05, 07), Int = 5, Int2 = null, Complex = new ComplexStruct { Text = "test", Span = new TimeSpan(1, 2, 3) } };
+            byte[] serialized = _serializer.Serialize(expected);
+            object actual = _serializer.Deserialize(serialized);
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void StructSerializationTest()
+        {
+            object expected = new DateTime(2000, 10, 10);
+            byte[] serialized = _serializer.Serialize(expected);
+            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void ValueTypeAssignedToObjectMemberSerializationTest()
+        {
+            var expected = new ObjectHolder { Value = 5 };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
+            Assert.That(actual.Value, Is.EqualTo(expected.Value));
         }
     }
 }

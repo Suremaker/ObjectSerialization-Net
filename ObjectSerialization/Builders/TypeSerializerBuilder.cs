@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using ObjectSerialization.Builders.Types;
 
 namespace ObjectSerialization.Builders
 {
@@ -26,7 +27,7 @@ namespace ObjectSerialization.Builders
 
         private static void BuildTypeSerializer(Type type, BuildContext<T> ctx)
         {
-            var serializer = Serializers.First(s => s.IsSupported(type));
+            ISerializer serializer = Serializers.First(s => s.IsSupported(type));
 
             Expression writeObject = type.IsValueType ? Expression.Convert(ctx.WriteObject, type) : Expression.TypeAs(ctx.WriteObject, type);
 

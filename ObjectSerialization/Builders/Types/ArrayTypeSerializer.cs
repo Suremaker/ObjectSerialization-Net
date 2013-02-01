@@ -7,6 +7,8 @@ namespace ObjectSerialization.Builders.Types
 {
     internal class ArrayTypeSerializer : BaseTypeSerializer, ISerializer
     {
+        #region ISerializer Members
+
         public bool IsSupported(Type type)
         {
             return type.IsArray;
@@ -28,9 +30,9 @@ namespace ObjectSerialization.Builders.Types
                 for(var i=0 ; i < c; ++i)
                     s.Invoke(w, ((T)o)[i]);
             }*/
-            var checkNotNull = CheckNotNull(value, valueType);
+            Expression checkNotNull = CheckNotNull(value, valueType);
 
-            var forLoop = CreateWriteLoop(writerObject, value, valueType);
+            BlockExpression forLoop = CreateWriteLoop(writerObject, value, valueType);
             BlockExpression arrayWrite = Expression.Block(GetWriteExpression(Expression.Property(value, "Length"), writerObject), forLoop);
 
             ConditionalExpression expression = Expression.IfThenElse(checkNotNull, arrayWrite, GetWriteExpression(Expression.Constant(-1), writerObject));
@@ -49,8 +51,8 @@ namespace ObjectSerialization.Builders.Types
                 for(var i=0 ; i < c; ++i)
                     ((T)o)[i] = s.Invoke(r);
             }*/
-            var count = Expression.Variable(typeof(int), "c");
-            var countRead = Expression.Assign(count, GetReadExpression("ReadInt32", readerObject));
+            ParameterExpression count = Expression.Variable(typeof(int), "c");
+            BinaryExpression countRead = Expression.Assign(count, GetReadExpression("ReadInt32", readerObject));
 
             BlockExpression expression = Expression.Block(new[] { count },
                 countRead,
@@ -61,18 +63,42 @@ namespace ObjectSerialization.Builders.Types
             return expression;
         }
 
+        #endregion
+
+        private static BlockExpression CreateWriteLoop(Expression writerObject, Expression value, Type valueType)
+        {
+            ParameterExpression index = Expression.Parameter(typeof(int), "i");
+            ParameterExpression count = Expression.Parameter(typeof(int), "c");
+            ParameterExpression serializer = Expression.Parameter(typeof(Action<BinaryWriter, object>), "s");
+            LabelTarget loopEndLabel = Expression.Label();
+
+            return Expression.Block(
+                new[] { index, count, serializer },
+                Expression.Assign(index, Expression.Constant(0, typeof(int))),
+                Expression.Assign(count, Expression.Property(value, "Length")),
+                Expression.Assign(serializer, GetSerializer<TypeSerializerFactory>(Expression.Constant(valueType.GetElementType()))),
+                Expression.Loop(
+                    Expression.IfThenElse(
+                        Expression.LessThan(index, count),
+                        Expression.Block(
+                            CallSerializeWithConvert(serializer, Expression.ArrayAccess(value, index), writerObject),
+                            Expression.PreIncrementAssign(index)),
+                        Expression.Break(loopEndLabel)),
+                    loopEndLabel));
+        }
+
         private Expression CreateReadLoop(Expression readerObject, Type expectedValueType, ParameterExpression count)
         {
-            var index = Expression.Parameter(typeof(int), "i");
-            var deserializer = Expression.Parameter(typeof(Func<BinaryReader, object>), "s");
-            var result = Expression.Parameter(expectedValueType, "r");
+            ParameterExpression index = Expression.Parameter(typeof(int), "i");
+            ParameterExpression deserializer = Expression.Parameter(typeof(Func<BinaryReader, object>), "s");
+            ParameterExpression result = Expression.Parameter(expectedValueType, "r");
             LabelTarget loopEndLabel = Expression.Label(expectedValueType);
 
-            var forLoop = Expression.Block(
+            BlockExpression forLoop = Expression.Block(
                 new[] { index, result, deserializer },
                 Expression.Assign(result, Expression.NewArrayBounds(expectedValueType.GetElementType(), count)),
                 Expression.Assign(index, Expression.Constant(0, typeof(int))),
-                Expression.Assign(deserializer, GetDeserializer(Expression.Constant(expectedValueType.GetElementType()))),
+                Expression.Assign(deserializer, GetDeserializer<TypeSerializerFactory>(Expression.Constant(expectedValueType.GetElementType()))),
                 Expression.Loop(
                     Expression.IfThenElse(
                         Expression.LessThan(index, count),
@@ -83,48 +109,6 @@ namespace ObjectSerialization.Builders.Types
                     loopEndLabel));
 
             return forLoop;
-        }
-
-        private static BlockExpression CreateWriteLoop(Expression writerObject, Expression value, Type valueType)
-        {
-            var index = Expression.Parameter(typeof(int), "i");
-            var count = Expression.Parameter(typeof(int), "c");
-            var serializer = Expression.Parameter(typeof(Action<BinaryWriter, object>), "s");
-            LabelTarget loopEndLabel = Expression.Label();
-
-            return Expression.Block(
-                new[] { index, count, serializer },
-                Expression.Assign(index, Expression.Constant(0, typeof(int))),
-                Expression.Assign(count, Expression.Property(value, "Length")),
-                Expression.Assign(serializer, GetSerializer(Expression.Constant(valueType.GetElementType()))),
-                Expression.Loop(
-                    Expression.IfThenElse(
-                        Expression.LessThan(index, count),
-                        Expression.Block(
-                            CallSerialize(serializer, Expression.ArrayAccess(value, index), writerObject),
-                            Expression.PreIncrementAssign(index)),
-                        Expression.Break(loopEndLabel)),
-                    loopEndLabel));
-        }
-
-        protected static Expression GetSerializer(Expression type)
-        {
-            return Expression.Call(typeof(TypeSerializerFactory), "GetSerializer", null, type);
-        }
-
-        protected static Expression CallSerialize(Expression serializer, Expression value, Expression writerObject)
-        {
-            return Expression.Call(serializer, "Invoke", null, writerObject, Expression.Convert(value, typeof(object)));
-        }
-
-        protected static Expression GetDeserializer(Expression type)
-        {
-            return Expression.Call(typeof(TypeSerializerFactory), "GetDeserializer", null, type);
-        }
-
-        protected static Expression CallDeserialize(Expression deserializer, Type type, Expression readerObject)
-        {
-            return Expression.Convert(Expression.Call(deserializer, "Invoke", null, readerObject), type);
         }
     }
 }

@@ -2,14 +2,8 @@
 {
     public class PolyImpl : APoly
     {
-        public string Text { get; set; }
-
         public override int Int { get; set; }
-
-        protected bool Equals(PolyImpl other)
-        {
-            return string.Equals(Text, other.Text) && Int == other.Int;
-        }
+        public string Text { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -25,6 +19,11 @@
             {
                 return ((Text != null ? Text.GetHashCode() : 0) * 397) ^ Int;
             }
+        }
+
+        protected bool Equals(PolyImpl other)
+        {
+            return string.Equals(Text, other.Text) && Int == other.Int;
         }
     }
 }

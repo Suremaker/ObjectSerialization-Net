@@ -9,6 +9,8 @@ namespace ObjectSerialization.Builders.Types
     {
         private static readonly IEnumerable<Type> _predefinedTypes = new[] { typeof(string) };
 
+        #region ISerializer Members
+
         public bool IsSupported(Type type)
         {
             return _predefinedTypes.Contains(type);
@@ -21,7 +23,7 @@ namespace ObjectSerialization.Builders.Types
             w.Write(o!=null);
             if(o!=null)
                 w.Write(((T)o).Prop);*/
-            var notNull = CheckNotNull(value, valueType);
+            Expression notNull = CheckNotNull(value, valueType);
 
             return Expression.Block(
                 GetWriteExpression(notNull, writerObject),
@@ -41,5 +43,7 @@ namespace ObjectSerialization.Builders.Types
                 GetReadExpression("Read" + expectedValueType.Name, readerObject),
                 Expression.Constant(null, expectedValueType));
         }
+
+        #endregion
     }
 }

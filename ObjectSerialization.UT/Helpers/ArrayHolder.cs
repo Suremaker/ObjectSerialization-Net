@@ -4,8 +4,7 @@
     {
         public byte[] ByteArray { get; set; }
 
-        public SimpleType[] SimpleTypeArray { get; set; }
-
         public object[] ObjectArray { get; set; }
+        public SimpleType[] SimpleTypeArray { get; set; }
     }
 }

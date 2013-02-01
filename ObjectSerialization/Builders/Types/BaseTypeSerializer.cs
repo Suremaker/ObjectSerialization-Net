@@ -6,14 +6,19 @@ namespace ObjectSerialization.Builders.Types
 {
     internal class BaseTypeSerializer
     {
-        protected static Expression GetWriteExpression(Expression valueExpression, Expression writer)
+        protected static Expression CallDeserialize(Expression deserializer, Type propertyType, Expression readerObject)
         {
-            return Expression.Call(writer, "Write", null, valueExpression);
+            return Expression.Convert(Expression.Call(deserializer, "Invoke", null, readerObject), propertyType);
         }
 
-        protected static Expression GetReadExpression(string method, Expression reader)
+        protected static Expression CallSerialize(Expression serializer, Expression value, Expression writerObject)
         {
-            return Expression.Call(reader, method, new Type[0]);
+            return Expression.Call(serializer, "Invoke", null, writerObject, value);
+        }
+
+        protected static Expression CallSerializeWithConvert(Expression serializer, Expression value, Expression writerObject)
+        {
+            return Expression.Call(serializer, "Invoke", null, writerObject, Expression.Convert(value, typeof(object)));
         }
 
         protected static Expression CheckNotNull(Expression value, Type valueType)
@@ -26,16 +31,36 @@ namespace ObjectSerialization.Builders.Types
             return Expression.Call(Expression.TypeAs(value, typeof(object)), "GetType", null);
         }
 
-        protected static Expression WriteObjectType(Expression value, Expression objectWriter)
+        protected static Expression GetDeserializer<TSerializerFactory>(Expression type)
         {
-            var valueType = GetActualValueType(value);
-            var typeFullName = Expression.Property(valueType, "FullName");
-            return GetWriteExpression(typeFullName, objectWriter);
+            return Expression.Call(typeof(TSerializerFactory), "GetDeserializer", null, type);
+        }
+
+        protected static Expression GetReadExpression(string method, Expression reader)
+        {
+            return Expression.Call(reader, method, new Type[0]);
+        }
+
+        protected static Expression GetSerializer<TSerializerFactory>(Expression type)
+        {
+            return Expression.Call(typeof(TSerializerFactory), "GetSerializer", null, type);
+        }
+
+        protected static Expression GetWriteExpression(Expression valueExpression, Expression writer)
+        {
+            return Expression.Call(writer, "Write", null, valueExpression);
         }
 
         protected static Expression ReloadType(Expression readerObject)
         {
             return Expression.Call(typeof(TypeSerializerFactory), "LoadType", null, GetReadExpression("ReadString", readerObject));
+        }
+
+        protected static Expression WriteObjectType(Expression value, Expression objectWriter)
+        {
+            Expression valueType = GetActualValueType(value);
+            MemberExpression typeFullName = Expression.Property(valueType, "FullName");
+            return GetWriteExpression(typeFullName, objectWriter);
         }
     }
 }

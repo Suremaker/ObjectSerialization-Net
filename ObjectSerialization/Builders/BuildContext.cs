@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace ObjectSerialization.Builders
 {
@@ -30,13 +31,26 @@ namespace ObjectSerialization.Builders
             expressions.Add(Expression.Label(label, Expression.Convert(Expression.Default(typeof(T)), typeof(object))));
             BlockExpression body = Expression.Block(new[] { ReadResultObject }, expressions);
             Expression<Func<BinaryReader, object>> expression = Expression.Lambda<Func<BinaryReader, object>>(body, ReaderObject);
+#if DEBUG
+            DumpExpression("Deserialize", expression);
+#endif
             return expression.Compile();
         }
 
         public Action<BinaryWriter, object> GetSerializeFn()
         {
             Expression<Action<BinaryWriter, object>> expression = Expression.Lambda<Action<BinaryWriter, object>>(Expression.Block(WriteExpressions), WriterObject, WriteObject);
+#if DEBUG
+            DumpExpression("Serialize", expression);
+#endif
             return expression.Compile();
+        }
+
+        private void DumpExpression(string operation, Expression expression)
+        {
+            object value = typeof(Expression).GetProperty("DebugView", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+                      .GetValue(expression, null);
+            Console.Write("{0} {1}: {2}\n", typeof(T).Name, operation, value);
         }
     }
 }

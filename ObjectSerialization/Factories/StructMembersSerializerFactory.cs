@@ -4,16 +4,16 @@ using ObjectSerialization.Builders;
 
 namespace ObjectSerialization.Factories
 {
-    internal class MemberSerializerFactory:GenericSerializerFactory
+    internal class StructMembersSerializerFactory : GenericSerializerFactory
     {
         public static Func<BinaryReader, object> GetDeserializer(Type type)
         {
-            return GetDeserializer(typeof(MemberSerializerBuilder<>), type);
+            return GetDeserializer(typeof(StructMembersSerializerBuilder<>), type);
         }
 
         public static Action<BinaryWriter, object> GetSerializer(Type type)
         {
-            return GetSerializer(typeof(MemberSerializerBuilder<>), type);
+            return GetSerializer(typeof(StructMembersSerializerBuilder<>), type);
         }
     }
 }

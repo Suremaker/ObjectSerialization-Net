@@ -40,6 +40,7 @@
     <Compile Include="Helpers\APoly.cs" />
     <Compile Include="Helpers\ArrayHolder.cs" />
     <Compile Include="Helpers\BasicTypes.cs" />
+    <Compile Include="Helpers\ComplexStruct.cs" />
     <Compile Include="Helpers\IPoly.cs" />
     <Compile Include="Helpers\NestedType.cs" />
     <Compile Include="Helpers\ObjectHolder.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="Helpers\PolyImpl.cs" />
     <Compile Include="Helpers\SimpleType.cs" />
     <Compile Include="Helpers\SimpleType2.cs" />
+    <Compile Include="Helpers\StructHolder.cs" />
     <Compile Include="ObjectSerializerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

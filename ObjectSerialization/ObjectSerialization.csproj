@@ -32,8 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Builders\BuildContext.cs" />
-    <Compile Include="Builders\MemberSerializerBuilder.cs" />
+    <Compile Include="Builders\ClassMembersSerializerBuilder.cs" />
     <Compile Include="Builders\SerializerBuilder.cs" />
+    <Compile Include="Builders\StructMembersSerializerBuilder.cs" />
     <Compile Include="Builders\TypeSerializerBuilder.cs" />
     <Compile Include="Builders\Types\ArrayTypeSerializer.cs" />
     <Compile Include="Builders\Types\BaseTypeSerializer.cs" />
@@ -43,8 +44,9 @@
     <Compile Include="Builders\Types\PredefinedTypeSerializer.cs" />
     <Compile Include="Builders\Types\StringTypeSerializer.cs" />
     <Compile Include="Builders\Types\ValueTypeSerializer.cs" />
+    <Compile Include="Factories\ClassMembersSerializerFactory.cs" />
     <Compile Include="Factories\GenericSerializerFactory.cs" />
-    <Compile Include="Factories\MemberSerializerFactory.cs" />
+    <Compile Include="Factories\StructMembersSerializerFactory.cs" />
     <Compile Include="Factories\TypeSerializerFactory.cs" />
     <Compile Include="IObjectSerializer.cs" />
     <Compile Include="ObjectSerializer.cs" />

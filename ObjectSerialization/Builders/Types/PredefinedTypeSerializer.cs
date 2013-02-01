@@ -13,6 +13,8 @@ namespace ObjectSerialization.Builders.Types
             typeof (uint), typeof (long), typeof (ulong), typeof (float), typeof (double), typeof (decimal)
         };
 
+        #region ISerializer Members
+
         public bool IsSupported(Type type)
         {
             return _predefinedTypes.Contains(type);
@@ -33,5 +35,7 @@ namespace ObjectSerialization.Builders.Types
             o.Prop = r.ReadString();*/
             return GetReadExpression("Read" + expectedValueType.Name, readerObject);
         }
+
+        #endregion
     }
 }

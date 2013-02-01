@@ -37,7 +37,7 @@ namespace ObjectSerialization
             using (var reader = new BinaryReader(stream, Encoding.UTF8))
             {
                 string type = reader.ReadString();
-                return TypeSerializerFactory.GetDeserializer(TypeSerializerFactory.LoadType(type)).Invoke(reader);
+                return TypeSerializerFactory.GetDeserializer(GenericSerializerFactory.LoadType(type)).Invoke(reader);
             }
         }
 
