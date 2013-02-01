@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialization", "ObjectSerialization\ObjectSerialization.csproj", "{32D2BED8-AE96-4E80-A981-5188FEB260D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialization.UT", "ObjectSerialization.UT\ObjectSerialization.UT.csproj", "{25015080-9E1B-49F2-9F1F-D22C1418B25F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9ED67244-9589-4908-9F8E-56EA1E7556CF}"
+	ProjectSection(SolutionItems) = preProject
+		Changelog.txt = Changelog.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32D2BED8-AE96-4E80-A981-5188FEB260D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32D2BED8-AE96-4E80-A981-5188FEB260D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32D2BED8-AE96-4E80-A981-5188FEB260D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32D2BED8-AE96-4E80-A981-5188FEB260D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25015080-9E1B-49F2-9F1F-D22C1418B25F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25015080-9E1B-49F2-9F1F-D22C1418B25F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25015080-9E1B-49F2-9F1F-D22C1418B25F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25015080-9E1B-49F2-9F1F-D22C1418B25F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

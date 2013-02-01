@@ -1,0 +1,7 @@
+bin
+obj
+*.user
+*.userprefs
+*.suo
+_Resharper*
+*.Debug.cachefile
