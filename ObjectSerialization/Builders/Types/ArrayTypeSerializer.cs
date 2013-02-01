@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 
-namespace ObjectSerialization
+namespace ObjectSerialization.Builders.Types
 {
-    internal class ValueTypeSerializer : BaseTypeSerializer, ISerializer
+    internal class ArrayTypeSerializer : BaseTypeSerializer, ISerializer
     {
         public bool IsSupported(Type type)
         {
-            return type.IsValueType;
+            return type.IsArray;
         }
 
         public Expression Write(Expression writerObject, Expression value, Type propertyType)

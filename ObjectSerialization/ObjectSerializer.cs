@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
 using System.Text;
+using ObjectSerialization.Factories;
 
 namespace ObjectSerialization
 {
@@ -21,14 +21,11 @@ namespace ObjectSerialization
 
         public byte[] SerializeAs(object value, Type type)
         {
-            if (value == null || value.GetType().IsArray || !value.GetType().IsClass || value is ICollection || value is string)
-                throw new ArgumentException("Serialized type has to be instance of simple POCO type.", "value");
-
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream, Encoding.UTF8))
             {
                 writer.Write(type.FullName);
-                TypeSerializer.GetSerializer(type).Invoke(writer, value);
+                TypeSerializerFactory.GetSerializer(type).Invoke(writer, value);
                 writer.Flush();
                 return stream.ToArray();
             }
@@ -40,7 +37,7 @@ namespace ObjectSerialization
             using (var reader = new BinaryReader(stream, Encoding.UTF8))
             {
                 string type = reader.ReadString();
-                return TypeSerializer.GetDeserializer(TypeSerializer.LoadType(type)).Invoke(reader);
+                return TypeSerializerFactory.GetDeserializer(TypeSerializerFactory.LoadType(type)).Invoke(reader);
             }
         }
 

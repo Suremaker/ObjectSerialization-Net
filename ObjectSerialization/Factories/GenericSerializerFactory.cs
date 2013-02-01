@@ -3,20 +3,20 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ObjectSerialization
+namespace ObjectSerialization.Factories
 {
-    internal class TypeSerializer
+    internal class GenericSerializerFactory
     {
-        public static Func<BinaryReader, object> GetDeserializer(Type type)
+        public static Func<BinaryReader, object> GetDeserializer(Type builderGenericType,Type type)
         {
-            Type builderType = typeof(TypeSerializerBuilder<>).MakeGenericType(type);
+            Type builderType = builderGenericType.MakeGenericType(type);
             PropertyInfo property = builderType.GetProperty("DeserializeFn", BindingFlags.Static | BindingFlags.Public);
             return (Func<BinaryReader, object>)property.GetValue(null, null);
         }
 
-        public static Action<BinaryWriter, object> GetSerializer(Type type)
+        public static Action<BinaryWriter, object> GetSerializer(Type builderGenericType, Type type)
         {
-            Type builderType = typeof(TypeSerializerBuilder<>).MakeGenericType(type);
+            Type builderType = builderGenericType.MakeGenericType(type);
             PropertyInfo property = builderType.GetProperty("SerializeFn", BindingFlags.Static | BindingFlags.Public);
             return (Action<BinaryWriter, object>)property.GetValue(null, null);
         }

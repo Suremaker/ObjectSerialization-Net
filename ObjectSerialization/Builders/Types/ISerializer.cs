@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace ObjectSerialization
+namespace ObjectSerialization.Builders.Types
 {
     internal interface ISerializer
     {

@@ -1,6 +1,10 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.5
+-------------------------------------------
++ added support for direct serialization of built-in primitive types, strings and null objects on root level
+
 Version 1.0.4
 -------------------------------------------
 + merged ClassTypeSerializer with PolymorphicClassTypeSerializer

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace ObjectSerialization
+namespace ObjectSerialization.Builders.Types
 {
     internal class CollectionTypeSerializer : BaseTypeSerializer, ISerializer
     {

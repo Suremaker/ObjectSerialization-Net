@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
+using ObjectSerialization.Factories;
 
-namespace ObjectSerialization
+namespace ObjectSerialization.Builders.Types
 {
     internal class BaseTypeSerializer
     {
@@ -19,27 +20,7 @@ namespace ObjectSerialization
         {
             return Expression.ReferenceNotEqual(value, Expression.Constant(null, valueType));
         }
-
-        protected static Expression GetSerializer(Expression type)
-        {
-            return Expression.Call(typeof(TypeSerializer), "GetSerializer", null, type);
-        }
-
-        protected static Expression CallSerialize(Expression serializer, Expression value, Expression writerObject)
-        {
-            return Expression.Call(serializer, "Invoke", null, writerObject, value);
-        }
-
-        protected static Expression GetDeserializer(Expression type)
-        {
-            return Expression.Call(typeof(TypeSerializer), "GetDeserializer", null, type);
-        }
-
-        protected static Expression CallDeserialize(Expression deserializer, Type propertyType, Expression readerObject)
-        {
-            return Expression.TypeAs(Expression.Call(deserializer, "Invoke", null, readerObject), propertyType);
-        }
-
+        
         protected static Expression GetActualValueType(Expression value)
         {
             return Expression.Call(Expression.TypeAs(value, typeof(object)), "GetType", null);
@@ -54,7 +35,7 @@ namespace ObjectSerialization
 
         protected static Expression ReloadType(Expression readerObject)
         {
-            return Expression.Call(typeof(TypeSerializer), "LoadType", null, GetReadExpression("ReadString", readerObject));
+            return Expression.Call(typeof(TypeSerializerFactory), "LoadType", null, GetReadExpression("ReadString", readerObject));
         }
     }
 }

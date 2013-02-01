@@ -21,7 +21,7 @@ namespace ObjectSerialization.UT
         private ObjectSerializer _serializer;
 
         [Test]
-        public void StringSerializationTest()
+        public void StringMemberSerializationTest()
         {
             var expected = new SimpleType { TextA = "test", TextB = "other" };
             byte[] serialized = _serializer.Serialize(expected);
@@ -30,7 +30,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test, Ignore("Not implemented")]
-        public void NullStringSerializationTest()
+        public void NullStringMemberSerializationTest()
         {
             var expected = new SimpleType { TextA = "test", TextB = null };
             byte[] serialized = _serializer.Serialize(expected);
@@ -39,42 +39,54 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void SerializedObjectCannotBeNull()
+        public void NullSerializationTest()
         {
-            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(null));
-            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
-        }
-
-        [Test]
-        public void SerializedObjectCannotBeStruct()
-        {
-            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(new DateTime(2000, 10, 10)));
-            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
-        }
-
-        [Test]
-        public void SerializedObjectCannotBeString()
-        {
-            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize("sss"));
-            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
-        }
-
-        [Test]
-        public void SerializedObjectCannotBeArray()
-        {
-            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(new byte[5]));
-            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
-        }
-
-        [Test]
-        public void SerializedObjectCannotBeCollection()
-        {
-            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(new List<SimpleType>()));
-            Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
+            var serialized = _serializer.Serialize(null);
+            Assert.That(_serializer.Deserialize(serialized), Is.Null);
         }
 
         [Test, Ignore("Not implemented yet")]
-        public void ArraySerialization()
+        public void StructSerializationTest()
+        {
+            var expected = new DateTime(2000, 10, 10);
+            var serialized = _serializer.Serialize(expected);
+            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void StringSerializationTest()
+        {
+            const string expected = "sss";
+            var serialized = _serializer.Serialize(expected);
+            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void IntSerializationTest()
+        {
+            const int expected = 5;
+            var serialized = _serializer.Serialize(expected);
+            Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
+        }
+
+        [Test, Ignore("Not implemented yet")]
+        public void ArraySerializationTest()
+        {
+            var expected = new byte[] { 1, 2, 3, 4, 5 };
+            var serialized = _serializer.Serialize(expected);
+            Assert.That(_serializer.Deserialize(serialized), Is.EquivalentTo(expected));
+        }
+
+        [Test, Ignore("Not implemented yet")]
+        public void CollectionSerializationTest()
+        {
+            var expected = new List<SimpleType> { new SimpleType { TextA = "a" }, new SimpleType2 { TextB = "b" } };
+            var serialized = _serializer.Serialize(expected);
+            Assert.That(_serializer.Deserialize(serialized), Is.EquivalentTo(expected));
+        }
+
+        [Test, Ignore("Not implemented yet")]
+        public void ArrayMemberSerializationTest()
         {
             var expected = new ArrayHolder
             {
@@ -88,7 +100,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void BasicTypeSerializationTest()
+        public void BasicTypeMemberSerializationTest()
         {
             var expected = new BasicTypes
             {
@@ -153,7 +165,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void PolymorphicTypesSerialization()
+        public void PolymorphicTypesSerializationTest()
         {
             var expected = new OtherType
             {
@@ -167,7 +179,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void PolymorphicTypesSerializationWithNullValues()
+        public void PolymorphicTypesSerializationTestWithNullValues()
         {
             var expected = new OtherType
             {

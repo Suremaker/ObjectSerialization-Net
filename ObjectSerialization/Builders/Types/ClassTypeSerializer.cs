@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
+using ObjectSerialization.Factories;
 
-namespace ObjectSerialization
+namespace ObjectSerialization.Builders.Types
 {
     internal class ClassTypeSerializer : BaseTypeSerializer, ISerializer
     {
         public bool IsSupported(Type type)
         {
-            return type.IsClass|| type.IsAbstract || type.IsInterface;
+            return type.IsClass || type.IsAbstract || type.IsInterface;
         }
 
         public Expression Write(Expression writerObject, Expression value, Type expectedValueType)
@@ -19,13 +20,13 @@ namespace ObjectSerialization
                 if(((T)o).Prop.GetType() == typeof(T))
                 {
                     w.Write((byte)1);
-                    TypeSerializer.GetSerializer(type).Invoke(w, ((T)o).Prop);
+                    MemberSerializerFactory.GetSerializer(type).Invoke(w, ((T)o).Prop);
                 }
                 else
                 {
                     w.Write((byte)2);
                     w.Write(((T)o).Prop.GetType().FullName);
-                    TypeSerializer.GetSerializer(((T)o).Prop.GetType()).Invoke(w, ((T)o).Prop);
+                    MemberSerializerFactory.GetSerializer(((T)o).Prop.GetType()).Invoke(w, ((T)o).Prop);
                 }
             }
             else
@@ -52,14 +53,14 @@ namespace ObjectSerialization
                 CallSerialize(GetSerializer(GetActualValueType(value)), value, writerObject));
 
             var serializationExpression = Expression.IfThenElse(
-                Expression.Equal(GetActualValueType(value),Expression.Constant(expectedValueType)),
+                Expression.Equal(GetActualValueType(value), Expression.Constant(expectedValueType)),
                 serializeClass,
                 serializePolymorphicClass
                 );
 
             return Expression.IfThenElse(checkNotNull,
                 serializationExpression,
-                GetWriteExpression(Expression.Constant((byte) 0),writerObject));
+                GetWriteExpression(Expression.Constant((byte)0), writerObject));
 
         }
 
@@ -74,20 +75,41 @@ namespace ObjectSerialization
                     ? TypeSerializer.GetDeserializer(typeof(T)).Invoke(r)
                     : TypeSerializer.GetDeserializer(TypeSerializer.LoadType(r.ReadString())).Invoke(r));
             */
-            var flag = Expression.Variable(typeof (byte), "b");
+            var flag = Expression.Variable(typeof(byte), "b");
             var readFlag = Expression.Assign(flag, GetReadExpression("ReadByte", readerObject));
-            var deserializeClass = CallDeserialize(GetDeserializer(Expression.Constant(expectedValueType)), expectedValueType, readerObject);            
+            var deserializeClass = CallDeserialize(GetDeserializer(Expression.Constant(expectedValueType)), expectedValueType, readerObject);
             var deserializePolymorphic = CallDeserialize(GetDeserializer(ReloadType(readerObject)), expectedValueType, readerObject);
 
-            var deserialization= Expression.Condition(
-                Expression.Equal(flag, Expression.Constant((byte) 0)),
+            var deserialization = Expression.Condition(
+                Expression.Equal(flag, Expression.Constant((byte)0)),
                 Expression.Constant(null, expectedValueType),
                 Expression.Condition(
-                    Expression.Equal(flag, Expression.Constant((byte) 1)),
+                    Expression.Equal(flag, Expression.Constant((byte)1)),
                     deserializeClass,
                     deserializePolymorphic));
 
-            return Expression.Block(new []{flag},readFlag, deserialization);
+            return Expression.Block(new[] { flag }, readFlag, deserialization);
         }
+
+        protected static Expression GetSerializer(Expression type)
+        {
+            return Expression.Call(typeof(MemberSerializerFactory), "GetSerializer", null, type);
+        }
+
+        protected static Expression CallSerialize(Expression serializer, Expression value, Expression writerObject)
+        {
+            return Expression.Call(serializer, "Invoke", null, writerObject, value);
+        }
+
+        protected static Expression GetDeserializer(Expression type)
+        {
+            return Expression.Call(typeof(MemberSerializerFactory), "GetDeserializer", null, type);
+        }
+
+        protected static Expression CallDeserialize(Expression deserializer, Type propertyType, Expression readerObject)
+        {
+            return Expression.TypeAs(Expression.Call(deserializer, "Invoke", null, readerObject), propertyType);
+        }
+
     }
 }
