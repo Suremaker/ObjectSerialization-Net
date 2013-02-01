@@ -42,6 +42,8 @@
     <Compile Include="Helpers\ArrayHolder.cs" />
     <Compile Include="Helpers\BasicTypes.cs" />
     <Compile Include="Helpers\ComplexStruct.cs" />
+    <Compile Include="Helpers\EmptyClass.cs" />
+    <Compile Include="Helpers\EmptyStruct.cs" />
     <Compile Include="Helpers\IPoly.cs" />
     <Compile Include="Helpers\NestedType.cs" />
     <Compile Include="Helpers\ObjectHolder.cs" />

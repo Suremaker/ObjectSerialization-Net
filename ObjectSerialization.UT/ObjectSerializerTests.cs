@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 using ObjectSerialization.UT.Helpers;
@@ -229,6 +230,38 @@ namespace ObjectSerialization.UT
 			object expected = new DateTime(2000, 10, 10);
 			byte[] serialized = _serializer.Serialize(expected);
 			Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void EmptyClassSerializationTest()
+		{
+			var expected = new EmptyClass();
+			byte[] serialized = _serializer.Serialize(expected);
+			Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void EmptyClassMemberSerializationTest()
+		{
+			var expected = new ObjectHolder { Value = new EmptyClass() };
+			byte[] serialized = _serializer.Serialize(expected);
+			AssertProperties(expected, _serializer.Deserialize<object>(serialized));
+		}
+
+		[Test]
+		public void EmptyStructSerializationTest()
+		{
+			var expected = new EmptyStruct();
+			byte[] serialized = _serializer.Serialize(expected);
+			Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void EmptyStructMemberSerializationTest()
+		{
+			var expected = new ObjectHolder { Value = new EmptyStruct() };
+			byte[] serialized = _serializer.Serialize(expected);
+			AssertProperties(expected, _serializer.Deserialize<object>(serialized));
 		}
 
 		[Test]

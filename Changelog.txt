@@ -6,6 +6,7 @@ Version 1.0.15
 + extended IObjectSerializer interface to support streams
 + added performance test for huge object
 + refactored adapter classes in performance tests
++ added tests for empty struct / class serialization
 
 Version 1.0.14
 -------------------------------------------
