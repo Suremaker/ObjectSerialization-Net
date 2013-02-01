@@ -25,7 +25,7 @@ namespace ObjectSerialization.Performance.TestCases
 
         private void Measure(ISerializer serializer, PerformanceResult result)
         {
-            ValidateSerializer(serializer);
+            ValidateSerializer(serializer, result);
 
             var watch = new Stopwatch();
 
@@ -41,13 +41,14 @@ namespace ObjectSerialization.Performance.TestCases
                 watch.Stop();
                 result.DeserializeTime.Add(watch.ElapsedTicks);
 
-                result.Size.Add(data.Length);
             }
         }
 
-        private void ValidateSerializer(ISerializer serializer)
+        private void ValidateSerializer(ISerializer serializer, PerformanceResult result)
         {
-            object deserialized = Deserialize(serializer, Serialize(serializer));
+            var serializedData = Serialize(serializer);
+            result.Size = serializedData.Length;
+            object deserialized = Deserialize(serializer, serializedData);
             var deserializedEnumerable = deserialized as IEnumerable;
 
             if (deserializedEnumerable != null)

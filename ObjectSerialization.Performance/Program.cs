@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ObjectSerialization.Performance.Results;
 using ObjectSerialization.Performance.Serializers;
 using ObjectSerialization.Performance.TestCases;
 using ObjectSerialization.Performance.TestObjects;
@@ -13,14 +14,31 @@ namespace ObjectSerialization.Performance
         {
             var monitor = new PerformanceMonitor(new DCSerializer(), new BFSerializer(), new ProtoBufSerializer());
 
+            PerformMeasurement(monitor);
+
+            var date = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
+            WriteResult(date, new CsvResultPresenter(monitor.GetResults()));
+            WriteResult(date, new HtmlResultPresenter(monitor.GetResults()));
+
+            Console.WriteLine("Done...");
+            Console.ReadKey();
+        }
+
+        private static void WriteResult(string date, ResultPresenter presenter)
+        {
+            File.WriteAllText(string.Format("results {0}.{1}", date, presenter.Extension), presenter.Present());
+        }
+
+        private static void PerformMeasurement(PerformanceMonitor monitor)
+        {
             monitor.MeasureFor(Case.For(new SimpleClass { Number = 32, Double = 3.14, Text = "test" }));
             monitor.MeasureFor(Case.For("SimpleClass null text", new SimpleClass { Number = 32, Double = 3.14 }));
 
             monitor.MeasureFor(Case.For(new[]
             {
-                new SimpleClass{ Number = 32, Double = 3.14,Text = "test1"},
-                new SimpleClass{ Number = 5, Double = 7.14,Text = "test2"},
-                new SimpleClass{ Number = -3, Double = 21.14,Text = "test3"},
+                new SimpleClass {Number = 32, Double = 3.14, Text = "test1"},
+                new SimpleClass {Number = 5, Double = 7.14, Text = "test2"},
+                new SimpleClass {Number = -3, Double = 21.14, Text = "test3"}
             }));
 
             monitor.MeasureFor(Case.For(new BasicTypes
@@ -66,7 +84,11 @@ namespace ObjectSerialization.Performance
 
             monitor.MeasureFor(Case.For("Mixed array", new object[] { 55, 3.15, null, "test", DateTime.Now, new SimpleClass { Text = "test" } }));
 
-            monitor.MeasureFor(Case.For(new List<SimpleClass> { new SimpleClass { Double = 5, Number = 32, Text = "a" }, new SimpleClass { Double = 45, Number = 332, Text = "bb" } }));
+            monitor.MeasureFor(Case.For(new List<SimpleClass>
+            {
+                new SimpleClass {Double = 5, Number = 32, Text = "a"},
+                new SimpleClass {Double = 45, Number = 332, Text = "bb"}
+            }));
 
             monitor.MeasureFor(Case.For(new Dictionary<int, string> { { 3, "3" }, { 55, "fifty five" } }));
 
@@ -76,13 +98,13 @@ namespace ObjectSerialization.Performance
             monitor.MeasureFor(Case.For(linkedList));
 
 
-            monitor.MeasureFor(Case.For(new PolymorphicHolder { A = new Derived { Other = 'c', Value = 34.2 }, B = new Derived2 { Other = 55, Value = 34.2 } }));
+            monitor.MeasureFor(Case.For(new PolymorphicHolder
+            {
+                A = new Derived { Other = 'c', Value = 34.2 },
+                B = new Derived2 { Other = 55, Value = 34.2 }
+            }));
 
             monitor.MeasureFor(Case.For<object>("SimpleClass as object", new SimpleClass { Number = 32, Double = 3.14, Text = "test" }));
-
-            File.WriteAllText(string.Format("results {0}.csv", DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss")), monitor.GetResults());
-
-            Console.ReadKey();
         }
     }
 }

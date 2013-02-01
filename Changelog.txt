@@ -5,6 +5,7 @@ Version 1.0.13
 -------------------------------------------
 + added ProtoBuf-net serializer for performance comparison
 + annotated TestObjects with ProtoBuf attributes
++ refactored PerformanceMonitor and added HtmlResultPresenter
 
 Version 1.0.12
 -------------------------------------------
