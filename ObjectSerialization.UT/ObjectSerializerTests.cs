@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ObjectSerialization.UT.Helpers;
 
 namespace ObjectSerialization.UT
 {
@@ -26,7 +27,7 @@ namespace ObjectSerialization.UT
             AssertProperties(expected, actual);
         }
 
-        [Test,Ignore("Not implemented")]
+        [Test, Ignore("Not implemented")]
         public void NullStringSerializationTest()
         {
             var expected = new SimpleType { TextA = "test", TextB = null };
@@ -87,12 +88,39 @@ namespace ObjectSerialization.UT
             AssertProperties(expected, actual);
         }
 
+        [Test]
+        public void PolymorphicTypesSerialization()
+        {
+            var expected = new OtherType
+            {
+                Object = new PolyImpl { Text = "aaa", Int = 3 },
+                Interface = new PolyImpl { Text = "bbb", Int = 4 },
+                Abstract = new PolyImpl { Text = "ccc", Int = 5 }
+            };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<OtherType>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void PolymorphicTypesSerializationWithNullValues()
+        {
+            var expected = new OtherType
+            {
+                Object = null,
+                Interface = null,
+                Abstract = null
+            };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<OtherType>(serialized);
+            AssertProperties(expected, actual);
+        }
+
         private void AssertProperties<T>(T expected, T actual)
         {
             Assert.That(actual, Is.Not.Null);
             foreach (var prop in typeof(T).GetProperties())
                 Assert.That(prop.GetValue(actual, null), Is.EqualTo(prop.GetValue(expected, null)), prop.Name);
-
         }
     }
 }

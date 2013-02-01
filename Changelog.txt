@@ -1,6 +1,10 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.3
+-------------------------------------------
++ added support for nested polymorphic classes serialization
+
 Version 1.0.2
 -------------------------------------------
 + added support for nested classes serialization

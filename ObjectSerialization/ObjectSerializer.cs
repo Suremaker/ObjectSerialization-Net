@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace ObjectSerialization
@@ -37,15 +36,10 @@ namespace ObjectSerialization
             using (var reader = new BinaryReader(stream, Encoding.UTF8))
             {
                 string type = reader.ReadString();
-                return TypeSerializer.GetDeserializer(LoadType(type)).Invoke(reader);
+                return TypeSerializer.GetDeserializer(TypeSerializer.LoadType(type)).Invoke(reader);
             }
         }
 
-        #endregion
-
-        private static Type LoadType(string type)
-        {
-            return AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(type, false)).First(t => t != null);
-        }
+        #endregion        
     }
 }

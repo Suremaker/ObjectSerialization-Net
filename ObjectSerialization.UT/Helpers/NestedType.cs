@@ -1,4 +1,4 @@
-﻿namespace ObjectSerialization.UT
+﻿namespace ObjectSerialization.UT.Helpers
 {
     class NestedType
     {
