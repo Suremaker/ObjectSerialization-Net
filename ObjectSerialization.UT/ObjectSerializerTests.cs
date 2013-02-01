@@ -85,7 +85,7 @@ namespace ObjectSerialization.UT
             AssertProperties(expected, actual);
         }
 
-        [Test, Ignore("Not implemented yet")]
+        [Test]
         public void CollectionSerializationTest()
         {
             var expected = new List<SimpleType> { new SimpleType { TextA = "a" }, new SimpleType2 { TextB = "b" } };
@@ -235,6 +235,16 @@ namespace ObjectSerialization.UT
         public void ValueTypeAssignedToObjectMemberSerializationTest()
         {
             var expected = new ObjectHolder { Value = 5 };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
+            Assert.That(actual.Value, Is.EqualTo(expected.Value));
+        }
+
+        [Test]
+        public void CollectionAssignedToObjectMemberSerializationTest()
+        {
+            var dictionary = new Dictionary<string, int> {{"a", 1}, {"b", 2}, {"c", 3}};            
+            var expected = new ObjectHolder { Value = dictionary };
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<ObjectHolder>(serialized);
             Assert.That(actual.Value, Is.EqualTo(expected.Value));

@@ -1,9 +1,13 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.9
+-------------------------------------------
++ added support for collection serialization (any implementing ICollection)
+
 Version 1.0.8
 -------------------------------------------
-+ added support for structs
++ added support for struct serialization
 
 Version 1.0.7
 -------------------------------------------

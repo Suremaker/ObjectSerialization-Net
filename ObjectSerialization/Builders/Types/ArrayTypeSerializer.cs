@@ -35,8 +35,7 @@ namespace ObjectSerialization.Builders.Types
             BlockExpression forLoop = CreateWriteLoop(writerObject, value, valueType);
             BlockExpression arrayWrite = Expression.Block(GetWriteExpression(Expression.Property(value, "Length"), writerObject), forLoop);
 
-            ConditionalExpression expression = Expression.IfThenElse(checkNotNull, arrayWrite, GetWriteExpression(Expression.Constant(-1), writerObject));
-            return expression;
+            return Expression.IfThenElse(checkNotNull, arrayWrite, GetWriteExpression(Expression.Constant(-1), writerObject));
         }
 
         public Expression Read(Expression readerObject, Type expectedValueType)
@@ -47,10 +46,13 @@ namespace ObjectSerialization.Builders.Types
                 ? null
                 :
             {
+                T[]o=new T[c];
                 int s = TypeSerializerFactory.GetDeserializer(typeof (T).GetElementType());
                 for(var i=0 ; i < c; ++i)
                     ((T)o)[i] = s.Invoke(r);
+                return o;
             }*/
+
             ParameterExpression count = Expression.Variable(typeof(int), "c");
             BinaryExpression countRead = Expression.Assign(count, GetReadExpression("ReadInt32", readerObject));
 
