@@ -1,6 +1,5 @@
 using System;
 using System.Linq.Expressions;
-using ObjectSerialization.Factories;
 
 namespace ObjectSerialization.Builders.Types
 {
@@ -63,7 +62,7 @@ namespace ObjectSerialization.Builders.Types
 
         protected static Expression ReloadType(Expression readerObject)
         {
-            return Expression.Call(typeof(TypeSerializerFactory), "LoadType", null, GetReadExpression("ReadString", readerObject));
+            return GetReadExpression("ReadString", readerObject);
         }
 
         protected static Expression WriteObjectType(Expression value, Expression objectWriter)

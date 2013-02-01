@@ -1,6 +1,10 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.12
+-------------------------------------------
++ optimized TypeSerializerFactory to cache type information
+
 Version 1.0.11
 -------------------------------------------
 + optimized struct and class members serialization
