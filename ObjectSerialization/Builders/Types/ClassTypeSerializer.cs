@@ -11,7 +11,7 @@ namespace ObjectSerialization.Builders.Types
             return type.IsClass || type.IsAbstract || type.IsInterface;
         }
 
-        public Expression Write(Expression writerObject, Expression value, Type expectedValueType)
+        public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
             /*BinaryWriter w;
             object o;
@@ -26,7 +26,7 @@ namespace ObjectSerialization.Builders.Types
                 {
                     w.Write((byte)2);
                     w.Write(((T)o).Prop.GetType().FullName);
-                    MemberSerializerFactory.GetSerializer(((T)o).Prop.GetType()).Invoke(w, ((T)o).Prop);
+                    TypeSerializerFactory.GetSerializer(((T)o).Prop.GetType()).Invoke(w, ((T)o).Prop);
                 }
             }
             else
@@ -42,18 +42,18 @@ namespace ObjectSerialization.Builders.Types
                 GetWriteExpression(checkNotNull, writerObject),
                 Expression.IfThen(checkNotNull, Expression.Block(objectTypeWriteExpression, valueWriteExpression)));*/
 
-            var checkNotNull = CheckNotNull(value, expectedValueType);
+            var checkNotNull = CheckNotNull(value, valueType);
             var serializeClass = Expression.Block(
                 GetWriteExpression(Expression.Constant((byte)1), writerObject),
-                CallSerialize(GetSerializer(Expression.Constant(expectedValueType)), value, writerObject));
+                CallSerialize(GetSerializer<MemberSerializerFactory>(Expression.Constant(valueType)), value, writerObject));
 
             var serializePolymorphicClass = Expression.Block(
                 GetWriteExpression(Expression.Constant((byte)2), writerObject),
                 WriteObjectType(value, writerObject),
-                CallSerialize(GetSerializer(GetActualValueType(value)), value, writerObject));
+                CallSerialize(GetSerializer<TypeSerializerFactory>(GetActualValueType(value)), value, writerObject));
 
             var serializationExpression = Expression.IfThenElse(
-                Expression.Equal(GetActualValueType(value), Expression.Constant(expectedValueType)),
+                Expression.Equal(GetActualValueType(value), Expression.Constant(valueType)),
                 serializeClass,
                 serializePolymorphicClass
                 );
@@ -72,13 +72,13 @@ namespace ObjectSerialization.Builders.Types
             return (b == 0)
                 ? null
                 : ((b == 1)
-                    ? TypeSerializer.GetDeserializer(typeof(T)).Invoke(r)
-                    : TypeSerializer.GetDeserializer(TypeSerializer.LoadType(r.ReadString())).Invoke(r));
+                    ? MemberSerializerFactory.GetDeserializer(typeof(T)).Invoke(r)
+                    : TypeSerializerFactory.GetDeserializer(TypeSerializer.LoadType(r.ReadString())).Invoke(r));
             */
             var flag = Expression.Variable(typeof(byte), "b");
             var readFlag = Expression.Assign(flag, GetReadExpression("ReadByte", readerObject));
-            var deserializeClass = CallDeserialize(GetDeserializer(Expression.Constant(expectedValueType)), expectedValueType, readerObject);
-            var deserializePolymorphic = CallDeserialize(GetDeserializer(ReloadType(readerObject)), expectedValueType, readerObject);
+            var deserializeClass = CallDeserialize(GetDeserializer<MemberSerializerFactory>(Expression.Constant(expectedValueType)), expectedValueType, readerObject);
+            var deserializePolymorphic = CallDeserialize(GetDeserializer<TypeSerializerFactory>(ReloadType(readerObject)), expectedValueType, readerObject);
 
             var deserialization = Expression.Condition(
                 Expression.Equal(flag, Expression.Constant((byte)0)),
@@ -91,9 +91,9 @@ namespace ObjectSerialization.Builders.Types
             return Expression.Block(new[] { flag }, readFlag, deserialization);
         }
 
-        protected static Expression GetSerializer(Expression type)
+        protected static Expression GetSerializer<TSerializerFactory>(Expression type)
         {
-            return Expression.Call(typeof(MemberSerializerFactory), "GetSerializer", null, type);
+            return Expression.Call(typeof(TSerializerFactory), "GetSerializer", null, type);
         }
 
         protected static Expression CallSerialize(Expression serializer, Expression value, Expression writerObject)
@@ -101,9 +101,9 @@ namespace ObjectSerialization.Builders.Types
             return Expression.Call(serializer, "Invoke", null, writerObject, value);
         }
 
-        protected static Expression GetDeserializer(Expression type)
+        protected static Expression GetDeserializer<TSerializerFactory>(Expression type)
         {
-            return Expression.Call(typeof(MemberSerializerFactory), "GetDeserializer", null, type);
+            return Expression.Call(typeof(TSerializerFactory), "GetDeserializer", null, type);
         }
 
         protected static Expression CallDeserialize(Expression deserializer, Type propertyType, Expression readerObject)

@@ -19,7 +19,7 @@ namespace ObjectSerialization.Builders.Types
             return _predefinedTypes.Contains(type);
         }
 
-        public Expression Write(Expression writerObject, Expression value,Type expectedValueType)
+        public Expression Write(Expression writerObject, Expression value,Type valueType)
         {
             /*BinaryWriter w;   
             object o;

@@ -69,7 +69,25 @@ namespace ObjectSerialization.UT
             Assert.That(_serializer.Deserialize(serialized), Is.EqualTo(expected));
         }
 
-        [Test, Ignore("Not implemented yet")]
+        [Test]
+        public void ValueTypeAssignedToObjectMemberSerializationTest()
+        {
+            var expected = new ObjectHolder { Value = 5 };
+            var serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
+            Assert.That(actual.Value, Is.EqualTo(expected.Value));
+        }
+
+        [Test]
+        public void ArrayAssignedToObjectMemberSerializationTest()
+        {
+            var expected = new ObjectHolder { Value = new[] { 1, 2, 3, 4, 5 } };
+            var serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
+            Assert.That(actual.Value, Is.EqualTo(expected.Value));
+        }
+
+        [Test]
         public void ArraySerializationTest()
         {
             var expected = new byte[] { 1, 2, 3, 4, 5 };
@@ -85,14 +103,14 @@ namespace ObjectSerialization.UT
             Assert.That(_serializer.Deserialize(serialized), Is.EquivalentTo(expected));
         }
 
-        [Test, Ignore("Not implemented yet")]
+        [Test]
         public void ArrayMemberSerializationTest()
         {
             var expected = new ArrayHolder
             {
                 ByteArray = new byte[] { 1, 2, 3 },
-                SimpleTypeArray = new[] { new SimpleType { TextA = "11" }, new SimpleType { TextB = "22" } },
-                ObjectArray = new object[] { new SimpleType { TextB = "b" }, 5, "test" }
+                SimpleTypeArray = new[] { new SimpleType { TextA = "11", TextB = "12" }, new SimpleType2 { TextA = "21", TextB = "22" } },
+                ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test" }
             };
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<ArrayHolder>(serialized);

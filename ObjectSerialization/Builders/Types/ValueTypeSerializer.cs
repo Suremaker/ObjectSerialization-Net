@@ -10,7 +10,7 @@ namespace ObjectSerialization.Builders.Types
             return type.IsValueType;
         }
 
-        public Expression Write(Expression writerObject, Expression value, Type propertyType)
+        public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
             throw new NotImplementedException();
         }

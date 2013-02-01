@@ -28,7 +28,7 @@ namespace ObjectSerialization.Builders.Types
             return IsEnumerable(type, out itemType) && HasAddMethod(type, itemType);
         }
 
-        public Expression Write(Expression writerObject, Expression value, Type propertyType)
+        public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
             throw new NotImplementedException();
         }

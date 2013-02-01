@@ -42,6 +42,7 @@
     <Compile Include="Helpers\BasicTypes.cs" />
     <Compile Include="Helpers\IPoly.cs" />
     <Compile Include="Helpers\NestedType.cs" />
+    <Compile Include="Helpers\ObjectHolder.cs" />
     <Compile Include="Helpers\OtherType.cs" />
     <Compile Include="Helpers\PolyImpl.cs" />
     <Compile Include="Helpers\SimpleType.cs" />
