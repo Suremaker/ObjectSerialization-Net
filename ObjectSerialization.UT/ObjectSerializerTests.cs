@@ -127,6 +127,19 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
+        public void NestedPolymorphicTypeSerializationTest()
+        {
+            var expected = new NestedType
+            {
+                Int = 32,
+                Simple = new SimpleType2 { TextA = "test", TextB = "test2" }
+            };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<NestedType>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
         public void NestedTypeSerializationTestWhereNestedElementIsNull()
         {
             var expected = new NestedType

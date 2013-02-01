@@ -1,6 +1,11 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.4
+-------------------------------------------
++ merged ClassTypeSerializer with PolymorphicClassTypeSerializer
++ added support for serialization of derived classes (property no longer have to be object, interface or abstract class type to trigger it)
+
 Version 1.0.3
 -------------------------------------------
 + added support for nested polymorphic classes serialization

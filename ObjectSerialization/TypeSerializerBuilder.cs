@@ -7,16 +7,15 @@ using System.Reflection;
 
 namespace ObjectSerialization
 {
-    class TypeSerializerBuilder
+    internal class TypeSerializerBuilder
     {
         protected static readonly IEnumerable<ISerializer> Serializers = new ISerializer[]
             {
                 new ArrayTypeSerializer(),                
                 new PredefinedTypeSerializer(),
                 new CollectionTypeSerializer(),
-                new PolymorphicClassTypeSerializer(),
-                new ValueTypeSerializer(),
-                new ClassTypeSerializer()
+                new ClassTypeSerializer(),
+                new ValueTypeSerializer()
             };
     }
 
@@ -74,7 +73,7 @@ namespace ObjectSerialization
                                  .OrderBy(p => p.Name);
 
             foreach (PropertyInfo property in properties)
-                BuildPropertySerializer(property,ctx);
+                BuildPropertySerializer(property, ctx);
 
             SerializeFn = ctx.GetSerializeFn();
             DeserializeFn = ctx.GetDeserializeFn();

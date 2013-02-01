@@ -45,6 +45,7 @@
     <Compile Include="Helpers\OtherType.cs" />
     <Compile Include="Helpers\PolyImpl.cs" />
     <Compile Include="Helpers\SimpleType.cs" />
+    <Compile Include="Helpers\SimpleType2.cs" />
     <Compile Include="ObjectSerializerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
