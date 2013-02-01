@@ -48,7 +48,7 @@ namespace ObjectSerialization.UT
         [Test]
         public void SerializedObjectCannotBeStruct()
         {
-            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(new DateTime(2000,10,10)));
+            var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(new DateTime(2000, 10, 10)));
             Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
         }
 
@@ -71,6 +71,20 @@ namespace ObjectSerialization.UT
         {
             var ex = Assert.Throws<ArgumentException>(() => _serializer.Serialize(new List<SimpleType>()));
             Assert.That(ex.Message, Is.StringContaining("Serialized type has to be instance of simple POCO type."));
+        }
+
+        [Test, Ignore("Not implemented yet")]
+        public void ArraySerialization()
+        {
+            var expected = new ArrayHolder
+            {
+                ByteArray = new byte[] { 1, 2, 3 },
+                SimpleTypeArray = new[] { new SimpleType { TextA = "11" }, new SimpleType { TextB = "22" } },
+                ObjectArray = new object[] { new SimpleType { TextB = "b" }, 5, "test" }
+            };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ArrayHolder>(serialized);
+            AssertProperties(expected, actual);
         }
 
         [Test]
