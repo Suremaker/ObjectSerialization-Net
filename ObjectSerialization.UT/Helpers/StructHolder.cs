@@ -6,9 +6,7 @@ namespace ObjectSerialization.UT.Helpers
     {
         public ComplexStruct Complex { get; set; }
         public DateTime Date { get; set; }
-
         public int? Int { get; set; }
-
         public int? Int2 { get; set; }
 
         public override bool Equals(object obj)

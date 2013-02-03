@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NUnit.Framework;
 using ObjectSerialization.UT.Helpers;
 
@@ -283,30 +284,37 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        [Ignore("Overwritting of read only fields is not implemented")]
-        public void OmitReadonlyStructFieldsTest()
+        public void DisallowReadonlyFieldSerializationInStructTest()
         {
-            var expected = new ReadOnlyStruct(32, 66);
-            byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<ReadOnlyStruct>(serialized);
-            Assert.That(actual.ReadWriteInt, Is.EqualTo(expected.ReadWriteInt));
-            Assert.That(actual.ReadOnlyInt, Is.EqualTo(expected.ReadOnlyInt));
-
-            Assert.That(actual.ReadWriteProperty, Is.EqualTo(expected.ReadWriteProperty));
-            Assert.That(actual.ReadOnlyProperty, Is.EqualTo(expected.ReadOnlyProperty));
+            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyStruct(32, 66)));
+            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field ReadOnlyStruct._readOnlyInt. Please mark it with NonSerialized attribute or remove readonly modifier."));
         }
 
         [Test]
-        public void ClassWithPublicReadWriteFieldsSerializationTest()
+        public void OmitNonSerializedFieldsInStructTest()
         {
-            var expected = new ClassWithReadOnlyMembers(12, 21) { ReadWriteField = 32, ReadWriteProperty = 33 };
+            var expected = new ReadOnlyStructWithNonSerializedField(33) { ReadWriteInt = 55 };
             byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<ClassWithReadOnlyMembers>(serialized);
-            Assert.That(actual.ReadWriteField, Is.EqualTo(expected.ReadWriteField));
-            Assert.That(actual.ReadWriteProperty, Is.EqualTo(expected.ReadWriteProperty));
+            var actual = _serializer.Deserialize<ReadOnlyStructWithNonSerializedField>(serialized);
+            Assert.That(actual.ReadWriteInt, Is.EqualTo(expected.ReadWriteInt));
+            Assert.That(actual.ReadOnlyInt, Is.EqualTo(0));
+        }
 
-            Assert.That(actual.ReadOnlyField, Is.EqualTo(0));
-            Assert.That(actual.ReadOnlyProperty, Is.EqualTo(0));
+        [Test]
+        public void DisallowReadonlyFieldSerializationInClassTest()
+        {
+            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyClass(66)));
+            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field ReadOnlyClass.ReadOnlyInt. Please mark it with NonSerialized attribute or remove readonly modifier."));
+        }
+
+        [Test]
+        public void OmitNonSerializedFieldsInClassTest()
+        {
+            var expected = new ReadOnlyClassWithNonSerializedField(33) { ReadWriteInt = 55 };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ReadOnlyClassWithNonSerializedField>(serialized);
+            Assert.That(actual.ReadWriteInt, Is.EqualTo(expected.ReadWriteInt));
+            Assert.That(actual.ReadOnlyInt, Is.EqualTo(0));
         }
     }
 }

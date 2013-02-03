@@ -1,6 +1,13 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.18
+-------------------------------------------
++ added support to omit class/struct field serialization if it is marked with NonSerialized attribute
++ disallowed class/struct serialization if contains readonly fields not marked with NonSerialized attribute (an SerializationException suggesting addition of NonSerialized attribute removal of readonly modifier is thrown)
++ modified Class/Struct/TypeSerializerBuilder to generate serialization code on first SerializeFn/DeserializeFn property acces instead of on type loading to avoid TypeInitializationExceptions.
+
+
 Version 1.0.17
 -------------------------------------------
 + modified class serializer to serialize public properties and fields that are not static and not readonly

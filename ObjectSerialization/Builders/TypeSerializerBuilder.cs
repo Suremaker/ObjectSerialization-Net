@@ -7,20 +7,35 @@ namespace ObjectSerialization.Builders
 {
 	internal class TypeSerializerBuilder<T> : SerializerBuilder
 	{
-		public static Func<BinaryReader, object> DeserializeFn { get; private set; }
-		public static Action<BinaryWriter, object> SerializeFn { get; private set; }
+        private static Func<BinaryReader, object> _deserializeFn;
+        private static Action<BinaryWriter, object> _serializeFn;
 
-		static TypeSerializerBuilder()
-		{
-			Build();
-		}
+        public static Func<BinaryReader, object> DeserializeFn
+        {
+            get
+            {
+                if (_deserializeFn == null)
+                    Build();
+                return _deserializeFn;
+            }
+        }
+
+        public static Action<BinaryWriter, object> SerializeFn
+        {
+            get
+            {
+                if (_serializeFn == null)
+                    Build();
+                return _serializeFn;
+            }
+        }
 
 		private static void Build()
 		{
 			var ctx = new BuildContext<T>();
 			BuildTypeSerializer(typeof(T), ctx);
-			SerializeFn = ctx.GetSerializeFn();
-			DeserializeFn = ctx.GetDeserializeFn();
+			_serializeFn = ctx.GetSerializeFn();
+			_deserializeFn = ctx.GetDeserializeFn();
 
 		}
 
