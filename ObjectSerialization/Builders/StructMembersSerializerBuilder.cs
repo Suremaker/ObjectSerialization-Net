@@ -52,7 +52,7 @@ namespace ObjectSerialization.Builders
         private static void BuildFieldSerializer(FieldInfo field, BuildContext<T> ctx)
         {
             if (field.IsInitOnly)
-                throw new SerializationException(string.Format("Unable to serialize readonly field {0}.{1}. Please mark it with NonSerialized attribute or remove readonly modifier.", typeof(T).Name, field.Name));
+                throw new SerializationException(string.Format("Unable to serialize readonly field {0} in type {1}. Please mark it with NonSerialized attribute or remove readonly modifier.", field.Name, typeof(T).FullName));
 
             ISerializer serializer = Serializers.First(s => s.IsSupported(field.FieldType));
             ctx.AddWriteExpression(serializer.Write(ctx.WriterObject, GetField(ctx.WriteObject, field), field.FieldType));

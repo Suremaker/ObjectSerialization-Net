@@ -287,7 +287,7 @@ namespace ObjectSerialization.UT
         public void DisallowReadonlyFieldSerializationInStructTest()
         {
             var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyStruct(32, 66)));
-            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field ReadOnlyStruct._readOnlyInt. Please mark it with NonSerialized attribute or remove readonly modifier."));
+            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field _readOnlyInt in type ObjectSerialization.UT.Helpers.ReadOnlyStruct. Please mark it with NonSerialized attribute or remove readonly modifier."));
         }
 
         [Test]
@@ -304,7 +304,7 @@ namespace ObjectSerialization.UT
         public void DisallowReadonlyFieldSerializationInClassTest()
         {
             var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyClass(66)));
-            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field ReadOnlyClass.ReadOnlyInt. Please mark it with NonSerialized attribute or remove readonly modifier."));
+            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field ReadOnlyInt in type ObjectSerialization.UT.Helpers.ReadOnlyClass. Please mark it with NonSerialized attribute or remove readonly modifier."));
         }
 
         [Test]
