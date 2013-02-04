@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -33,20 +34,22 @@ namespace ObjectSerialization.Builders
             }
         }
 
+        public static IEnumerable<FieldInfo> GetFields(Type type)
+        {
+            if (type == null)
+                return Enumerable.Empty<FieldInfo>();
+
+            return type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                .Concat(GetFields(type.BaseType));
+        }
+
         private static void Build()
         {
             var ctx = new BuildContext<T>(Expression.Variable(typeof(T), "o"));
 
-            IOrderedEnumerable<PropertyInfo> properties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                                                   .Where(p => p.GetGetMethod() != null && p.GetSetMethod() != null)
-                                                                   .OrderBy(p => p.Name);
-
-            IOrderedEnumerable<FieldInfo> fields = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public)
+            IOrderedEnumerable<FieldInfo> fields = GetFields(typeof(T))
                 .Where(f => f.GetCustomAttributes(typeof(NonSerializedAttribute), true).Length == 0)
                 .OrderBy(f => f.Name);
-
-            foreach (PropertyInfo property in properties)
-                BuildPropertySerializer(property, ctx);
 
             foreach (FieldInfo field in fields)
                 BuildFieldSerializer(field, ctx);
@@ -65,13 +68,6 @@ namespace ObjectSerialization.Builders
             ctx.AddReadExpression(SetFieldValue(ctx.ReadResultObject, field, serializer.Read(ctx.ReaderObject, field.FieldType)));
         }
 
-        private static void BuildPropertySerializer(PropertyInfo property, BuildContext<T> ctx)
-        {
-            ISerializer serializer = Serializers.First(s => s.IsSupported(property.PropertyType));
-            ctx.AddWriteExpression(serializer.Write(ctx.WriterObject, GetPropertyValue(ctx.WriteObject, property), property.PropertyType));
-            ctx.AddReadExpression(SetPropertyValue(ctx.ReadResultObject, property, serializer.Read(ctx.ReaderObject, property.PropertyType)));
-        }
-
         private static Expression SetFieldValue(Expression instance, FieldInfo field, Expression valueExpression)
         {
             return Expression.Assign(Expression.Field(instance, field), valueExpression);
@@ -80,16 +76,6 @@ namespace ObjectSerialization.Builders
         private static Expression GetFieldValue(Expression instance, FieldInfo field)
         {
             return Expression.Field(instance, field);
-        }
-
-        private static Expression GetPropertyValue(ParameterExpression instance, PropertyInfo property)
-        {
-            return Expression.Property(instance, property);
-        }
-
-        private static Expression SetPropertyValue(Expression instance, PropertyInfo property, Expression valueExpression)
-        {
-            return Expression.Call(instance, property.GetSetMethod(), valueExpression);
         }
     }
 }
