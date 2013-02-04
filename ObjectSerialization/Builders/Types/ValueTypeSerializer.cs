@@ -16,18 +16,18 @@ namespace ObjectSerialization.Builders.Types
         {
 			/*BinaryWriter w;
 			T v;
-			StructMembersSerializerBuilder<T>.SerializeFn.Invoke(w, v);
+			TypeMembersSerializerBuilder<T>.SerializeFn.Invoke(w, v);
 			*/
 
-			return CallSerializeWithConvert(GetDirectSerializer(typeof(StructMembersSerializerBuilder<>),valueType), value, writerObject);
+			return CallSerializeWithConvert(GetDirectSerializer(typeof(TypeMembersSerializerBuilder<>),valueType), value, writerObject);
         }
 
         public Expression Read(Expression readerObject, Type expectedValueType)
         {
 			/*BinaryReader r;
-			return StructMembersSerializerBuilder<T>.DeserializeFn.Invoke(r)
+			return TypeMembersSerializerBuilder<T>.DeserializeFn.Invoke(r)
 			*/
-			return CallDeserialize(GetDirectDeserializer(typeof(StructMembersSerializerBuilder<>), expectedValueType), expectedValueType, readerObject);
+			return CallDeserialize(GetDirectDeserializer(typeof(TypeMembersSerializerBuilder<>), expectedValueType), expectedValueType, readerObject);
         }
 
         #endregion

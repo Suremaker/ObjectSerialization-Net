@@ -4,6 +4,7 @@ ObjectSerialization
 Version 1.0.19
 -------------------------------------------
 + modified class serializer to serialize fields (public/protected/private) instead of public properties and public fields
++ merged Class/StructMembersSerializerBuilder into TypeMembersSerializerBuilder
 
 Version 1.0.18
 -------------------------------------------

@@ -32,9 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Builders\BuildContext.cs" />
-    <Compile Include="Builders\ClassMembersSerializerBuilder.cs" />
+    <Compile Include="Builders\TypeMembersSerializerBuilder.cs" />
     <Compile Include="Builders\SerializerBuilder.cs" />
-    <Compile Include="Builders\StructMembersSerializerBuilder.cs" />
     <Compile Include="Builders\TypeSerializerBuilder.cs" />
     <Compile Include="Builders\Types\ArrayTypeSerializer.cs" />
     <Compile Include="Builders\Types\BaseTypeSerializer.cs" />
