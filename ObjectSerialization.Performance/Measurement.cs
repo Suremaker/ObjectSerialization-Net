@@ -20,7 +20,7 @@ namespace ObjectSerialization.Performance
 
         public override string ToString()
         {
-            return string.Format("Min:{0}, Max:{1}, Avg:{2}", Min, Max, Avg);
+            return string.Format("Min:{0}, Max:{1}, Avg:{2}, Total: {3}", Min, Max, Avg, Total);
         }
     }
 }

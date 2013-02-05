@@ -40,8 +40,11 @@
   <ItemGroup>
     <Compile Include="Helpers\APoly.cs" />
     <Compile Include="Helpers\ArrayHolder.cs" />
+    <Compile Include="Helpers\BaseClassWithTransientMembers.cs" />
     <Compile Include="Helpers\BasicTypes.cs" />
     <Compile Include="Helpers\ComplexStruct.cs" />
+    <Compile Include="Helpers\DerivedClassWithOverriddenTransientMembers.cs" />
+    <Compile Include="Helpers\DerivedClassWithTransientMembers.cs" />
     <Compile Include="Helpers\EmptyClass.cs" />
     <Compile Include="Helpers\EmptyStruct.cs" />
     <Compile Include="Helpers\IPoly.cs" />
@@ -50,9 +53,9 @@
     <Compile Include="Helpers\OtherType.cs" />
     <Compile Include="Helpers\PolyImpl.cs" />
     <Compile Include="Helpers\ReadOnlyClass.cs" />
-    <Compile Include="Helpers\ReadOnlyClassWithNonSerializedField.cs" />
+    <Compile Include="Helpers\ClassWithTransientMembers.cs" />
     <Compile Include="Helpers\ReadOnlyStruct.cs" />
-    <Compile Include="Helpers\ReadOnlyStructWithNonSerializedField.cs" />
+    <Compile Include="Helpers\StructWithTransientMembers.cs" />
     <Compile Include="Helpers\SimpleType.cs" />
     <Compile Include="Helpers\SimpleType2.cs" />
     <Compile Include="Helpers\StructHolder.cs" />

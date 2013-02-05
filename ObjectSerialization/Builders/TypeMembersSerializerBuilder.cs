@@ -48,7 +48,7 @@ namespace ObjectSerialization.Builders
             var ctx = new BuildContext<T>(Expression.Variable(typeof(T), "o"));
 
             IOrderedEnumerable<FieldInfo> fields = GetFields(typeof(T))
-                .Where(f => f.GetCustomAttributes(typeof(NonSerializedAttribute), true).Length == 0)
+                .Where(ShouldBePersisted)
                 .OrderBy(f => f.Name);
 
             foreach (FieldInfo field in fields)
@@ -56,6 +56,24 @@ namespace ObjectSerialization.Builders
 
             _serializeFn = ctx.GetSerializeFn();
             _deserializeFn = ctx.GetDeserializeFn();
+        }
+
+        private static bool ShouldBePersisted(FieldInfo field)
+        {
+            if (field.GetCustomAttributes(typeof(NonSerializedAttribute), true).Length > 0)
+                return false;
+
+            if (field.Name.EndsWith("k__BackingField") && GetPropertyForBackingField(field).GetCustomAttributes(typeof(NonSerializedBackendAttribute), true).Length > 0)
+                return false;
+
+            return true;
+        }
+
+        private static PropertyInfo GetPropertyForBackingField(FieldInfo field)
+        {
+            var propertyName = field.Name.Substring(1, field.Name.IndexOf('>') - 1);
+            var propertyForBackingField = field.DeclaringType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);            
+            return propertyForBackingField;
         }
 
         private static void BuildFieldSerializer(FieldInfo field, BuildContext<T> ctx)

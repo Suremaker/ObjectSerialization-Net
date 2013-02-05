@@ -45,6 +45,7 @@
     <Compile Include="Builders\Types\ValueTypeSerializer.cs" />
     <Compile Include="Factories\TypeSerializerFactory.cs" />
     <Compile Include="IObjectSerializer.cs" />
+    <Compile Include="NonSerializedBackendAttribute.cs" />
     <Compile Include="ObjectSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\TypeInfo.cs" />

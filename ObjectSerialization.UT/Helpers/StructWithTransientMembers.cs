@@ -2,13 +2,13 @@
 
 namespace ObjectSerialization.UT.Helpers
 {
-    public struct ReadOnlyClassWithNonSerializedField
+    public struct StructWithTransientMembers
     {
         public int ReadWriteInt;
         [NonSerialized]
         public readonly int ReadOnlyInt;
 
-        public ReadOnlyClassWithNonSerializedField(int readOnlyInt)
+        public StructWithTransientMembers(int readOnlyInt)
             : this()
         {
             ReadOnlyInt = readOnlyInt;
