@@ -250,6 +250,29 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
+        public void SealedMemberTypeSerializationTest()
+        {
+            var expected = new SealedHolder { Value = new SealedSimpleType { TextA = "a", TextB = "b" } };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<SealedHolder>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void PolyMemberTypeSerializationTest()
+        {
+            var expected = new PolyHolder
+            {
+                IntPoly = new PolyImpl { Int = 1, Text = "a" },
+                AbsPoly = new PolyImpl { Int = 2, Text = "b" },
+                ObjPoly = new PolyImpl { Int = 3, Text = "c" }
+            };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<PolyHolder>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
         public void StringSerializationTest()
         {
             const string expected = "sss";

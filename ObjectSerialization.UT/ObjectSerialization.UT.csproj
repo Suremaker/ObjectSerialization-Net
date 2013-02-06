@@ -51,10 +51,13 @@
     <Compile Include="Helpers\NestedType.cs" />
     <Compile Include="Helpers\ObjectHolder.cs" />
     <Compile Include="Helpers\OtherType.cs" />
+    <Compile Include="Helpers\PolyHolder.cs" />
     <Compile Include="Helpers\PolyImpl.cs" />
     <Compile Include="Helpers\ReadOnlyClass.cs" />
     <Compile Include="Helpers\ClassWithTransientMembers.cs" />
     <Compile Include="Helpers\ReadOnlyStruct.cs" />
+    <Compile Include="Helpers\SealedSimpleType.cs" />
+    <Compile Include="Helpers\SealedHolder.cs" />
     <Compile Include="Helpers\StructWithTransientMembers.cs" />
     <Compile Include="Helpers\SimpleType.cs" />
     <Compile Include="Helpers\SimpleType2.cs" />

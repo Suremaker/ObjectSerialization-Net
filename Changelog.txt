@@ -1,6 +1,11 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.21
+-------------------------------------------
++ optimized sealed class serialization
++ optimized interface, abstract and object member type serialization
+
 Version 1.0.20
 -------------------------------------------
 + added NonSerializedBackendAttribute allow to mark backend field of automatic properties to not be serialized (if automatic virtual property is overriden with another automatic property implementation, both has to be marked with NonSerializedBackendAttribute if none of them should be serialized. Otherwise only the marked one will not be serialized.)
