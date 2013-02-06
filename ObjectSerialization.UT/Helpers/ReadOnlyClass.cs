@@ -2,8 +2,8 @@
 {
     public class ReadOnlyClass
     {
-        public int ReadWriteInt;
         public readonly int ReadOnlyInt;
+        public int ReadWriteInt;
 
         public ReadOnlyClass() { }
         public ReadOnlyClass(int readOnlyInt)

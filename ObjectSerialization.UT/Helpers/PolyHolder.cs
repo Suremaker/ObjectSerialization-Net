@@ -2,8 +2,8 @@
 {
     class PolyHolder
     {
-        public IPoly IntPoly { get; set; }
         public APoly AbsPoly { get; set; }
+        public IPoly IntPoly { get; set; }
         public object ObjPoly { get; set; }
     }
 }

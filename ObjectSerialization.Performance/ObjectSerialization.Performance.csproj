@@ -71,7 +71,10 @@
     <Compile Include="TestObjects\Impl.cs" />
     <Compile Include="TestObjects\PolymorphicHolder.cs" />
     <Compile Include="TestObjects\RegisteredSimpleClass.cs" />
+    <Compile Include="TestObjects\SealedClass.cs" />
+    <Compile Include="TestObjects\SealedHolder.cs" />
     <Compile Include="TestObjects\SimpleClass.cs" />
+    <Compile Include="TestObjects\SimpleHolder.cs" />
     <Compile Include="TestObjects\StructureHolder.cs" />
   </ItemGroup>
   <ItemGroup>

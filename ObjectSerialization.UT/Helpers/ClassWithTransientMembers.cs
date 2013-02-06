@@ -4,9 +4,10 @@ namespace ObjectSerialization.UT.Helpers
 {
     public class ClassWithTransientMembers
     {
-        public int ReadWriteInt;
         [NonSerialized]
         public readonly int ReadOnlyInt;
+
+        public int ReadWriteInt;
 
         public ClassWithTransientMembers()
         {

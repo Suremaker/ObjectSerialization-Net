@@ -51,39 +51,6 @@ namespace ObjectSerialization.Builders.Types
 
         }
 
-        private static Expression GetSerializationExpression(Expression value, Type valueType, BlockExpression serializeClass, BlockExpression serializePolymorphicClass)
-        {
-            if (valueType.IsSealed)
-                return serializeClass;
-
-            if (IsPurePolymorphic(valueType))
-                return serializePolymorphicClass;
-
-            return Expression.IfThenElse(
-                Expression.Equal(GetActualValueType(value), Expression.Constant(valueType)),
-                serializeClass,
-                serializePolymorphicClass
-                );
-        }
-
-        private static bool IsPurePolymorphic(Type valueType)
-        {
-            return valueType.IsAbstract || valueType.IsInterface || valueType == typeof(object);
-        }
-
-        private static Expression GetDeserializationExpression(ParameterExpression flag, Type expectedValueType, Expression deserializeClass, Expression deserializePolymorphic)
-        {
-            if (expectedValueType.IsSealed)
-                return deserializeClass;
-            if (IsPurePolymorphic(expectedValueType))
-                return deserializePolymorphic;
-
-            return Expression.Condition(
-                Expression.Equal(flag, Expression.Constant((byte)1)),
-                deserializeClass,
-                deserializePolymorphic);
-        }
-
         public Expression Read(Expression readerObject, Type expectedValueType)
         {
             /*BinaryReader r;
@@ -108,6 +75,39 @@ namespace ObjectSerialization.Builders.Types
         }
 
         #endregion
+
+        private static Expression GetDeserializationExpression(ParameterExpression flag, Type expectedValueType, Expression deserializeClass, Expression deserializePolymorphic)
+        {
+            if (expectedValueType.IsSealed)
+                return deserializeClass;
+            if (IsPurePolymorphic(expectedValueType))
+                return deserializePolymorphic;
+
+            return Expression.Condition(
+                Expression.Equal(flag, Expression.Constant((byte)1)),
+                deserializeClass,
+                deserializePolymorphic);
+        }
+
+        private static Expression GetSerializationExpression(Expression value, Type valueType, BlockExpression serializeClass, BlockExpression serializePolymorphicClass)
+        {
+            if (valueType.IsSealed)
+                return serializeClass;
+
+            if (IsPurePolymorphic(valueType))
+                return serializePolymorphicClass;
+
+            return Expression.IfThenElse(
+                Expression.Equal(GetActualValueType(value), Expression.Constant(valueType)),
+                serializeClass,
+                serializePolymorphicClass
+                );
+        }
+
+        private static bool IsPurePolymorphic(Type valueType)
+        {
+            return valueType.IsAbstract || valueType.IsInterface || valueType == typeof(object);
+        }
 
         private Expression GetDeserializerField(Expression typeInfo)
         {

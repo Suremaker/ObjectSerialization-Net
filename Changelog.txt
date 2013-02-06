@@ -5,6 +5,7 @@ Version 1.0.21
 -------------------------------------------
 + optimized sealed class serialization
 + optimized interface, abstract and object member type serialization
++ added performance tests for sealed classes
 
 Version 1.0.20
 -------------------------------------------

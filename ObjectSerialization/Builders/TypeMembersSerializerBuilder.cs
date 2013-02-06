@@ -58,24 +58,6 @@ namespace ObjectSerialization.Builders
             _deserializeFn = ctx.GetDeserializeFn();
         }
 
-        private static bool ShouldBePersisted(FieldInfo field)
-        {
-            if (field.GetCustomAttributes(typeof(NonSerializedAttribute), true).Length > 0)
-                return false;
-
-            if (field.Name.EndsWith("k__BackingField") && GetPropertyForBackingField(field).GetCustomAttributes(typeof(NonSerializedBackendAttribute), true).Length > 0)
-                return false;
-
-            return true;
-        }
-
-        private static PropertyInfo GetPropertyForBackingField(FieldInfo field)
-        {
-            var propertyName = field.Name.Substring(1, field.Name.IndexOf('>') - 1);
-            var propertyForBackingField = field.DeclaringType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);            
-            return propertyForBackingField;
-        }
-
         private static void BuildFieldSerializer(FieldInfo field, BuildContext<T> ctx)
         {
             if (field.IsInitOnly)
@@ -86,14 +68,32 @@ namespace ObjectSerialization.Builders
             ctx.AddReadExpression(SetFieldValue(ctx.ReadResultObject, field, serializer.Read(ctx.ReaderObject, field.FieldType)));
         }
 
+        private static Expression GetFieldValue(Expression instance, FieldInfo field)
+        {
+            return Expression.Field(instance, field);
+        }
+
+        private static PropertyInfo GetPropertyForBackingField(FieldInfo field)
+        {
+            string propertyName = field.Name.Substring(1, field.Name.IndexOf('>') - 1);
+            PropertyInfo propertyForBackingField = field.DeclaringType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);            
+            return propertyForBackingField;
+        }
+
         private static Expression SetFieldValue(Expression instance, FieldInfo field, Expression valueExpression)
         {
             return Expression.Assign(Expression.Field(instance, field), valueExpression);
         }
 
-        private static Expression GetFieldValue(Expression instance, FieldInfo field)
+        private static bool ShouldBePersisted(FieldInfo field)
         {
-            return Expression.Field(instance, field);
+            if (field.GetCustomAttributes(typeof(NonSerializedAttribute), true).Length > 0)
+                return false;
+
+            if (field.Name.EndsWith("k__BackingField") && GetPropertyForBackingField(field).GetCustomAttributes(typeof(NonSerializedBackendAttribute), true).Length > 0)
+                return false;
+
+            return true;
         }
     }
 }
