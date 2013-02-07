@@ -8,6 +8,7 @@ Version 1.0.23
 + renamed test cases for performance monitor
 + added text result presenter for performance results
 + extended performance tests
++ added tests for Newsoft BSON and DataContractSerializer
 
 Version 1.0.22
 -------------------------------------------

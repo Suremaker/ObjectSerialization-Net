@@ -34,11 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\packages\protobuf-net.2.0.0.621\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,6 +60,8 @@
     <Compile Include="Results\ResultPresenter.cs" />
     <Compile Include="Results\TextResultPresenter.cs" />
     <Compile Include="Serializers\BinaryFormatterAdapter.cs" />
+    <Compile Include="Serializers\DataContractSerializerAdapter.cs" />
+    <Compile Include="Serializers\NewtonBsonAdapter.cs" />
     <Compile Include="Serializers\ObjectSerializerAdapter.cs" />
     <Compile Include="Serializers\ISerializerAdapter.cs" />
     <Compile Include="Serializers\ProtoBufAdapter.cs" />
@@ -72,6 +78,7 @@
     <Compile Include="TestObjects\Derived2.cs" />
     <Compile Include="TestObjects\IInterface.cs" />
     <Compile Include="TestObjects\Impl.cs" />
+    <Compile Include="TestObjects\POCO.cs" />
     <Compile Include="TestObjects\PolymorphicHolder.cs" />
     <Compile Include="TestObjects\RegisteredSimpleClass.cs" />
     <Compile Include="TestObjects\SealedClass.cs" />

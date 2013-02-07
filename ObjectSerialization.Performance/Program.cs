@@ -16,7 +16,9 @@ namespace ObjectSerialization.Performance
             var monitor = new PerformanceMonitor(
                 new ObjectSerializerAdapter(),
                 new BinaryFormatterAdapter(),
-                new ProtoBufAdapter());
+                new ProtoBufAdapter(),
+                new NewtonBsonAdapter(),
+                new DataContractSerializerAdapter());
 
             PerformMeasurement(monitor);
 
@@ -77,6 +79,8 @@ namespace ObjectSerialization.Performance
                 ObjectHolder = new SimpleClass { Double = 32 },
                 BaseType = new Derived { Value = 65.5, Other = 'c' }
             }));
+
+            monitor.MeasureFor(Case.For("Instance of POCO", new POCO { Text = "text", TimeSpan = TimeSpan.FromHours(66), Value = 99999 }));
 
             monitor.MeasureFor(Case.For("Array byte[]", new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 }));
             monitor.MeasureFor(Case.For("Array long[]", new long[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 }));
