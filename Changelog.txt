@@ -7,6 +7,7 @@ Version 1.0.23
 + updated Measurement class to omit 1% of lovest and highest values
 + renamed test cases for performance monitor
 + added text result presenter for performance results
++ extended performance tests
 
 Version 1.0.22
 -------------------------------------------

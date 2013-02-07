@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
@@ -20,7 +22,21 @@ namespace ObjectSerialization.Performance.TestObjects
         public int? NullableInt { get; set; }
 
         [ProtoMember(4)]
-        public object ObjectHolder { get; set; }
+        public PolymorphicHolder PolymorphicHolder { get; set; }
+
+        [ProtoMember(6)]
+        public double[] Array { get; set; }
+
+        [ProtoMember(7)]
+        public List<Guid> GuidCollection { get; set; }
+
+        protected bool Equals(ComplexType other)
+        {
+            return Equals(BaseType, other.BaseType) && Date.Equals(other.Date) &&
+                   Equals(InterfaceHolder, other.InterfaceHolder) && NullableInt == other.NullableInt &&
+                   Equals(PolymorphicHolder, other.PolymorphicHolder) && Array.SequenceEqual(other.Array) &&
+                   GuidCollection.SequenceEqual(other.GuidCollection);
+        }
 
         public override bool Equals(object obj)
         {
@@ -34,20 +50,15 @@ namespace ObjectSerialization.Performance.TestObjects
         {
             unchecked
             {
-                int hashCode = Date.GetHashCode();
-                hashCode = (hashCode * 397) ^ NullableInt.GetHashCode();
+                var hashCode = (BaseType != null ? BaseType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Date.GetHashCode();
                 hashCode = (hashCode * 397) ^ (InterfaceHolder != null ? InterfaceHolder.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ObjectHolder != null ? ObjectHolder.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (BaseType != null ? BaseType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ NullableInt.GetHashCode();
+                hashCode = (hashCode * 397) ^ (PolymorphicHolder != null ? PolymorphicHolder.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Array != null ? Array.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (GuidCollection != null ? GuidCollection.GetHashCode() : 0);
                 return hashCode;
             }
-        }
-
-        protected bool Equals(ComplexType other)
-        {
-            return Date.Equals(other.Date) && NullableInt == other.NullableInt &&
-                   Equals(InterfaceHolder, other.InterfaceHolder) && Equals(ObjectHolder, other.ObjectHolder) &&
-                   Equals(BaseType, other.BaseType);
         }
     }
 }

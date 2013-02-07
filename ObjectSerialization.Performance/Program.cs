@@ -63,6 +63,17 @@ namespace ObjectSerialization.Performance
                 Date = DateTime.Now,
                 NullableInt = 35,
                 InterfaceHolder = new Impl { Text = "test" },
+                BaseType = new Derived { Value = 65.5, Other = 'c' },
+                PolymorphicHolder = new PolymorphicHolder { A = new Derived { Other = '3', Value = 3.3 }, B = new Derived2 { Other = 33, Value = 33.3 } },
+                Array = new[] { 1.0, 2.1, 3.2, 4.3, 5.4, 6.5, 7.6, 8.7, 9.8, 0.9 },
+                GuidCollection = new List<Guid> { Guid.NewGuid(), Guid.Empty }
+            }));
+
+            monitor.MeasureFor(Case.For("Instance of ComplexTypeWithObject", new ComplexTypeWithObject
+            {
+                Date = DateTime.Now,
+                NullableInt = 35,
+                InterfaceHolder = new Impl { Text = "test" },
                 ObjectHolder = new SimpleClass { Double = 32 },
                 BaseType = new Derived { Value = 65.5, Other = 'c' }
             }));
