@@ -1,6 +1,11 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.22
+-------------------------------------------
++ modified TypeMembersSerializerBuilder to throw SerializationException when exception occurs during serializer construction
++ renamed unit tests 
+
 Version 1.0.21
 -------------------------------------------
 + optimized sealed class serialization

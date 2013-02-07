@@ -30,30 +30,74 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void ArrayAssignedToObjectMemberSerializationTest()
+        public void ShouldDisallowReadonlyFieldSerializationInClass()
         {
-            var expected = new ObjectHolder { Value = new[] { 1, 2, 3, 4, 5 } };
-            byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
-            Assert.That(actual.Value, Is.EqualTo(expected.Value));
+            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyClass(66)));
+            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field ReadOnlyInt in type ObjectSerialization.UT.Helpers.ReadOnlyClass. Please mark it with NonSerialized attribute or remove readonly modifier."));
         }
 
         [Test]
-        public void ArrayMemberSerializationTest()
+        public void ShouldDisallowReadonlyFieldSerializationInStruct()
         {
-            var expected = new ArrayHolder
-            {
-                ByteArray = new byte[] { 1, 2, 3 },
-                SimpleTypeArray = new[] { new SimpleType { TextA = "11", TextB = "12" }, new SimpleType2 { TextA = "21" } },
-                ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test" }
-            };
-            byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<ArrayHolder>(serialized);
-            AssertProperties(expected, actual);
+            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyStruct(32, 66)));
+            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field _readOnlyInt in type ObjectSerialization.UT.Helpers.ReadOnlyStruct. Please mark it with NonSerialized attribute or remove readonly modifier."));
         }
 
         [Test]
-        public void ArraySerializationTest()
+        public void ShouldOmitDerivedPropertyWithNonSerializedBackend()
+        {
+            var expected = new DerivedClassWithTransientMembers { Text = "text", TransientProperty = "transient", Other = "test" };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<DerivedClassWithTransientMembers>(serialized);
+            Assert.That(actual.Text, Is.EqualTo(expected.Text));
+            Assert.That(actual.Other, Is.EqualTo(expected.Other));
+            Assert.That(actual.TransientProperty, Is.Null);
+        }
+
+        [Test]
+        public void ShouldOmitNonSerializedFieldsInClass()
+        {
+            var expected = new ClassWithTransientMembers(33) { ReadWriteInt = 55 };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ClassWithTransientMembers>(serialized);
+            Assert.That(actual.ReadWriteInt, Is.EqualTo(expected.ReadWriteInt));
+            Assert.That(actual.ReadOnlyInt, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ShouldOmitNonSerializedFieldsInStruct()
+        {
+            var expected = new StructWithTransientMembers(33) { ReadWriteInt = 55 };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<StructWithTransientMembers>(serialized);
+            Assert.That(actual.ReadWriteInt, Is.EqualTo(expected.ReadWriteInt));
+            Assert.That(actual.ReadOnlyInt, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ShouldOmitPropertyWithNonSerializedBackend()
+        {
+            var expected = new BaseClassWithTransientMembers { Text = "text", TransientProperty = "transient" };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<BaseClassWithTransientMembers>(serialized);
+            Assert.That(actual.Text, Is.EqualTo(expected.Text));
+            Assert.That(actual.TransientProperty, Is.Null);
+        }
+
+        [Test]
+        public void ShouldOmitPropertyWithNonSerializedBackendInBaseClass()
+        {
+            var expected = new DerivedClassWithOverriddenTransientMembers { Text = "text", TransientProperty = "transient", Other = "test", BaseTransientProperty = "transient2" };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<DerivedClassWithOverriddenTransientMembers>(serialized);
+            Assert.That(actual.Text, Is.EqualTo(expected.Text));
+            Assert.That(actual.Other, Is.EqualTo(expected.Other));
+            Assert.That(actual.TransientProperty, Is.EqualTo(expected.TransientProperty));
+            Assert.That(actual.BaseTransientProperty, Is.Null);
+        }
+
+        [Test]
+        public void ShouldSerializeArray()
         {
             var expected = new byte[] { 1, 2, 3, 4, 5 };
             byte[] serialized = _serializer.Serialize(expected);
@@ -61,7 +105,21 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void BasicTypeMemberSerializationTest()
+        public void ShouldSerializeArrayMember()
+        {
+            var expected = new ArrayHolder
+                {
+                    ByteArray = new byte[] { 1, 2, 3 },
+                    SimpleTypeArray = new[] { new SimpleType { TextA = "11", TextB = "12" }, new SimpleType2 { TextA = "21" } },
+                    ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test" }
+                };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ArrayHolder>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void ShouldSerializeBasicTypeMembers()
         {
             var expected = new BasicTypes
             {
@@ -87,17 +145,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void CollectionAssignedToObjectMemberSerializationTest()
-        {
-            var dictionary = new Dictionary<string, int> { { "a", 1 }, { "b", 2 }, { "c", 3 } };
-            var expected = new ObjectHolder { Value = dictionary };
-            byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
-            Assert.That(actual.Value, Is.EqualTo(expected.Value));
-        }
-
-        [Test]
-        public void CollectionSerializationTest()
+        public void ShouldSerializeCollection()
         {
             var expected = new List<SimpleType> { new SimpleType { TextA = "a" }, new SimpleType2 { TextB = "b" } };
             byte[] serialized = _serializer.Serialize(expected);
@@ -105,29 +153,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void DisallowReadonlyFieldSerializationInClassTest()
-        {
-            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyClass(66)));
-            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field ReadOnlyInt in type ObjectSerialization.UT.Helpers.ReadOnlyClass. Please mark it with NonSerialized attribute or remove readonly modifier."));
-        }
-
-        [Test]
-        public void DisallowReadonlyFieldSerializationInStructTest()
-        {
-            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyStruct(32, 66)));
-            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field _readOnlyInt in type ObjectSerialization.UT.Helpers.ReadOnlyStruct. Please mark it with NonSerialized attribute or remove readonly modifier."));
-        }
-
-        [Test]
-        public void EmptyClassMemberSerializationTest()
-        {
-            var expected = new ObjectHolder { Value = new EmptyClass() };
-            byte[] serialized = _serializer.Serialize(expected);
-            AssertProperties(expected, _serializer.Deserialize<object>(serialized));
-        }
-
-        [Test]
-        public void EmptyClassSerializationTest()
+        public void ShouldSerializeEmptyClass()
         {
             var expected = new EmptyClass();
             byte[] serialized = _serializer.Serialize(expected);
@@ -135,15 +161,15 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void EmptyStructMemberSerializationTest()
+        public void ShouldSerializeEmptyClassMember()
         {
-            var expected = new ObjectHolder { Value = new EmptyStruct() };
+            var expected = new ObjectHolder { Value = new EmptyClass() };
             byte[] serialized = _serializer.Serialize(expected);
             AssertProperties(expected, _serializer.Deserialize<object>(serialized));
         }
 
         [Test]
-        public void EmptyStructSerializationTest()
+        public void ShouldSerializeEmptyStruct()
         {
             var expected = new EmptyStruct();
             byte[] serialized = _serializer.Serialize(expected);
@@ -151,7 +177,15 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void IntSerializationTest()
+        public void ShouldSerializeEmptyStructMember()
+        {
+            var expected = new ObjectHolder { Value = new EmptyStruct() };
+            byte[] serialized = _serializer.Serialize(expected);
+            AssertProperties(expected, _serializer.Deserialize<object>(serialized));
+        }
+
+        [Test]
+        public void ShouldSerializeInt()
         {
             const int expected = 5;
             byte[] serialized = _serializer.Serialize(expected);
@@ -159,7 +193,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void NestedPolymorphicTypeSerializationTest()
+        public void ShouldSerializeNestedPolymorphicType()
         {
             var expected = new NestedType
             {
@@ -172,20 +206,20 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void NestedTypeSerializationTest()
+        public void ShouldSerializeNestedType()
         {
             var expected = new NestedType
-                {
-                    Int = 32,
-                    Simple = new SimpleType { TextA = "test", TextB = "test2" }
-                };
+            {
+                Int = 32,
+                Simple = new SimpleType { TextA = "test", TextB = "test2" }
+            };
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<NestedType>(serialized);
             AssertProperties(expected, actual);
         }
 
         [Test]
-        public void NestedTypeSerializationTestWhereNestedElementIsNull()
+        public void ShouldSerializeNestedTypeWhereNestedElementIsNull()
         {
             var expected = new NestedType
             {
@@ -198,7 +232,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void NullArrayMemberSerializationTest()
+        public void ShouldSerializeNullArrayMember()
         {
             var expected = new ArrayHolder
                 {
@@ -211,14 +245,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void NullSerializationTest()
-        {
-            byte[] serialized = _serializer.Serialize(null);
-            Assert.That(_serializer.Deserialize<object>(serialized), Is.Null);
-        }
-
-        [Test]
-        public void NullStringMemberSerializationTest()
+        public void ShouldSerializeNullStringMember()
         {
             var expected = new SimpleType { TextA = "test", TextB = null };
             byte[] serialized = _serializer.Serialize(expected);
@@ -227,60 +254,42 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void OmitDerivedPropertyWithNonSerializedBackendTest()
+        public void ShouldSerializeNullValue()
         {
-            var expected = new DerivedClassWithTransientMembers { Text = "text", TransientProperty = "transient", Other = "test" };
-            byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<DerivedClassWithTransientMembers>(serialized);
-            Assert.That(actual.Text, Is.EqualTo(expected.Text));
-            Assert.That(actual.Other, Is.EqualTo(expected.Other));
-            Assert.That(actual.TransientProperty, Is.Null);
+            byte[] serialized = _serializer.Serialize(null);
+            Assert.That(_serializer.Deserialize<object>(serialized), Is.Null);
         }
 
         [Test]
-        public void OmitNonSerializedFieldsInClassTest()
+        public void ShouldSerializeObjectMemberWithAssignedArray()
         {
-            var expected = new ClassWithTransientMembers(33) { ReadWriteInt = 55 };
+            var expected = new ObjectHolder { Value = new[] { 1, 2, 3, 4, 5 } };
             byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<ClassWithTransientMembers>(serialized);
-            Assert.That(actual.ReadWriteInt, Is.EqualTo(expected.ReadWriteInt));
-            Assert.That(actual.ReadOnlyInt, Is.EqualTo(0));
+            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
+            Assert.That(actual.Value, Is.EqualTo(expected.Value));
         }
 
         [Test]
-        public void OmitNonSerializedFieldsInStructTest()
+        public void ShouldSerializeObjectMemberWithAssignedCollection()
         {
-            var expected = new StructWithTransientMembers(33) { ReadWriteInt = 55 };
+            var dictionary = new Dictionary<string, int> { { "a", 1 }, { "b", 2 }, { "c", 3 } };
+            var expected = new ObjectHolder { Value = dictionary };
             byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<StructWithTransientMembers>(serialized);
-            Assert.That(actual.ReadWriteInt, Is.EqualTo(expected.ReadWriteInt));
-            Assert.That(actual.ReadOnlyInt, Is.EqualTo(0));
+            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
+            Assert.That(actual.Value, Is.EqualTo(expected.Value));
         }
 
         [Test]
-        public void OmitPropertyWithNonSerializedBackendInBaseClassTest()
+        public void ShouldSerializeObjectMemberWithAssignedValueType()
         {
-            var expected = new DerivedClassWithOverriddenTransientMembers { Text = "text", TransientProperty = "transient", Other = "test", BaseTransientProperty = "transient2" };
+            var expected = new ObjectHolder { Value = 5 };
             byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<DerivedClassWithOverriddenTransientMembers>(serialized);
-            Assert.That(actual.Text, Is.EqualTo(expected.Text));
-            Assert.That(actual.Other, Is.EqualTo(expected.Other));
-            Assert.That(actual.TransientProperty, Is.EqualTo(expected.TransientProperty));
-            Assert.That(actual.BaseTransientProperty, Is.Null);
+            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
+            Assert.That(actual.Value, Is.EqualTo(expected.Value));
         }
 
         [Test]
-        public void OmitPropertyWithNonSerializedBackendTest()
-        {
-            var expected = new BaseClassWithTransientMembers { Text = "text", TransientProperty = "transient" };
-            byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<BaseClassWithTransientMembers>(serialized);
-            Assert.That(actual.Text, Is.EqualTo(expected.Text));
-            Assert.That(actual.TransientProperty, Is.Null);
-        }
-
-        [Test]
-        public void PolyMemberTypeSerializationTest()
+        public void ShouldSerializePolymorphicMemberTypes()
         {
             var expected = new PolyHolder
                 {
@@ -294,7 +303,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void PolymorphicTypesSerializationTest()
+        public void ShouldSerializePolymorphicTypes()
         {
             var expected = new OtherType
             {
@@ -308,7 +317,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void PolymorphicTypesSerializationTestWithNullValues()
+        public void ShouldSerializePolymorphicTypesWithNullValues()
         {
             var expected = new OtherType
             {
@@ -322,7 +331,7 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void SealedMemberTypeSerializationTest()
+        public void ShouldSerializeSealedMemberType()
         {
             var expected = new SealedHolder { Value = new SealedSimpleType { TextA = "a", TextB = "b" } };
             byte[] serialized = _serializer.Serialize(expected);
@@ -331,7 +340,15 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void StringMemberSerializationTest()
+        public void ShouldSerializeString()
+        {
+            const string expected = "sss";
+            byte[] serialized = _serializer.Serialize(expected);
+            Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void ShouldSerializeStringMember()
         {
             var expected = new SimpleType { TextA = "test", TextB = "other" };
             byte[] serialized = _serializer.Serialize(expected);
@@ -340,15 +357,15 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void StringSerializationTest()
+        public void ShouldSerializeStruct()
         {
-            const string expected = "sss";
+            object expected = new DateTime(2000, 10, 10);
             byte[] serialized = _serializer.Serialize(expected);
             Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
         }
 
         [Test]
-        public void StructMemberSerializationTest()
+        public void ShouldSerializeStructMember()
         {
             object expected = new StructHolder { Date = new DateTime(2005, 05, 07), Int = 5, Int2 = null, Complex = new ComplexStruct { Text = "test", Span = new TimeSpan(1, 2, 3) } };
             byte[] serialized = _serializer.Serialize(expected);
@@ -357,20 +374,17 @@ namespace ObjectSerialization.UT
         }
 
         [Test]
-        public void StructSerializationTest()
+        public void ShouldThrowExceptionIfArrayMemberTypeDoesNotHaveParameterlessConstructor()
         {
-            object expected = new DateTime(2000, 10, 10);
-            byte[] serialized = _serializer.Serialize(expected);
-            Assert.That(_serializer.Deserialize<object>(serialized), Is.EqualTo(expected));
+            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new object[] { new ClassWithoutEmptyCtor(33) }));
+            Assert.That(ex.Message, Is.EqualTo("Type 'ObjectSerialization.UT.Helpers.ClassWithoutEmptyCtor' does not have a default constructor"));
         }
 
         [Test]
-        public void ValueTypeAssignedToObjectMemberSerializationTest()
+        public void ShouldThrowExceptionIfClassDoesNotHaveParameterlessConstructor()
         {
-            var expected = new ObjectHolder { Value = 5 };
-            byte[] serialized = _serializer.Serialize(expected);
-            var actual = _serializer.Deserialize<ObjectHolder>(serialized);
-            Assert.That(actual.Value, Is.EqualTo(expected.Value));
+            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ClassWithoutEmptyCtor(33)));
+            Assert.That(ex.Message, Is.EqualTo("Type 'ObjectSerialization.UT.Helpers.ClassWithoutEmptyCtor' does not have a default constructor"));
         }
     }
 }

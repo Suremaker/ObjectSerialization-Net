@@ -1,1 +1,1 @@
-add meaningful exceptions for cases when it is not possible to generate serialization code
+use FormatterServices.GetUninitializedObject for classes without parameterless ctor

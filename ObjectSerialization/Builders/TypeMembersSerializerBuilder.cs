@@ -45,23 +45,30 @@ namespace ObjectSerialization.Builders
 
         private static void Build()
         {
-            var ctx = new BuildContext<T>(Expression.Variable(typeof(T), "o"));
+            try
+            {
+                var ctx = new BuildContext<T>(Expression.Variable(typeof(T), "o"));
 
-            IOrderedEnumerable<FieldInfo> fields = GetFields(typeof(T))
-                .Where(ShouldBePersisted)
-                .OrderBy(f => f.Name);
+                IOrderedEnumerable<FieldInfo> fields = GetFields(typeof(T))
+                    .Where(ShouldBePersisted)
+                    .OrderBy(f => f.Name);
 
-            foreach (FieldInfo field in fields)
-                BuildFieldSerializer(field, ctx);
+                foreach (FieldInfo field in fields)
+                    BuildFieldSerializer(field, ctx);
 
-            _serializeFn = ctx.GetSerializeFn();
-            _deserializeFn = ctx.GetDeserializeFn();
+                _serializeFn = ctx.GetSerializeFn();
+                _deserializeFn = ctx.GetDeserializeFn();
+            }
+            catch (Exception e)
+            {
+                throw new SerializationException(e.Message, e);
+            }
         }
 
         private static void BuildFieldSerializer(FieldInfo field, BuildContext<T> ctx)
         {
             if (field.IsInitOnly)
-                throw new SerializationException(string.Format("Unable to serialize readonly field {0} in type {1}. Please mark it with NonSerialized attribute or remove readonly modifier.", field.Name, typeof(T).FullName));
+                throw new InvalidOperationException(string.Format("Unable to serialize readonly field {0} in type {1}. Please mark it with NonSerialized attribute or remove readonly modifier.", field.Name, typeof(T).FullName));
 
             ISerializer serializer = Serializers.First(s => s.IsSupported(field.FieldType));
             ctx.AddWriteExpression(serializer.Write(ctx.WriterObject, GetFieldValue(ctx.WriteObject, field), field.FieldType));
@@ -76,7 +83,7 @@ namespace ObjectSerialization.Builders
         private static PropertyInfo GetPropertyForBackingField(FieldInfo field)
         {
             string propertyName = field.Name.Substring(1, field.Name.IndexOf('>') - 1);
-            PropertyInfo propertyForBackingField = field.DeclaringType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);            
+            PropertyInfo propertyForBackingField = field.DeclaringType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             return propertyForBackingField;
         }
 
