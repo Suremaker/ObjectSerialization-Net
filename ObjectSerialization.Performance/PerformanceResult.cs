@@ -10,10 +10,10 @@
         public long Size { get; set; }
         public string TestCase { get; private set; }
 
-        public PerformanceResult(string testCase, string serializerName)
+        public PerformanceResult(string testCase, string serializerName, int measurementCount)
         {
-            SerializeTime = new Measurement();
-            DeserializeTime = new Measurement();
+            SerializeTime = new Measurement(measurementCount);
+            DeserializeTime = new Measurement(measurementCount);
             TestCase = testCase;
             SerializerName = serializerName;
         }
@@ -21,10 +21,10 @@
         public override string ToString()
         {
             if (!string.IsNullOrWhiteSpace(Failure))
-                return string.Format("{0}[{1}]: {2}\n\n", SerializerName, TestCase, Failure);
+                return string.Format("{0} ({1}): {2}\n\n", TestCase, SerializerName, Failure);
 
-            return string.Format("{0}[{1}]:\n Serialized Data Size: {2},\n Serialization Time: {3},\n Deserialization Time: {4}\n\n",
-                SerializerName, TestCase, Size, SerializeTime, DeserializeTime);
+            return string.Format("{0} ({1}):\n Serialized Data Size: {2},\n Serialization Time: {3},\n Deserialization Time: {4}\n\n",
+                TestCase, SerializerName, Size, SerializeTime, DeserializeTime);
         }
     }
 }

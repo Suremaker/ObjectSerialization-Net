@@ -4,6 +4,9 @@ ObjectSerialization
 Version 1.0.23
 -------------------------------------------
 + added support for serialization of classes without parameterless constructor
++ updated Measurement class to omit 1% of lovest and highest values
++ renamed test cases for performance monitor
++ added text result presenter for performance results
 
 Version 1.0.22
 -------------------------------------------

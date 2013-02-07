@@ -8,10 +8,11 @@ namespace ObjectSerialization.Performance.TestCases
 {
     abstract class TestCase
     {
+        private const int _measurementCount = 10000;
         public abstract string Name { get; }
         public PerformanceResult Measure(ISerializerAdapter serializer)
         {
-            var result = new PerformanceResult(Name, serializer.Name);
+            var result = new PerformanceResult(Name, serializer.Name,_measurementCount);
             try
             {
                 Measure(serializer, result);
@@ -33,8 +34,8 @@ namespace ObjectSerialization.Performance.TestCases
             ValidateSerializer(serializer, result);
 
             var watch = new Stopwatch();
-
-            for (int i = 0; i < 10000; ++i)
+            
+            for (int i = 0; i < _measurementCount; ++i)
             {
                 watch.Start();
                 byte[] data = Serialize(serializer);

@@ -34,8 +34,6 @@ namespace ObjectSerialization.Performance.Results
             WriteCase(sb, testCase, "Total time", results, c => FormatTimeSpan(c.SerializeTime.Total + c.DeserializeTime.Total));
         }
 
-
-
         private void WriteCase(StringBuilder sb, string testCase, string category, IEnumerable<PerformanceResult> results, Func<PerformanceResult, string> valueGetter)
         {
             WriteCell(sb, testCase);

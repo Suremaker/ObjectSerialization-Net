@@ -54,6 +54,7 @@
     <Compile Include="Results\CsvResultPresenter.cs" />
     <Compile Include="Results\HtmlResultPresenter.cs" />
     <Compile Include="Results\ResultPresenter.cs" />
+    <Compile Include="Results\TextResultPresenter.cs" />
     <Compile Include="Serializers\BinaryFormatterAdapter.cs" />
     <Compile Include="Serializers\ObjectSerializerAdapter.cs" />
     <Compile Include="Serializers\ISerializerAdapter.cs" />
