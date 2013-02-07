@@ -33,7 +33,7 @@ namespace ObjectSerialization.Performance.TestObjects
             }
         }
 
-        protected bool Equals(SealedClass other)
+        private bool Equals(SealedClass other)
         {
             return Number == other.Number && string.Equals(Text, other.Text) && Double.Equals(other.Double);
         }

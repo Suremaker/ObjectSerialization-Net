@@ -21,7 +21,7 @@
             }
         }
 
-        protected bool Equals(SealedSimpleType other)
+        private bool Equals(SealedSimpleType other)
         {
             return string.Equals(TextA, other.TextA) && string.Equals(TextB, other.TextB);
         }

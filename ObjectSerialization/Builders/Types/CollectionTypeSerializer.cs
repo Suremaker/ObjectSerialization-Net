@@ -98,7 +98,7 @@ namespace ObjectSerialization.Builders.Types
 
             BlockExpression forLoop = Expression.Block(
                 new[] { index, result, deserializer },
-                Expression.Assign(result, Expression.New(expectedValueType)),
+                Expression.Assign(result, InstantiateNew(expectedValueType)),
                 Expression.Assign(index, Expression.Constant(0, typeof(int))),
                 Expression.Assign(deserializer, GetDeserializer<TypeSerializerFactory>(Expression.Constant(GetCollectionItemType(expectedValueType)))),
                 Expression.Loop(

@@ -119,6 +119,7 @@ namespace ObjectSerialization.Performance
 
             monitor.MeasureFor(Case.For(new SimpleHolder { Value = new SimpleClass { Double = 3.65, Number = 99999, Text = "abcdef" } }));
             monitor.MeasureFor(Case.For(new SealedHolder { Value = new SealedClass { Double = 3.65, Number = 99999, Text = "abcdef" } }));
+            monitor.MeasureFor(Case.For(new ClassWithoutParameterlessCtor(32)));
         }
 
         private static void WriteResult(string date, ResultPresenter presenter)

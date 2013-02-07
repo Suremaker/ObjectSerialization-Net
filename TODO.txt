@@ -1,1 +1,1 @@
-use FormatterServices.GetUninitializedObject for classes without parameterless ctor
+add stream dedicated serializer that would be associated to given stream for better resource management

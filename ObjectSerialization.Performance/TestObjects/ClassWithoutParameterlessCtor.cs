@@ -1,15 +1,21 @@
-﻿namespace ObjectSerialization.UT.Helpers
+﻿using System;
+using ProtoBuf;
+
+namespace ObjectSerialization.Performance.TestObjects
 {
-    public class ClassWithoutEmptyCtor
+    [Serializable]
+    [ProtoContract]
+    internal class ClassWithoutParameterlessCtor
     {
+        [ProtoMember(1)]
         public int Value { get; set; }
 
-        public ClassWithoutEmptyCtor(int value)
+        public ClassWithoutParameterlessCtor(int value)
         {
             Value = value;
         }
 
-        protected bool Equals(ClassWithoutEmptyCtor other)
+        protected bool Equals(ClassWithoutParameterlessCtor other)
         {
             return Value == other.Value;
         }
@@ -19,7 +25,7 @@
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((ClassWithoutEmptyCtor)obj);
+            return Equals((ClassWithoutParameterlessCtor)obj);
         }
 
         public override int GetHashCode()

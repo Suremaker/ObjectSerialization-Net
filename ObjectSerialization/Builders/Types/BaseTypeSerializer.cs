@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 
 namespace ObjectSerialization.Builders.Types
 {
@@ -70,6 +71,13 @@ namespace ObjectSerialization.Builders.Types
         protected Expression GetDirectSerializer(Type builderType, Type valueType)
         {
             return Expression.Property(null, builderType.MakeGenericType(valueType), "SerializeFn");
+        }
+
+        public static Expression InstantiateNew(Type type)
+        {
+            if (type.IsClass && type.GetConstructor(new Type[0]) == null)
+                return Expression.TypeAs(Expression.Call(typeof(FormatterServices), "GetUninitializedObject", null, Expression.Constant(type)), type);
+            return Expression.New(type);
         }
     }
 }

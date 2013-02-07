@@ -376,15 +376,19 @@ namespace ObjectSerialization.UT
         [Test]
         public void ShouldThrowExceptionIfArrayMemberTypeDoesNotHaveParameterlessConstructor()
         {
-            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new object[] { new ClassWithoutEmptyCtor(33) }));
-            Assert.That(ex.Message, Is.EqualTo("Type 'ObjectSerialization.UT.Helpers.ClassWithoutEmptyCtor' does not have a default constructor"));
+            var expected = new object[] { new ClassWithoutEmptyCtor(33) };
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<object>(serialized);
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         [Test]
         public void ShouldThrowExceptionIfClassDoesNotHaveParameterlessConstructor()
         {
-            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ClassWithoutEmptyCtor(33)));
-            Assert.That(ex.Message, Is.EqualTo("Type 'ObjectSerialization.UT.Helpers.ClassWithoutEmptyCtor' does not have a default constructor"));
+            var expected = new ClassWithoutEmptyCtor(33);
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<object>(serialized);
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }

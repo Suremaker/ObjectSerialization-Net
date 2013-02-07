@@ -26,8 +26,6 @@ namespace ObjectSerialization.Performance
                 Store(testCase.Measure(serializer));
         }
 
-        
-
         private void Store(PerformanceResult measure)
         {
             Console.WriteLine(measure);
