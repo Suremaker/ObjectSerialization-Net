@@ -71,6 +71,7 @@
     <Compile Include="TestCases\TestCase.cs" />
     <Compile Include="TestObjects\BaseType.cs" />
     <Compile Include="TestObjects\BasicTypes.cs" />
+    <Compile Include="TestObjects\ClassWithFieldsReferringToTheSameValue.cs" />
     <Compile Include="TestObjects\ClassWithoutParameterlessCtor.cs" />
     <Compile Include="TestObjects\ClassWithReadonlyField.cs" />
     <Compile Include="TestObjects\ComplexTypeWithObject.cs" />
