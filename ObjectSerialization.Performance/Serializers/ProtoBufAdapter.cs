@@ -7,19 +7,19 @@ namespace ObjectSerialization.Performance.Serializers
     {
         #region ISerializerAdapter Members
 
-        public byte[] Serialize<T>(T value)
+        public byte[] Serialize<T>(T value, out long operationTime)
         {
             using (var stream = new MemoryStream())
             {
-                Serializer.Serialize(stream, value);
+                ExecutionTimer.Measure(() => Serializer.Serialize(stream, value), out operationTime);
                 return stream.ToArray();
             }
         }
 
-        public T Deserialize<T>(byte[] data)
+        public T Deserialize<T>(byte[] data, out long operationTime)
         {
             using (var stream = new MemoryStream(data))
-                return Serializer.Deserialize<T>(stream);
+                return ExecutionTimer.Measure(() => Serializer.Deserialize<T>(stream), out operationTime);
         }
 
         public string Name { get { return "ProtoBuf"; } }

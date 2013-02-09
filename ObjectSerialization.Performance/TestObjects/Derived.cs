@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
     [Serializable]
     [ProtoContract]
+    [DataContract]
     internal class Derived : BaseType
     {
         [ProtoMember(1)]
+        [DataMember]
         public char Other { get; set; }
 
         public override bool Equals(object obj)

@@ -61,6 +61,7 @@
     <Compile Include="Results\TextResultPresenter.cs" />
     <Compile Include="Serializers\BinaryFormatterAdapter.cs" />
     <Compile Include="Serializers\DataContractSerializerAdapter.cs" />
+    <Compile Include="Serializers\ExecutionTimer.cs" />
     <Compile Include="Serializers\NewtonBsonAdapter.cs" />
     <Compile Include="Serializers\ObjectSerializerAdapter.cs" />
     <Compile Include="Serializers\ISerializerAdapter.cs" />

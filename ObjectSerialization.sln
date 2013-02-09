@@ -9,7 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Changelog.txt = Changelog.txt
 		LICENSE.txt = LICENSE.txt
-		TODO.txt = TODO.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialization.Performance", "ObjectSerialization.Performance\ObjectSerialization.Performance.csproj", "{724404A9-0638-4378-A0BC-D76B62FB0E3A}"

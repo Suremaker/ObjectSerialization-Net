@@ -1,1 +1,0 @@
-add stream dedicated serializer that would be associated to given stream for better resource management

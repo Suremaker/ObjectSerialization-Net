@@ -9,9 +9,11 @@ namespace ObjectSerialization.Performance.Results
         public TextResultPresenter(IEnumerable<PerformanceResult> results)
             : base("txt", results) { }
 
-        public override string Present()
+        public override string Present(string title)
         {
             var sb = new StringBuilder();
+            sb.AppendLine(title);
+            sb.AppendLine();
             foreach (var result in TestCases.SelectMany(testCase => GetResultsFor(testCase).ToArray()))
                 sb.AppendLine(result.ToString());
             return sb.ToString();

@@ -24,7 +24,7 @@ namespace ObjectSerialization.Performance.Results
             return string.Format("{0} b", size);
         }
 
-        public abstract string Present();
+        public abstract string Present(string title);
 
         protected string FormatTimeSpan(double value)
         {

@@ -12,7 +12,7 @@ namespace ObjectSerialization.Performance.TestCases
         public abstract string Name { get; }
         public PerformanceResult Measure(ISerializerAdapter serializer)
         {
-            var result = new PerformanceResult(Name, serializer.Name,_measurementCount);
+            var result = new PerformanceResult(Name, serializer.Name, _measurementCount);
             try
             {
                 Measure(serializer, result);
@@ -24,37 +24,31 @@ namespace ObjectSerialization.Performance.TestCases
             return result;
         }
 
-        protected abstract object Deserialize(ISerializerAdapter serializer, byte[] data);
-
+        protected abstract object Deserialize(ISerializerAdapter serializer, byte[] data, out long operationTime);
         protected abstract object GetValue();
-        protected abstract byte[] Serialize(ISerializerAdapter serializer);
+        protected abstract byte[] Serialize(ISerializerAdapter serializer, out long operationTime);
 
         private void Measure(ISerializerAdapter serializer, PerformanceResult result)
         {
             ValidateSerializer(serializer, result);
 
-            var watch = new Stopwatch();
-            
             for (int i = 0; i < _measurementCount; ++i)
             {
-                watch.Start();
-                byte[] data = Serialize(serializer);
-                watch.Stop();
-                result.SerializeTime.Add(watch.ElapsedTicks);
+                long operationTime;
+                byte[] data = Serialize(serializer, out operationTime);
+                result.SerializeTime.Add(operationTime);
 
-                watch.Restart();
-                Deserialize(serializer, data);
-                watch.Stop();
-                result.DeserializeTime.Add(watch.ElapsedTicks);
-
+                Deserialize(serializer, data, out operationTime);
+                result.DeserializeTime.Add(operationTime);
             }
         }
 
         private void ValidateSerializer(ISerializerAdapter serializer, PerformanceResult result)
         {
-            byte[] serializedData = Serialize(serializer);
+            long operationTime;
+            byte[] serializedData = Serialize(serializer, out operationTime);
             result.Size = serializedData.Length;
-            object deserialized = Deserialize(serializer, serializedData);
+            object deserialized = Deserialize(serializer, serializedData, out operationTime);
             var deserializedEnumerable = deserialized as IEnumerable;
 
             if (deserializedEnumerable != null)

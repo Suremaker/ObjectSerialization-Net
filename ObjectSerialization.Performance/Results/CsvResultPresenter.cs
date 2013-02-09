@@ -16,10 +16,10 @@ namespace ObjectSerialization.Performance.Results
             sb.Append(value).Append(';');
         }
 
-        public override string Present()
+        public override string Present(string title)
         {
             var sb = new StringBuilder();
-
+            sb.AppendLine(title);
             WriteHeaders(sb);
             foreach (string testCase in TestCases)
                 WriteCase(sb, testCase, GetResultsFor(testCase).ToArray());

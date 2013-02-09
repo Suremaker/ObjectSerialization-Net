@@ -1,0 +1,649 @@
+Performance results for ver 1.0.23.0 - 2013-02-09 00:14:34
+
+Array byte[] (BinaryFormatter):
+ Serialized Data Size: 38,
+ Serialization Time: Min:3, Max:280, Avg:4.226, Total: 44455,
+ Deserialization Time: Min:2, Max:157, Avg:3.381, Total: 34912
+
+
+Array byte[] (DataContractSerializer):
+ Serialized Data Size: 105,
+ Serialization Time: Min:3, Max:191, Avg:3.494, Total: 37202,
+ Deserialization Time: Min:6, Max:722, Avg:7.499, Total: 78781
+
+
+Array byte[] (NewtonBSON): Error writing Binary value. BSON must start with an Object or Array. Path ''.
+
+
+Array byte[] (ObjectSerializer):
+ Serialized Data Size: 19,
+ Serialization Time: Min:1, Max:236, Avg:1.625, Total: 17081,
+ Deserialization Time: Min:0, Max:22, Avg:1.098, Total: 11280
+
+
+Array byte[] (ProtoBuf):
+ Serialized Data Size: 12,
+ Serialization Time: Min:12, Max:705, Avg:13.233, Total: 135950,
+ Deserialization Time: Min:11, Max:108, Avg:13.052, Total: 132722
+
+
+Array double[] (BinaryFormatter):
+ Serialized Data Size: 108,
+ Serialization Time: Min:4, Max:215, Avg:5.249, Total: 55602,
+ Deserialization Time: Min:3, Max:155, Avg:4.437, Total: 46652
+
+
+Array double[] (DataContractSerializer):
+ Serialized Data Size: 329,
+ Serialization Time: Min:11, Max:413, Avg:12.224, Total: 124630,
+ Deserialization Time: Min:17, Max:408, Avg:19.295, Total: 197923
+
+
+Array double[] (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Double[]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Array double[] (ObjectSerializer):
+ Serialized Data Size: 89,
+ Serialization Time: Min:2, Max:216, Avg:2.566, Total: 26462,
+ Deserialization Time: Min:1, Max:225, Avg:1.805, Total: 18830
+
+
+Array double[] (ProtoBuf):
+ Serialized Data Size: 90,
+ Serialization Time: Min:29, Max:300, Avg:31.339, Total: 316560,
+ Deserialization Time: Min:33, Max:361, Avg:35.655, Total: 360702
+
+
+Array long[] (BinaryFormatter):
+ Serialized Data Size: 108,
+ Serialization Time: Min:4, Max:329, Avg:5.382, Total: 57703,
+ Deserialization Time: Min:3, Max:226, Avg:4.632, Total: 49223
+
+
+Array long[] (DataContractSerializer):
+ Serialized Data Size: 285,
+ Serialization Time: Min:6, Max:339, Avg:7.584, Total: 79439,
+ Deserialization Time: Min:17, Max:518, Avg:19.625, Total: 201356
+
+
+Array long[] (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Int64[]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Array long[] (ObjectSerializer):
+ Serialized Data Size: 89,
+ Serialization Time: Min:2, Max:216, Avg:2.521, Total: 26380,
+ Deserialization Time: Min:1, Max:125, Avg:1.652, Total: 17165
+
+
+Array long[] (ProtoBuf):
+ Serialized Data Size: 20,
+ Serialization Time: Min:29, Max:294, Avg:31.216, Total: 315643,
+ Deserialization Time: Min:33, Max:484, Avg:35.962, Total: 364694
+
+
+Array mixed object[] (BinaryFormatter):
+ Serialized Data Size: 322,
+ Serialization Time: Min:18, Max:503, Avg:19.805, Total: 203665,
+ Deserialization Time: Min:18, Max:365, Avg:19.915, Total: 204178
+
+
+Array mixed object[] (DataContractSerializer): Type 'ObjectSerialization.Performance.TestObjects.SimpleClass' with data contract name 'SimpleClass:http://schemas.datacontract.org/2004/07/ObjectSerialization.Performance.TestObjects' is not expected. Consider using a DataContractResolver or add any types not known statically to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding them to the list of known types passed to DataContractSerializer.
+
+
+Array mixed object[] (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Object[]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Array mixed object[] (ObjectSerializer):
+ Serialized Data Size: 137,
+ Serialization Time: Min:4, Max:37, Avg:4.879, Total: 49922,
+ Deserialization Time: Min:2, Max:223, Avg:3.076, Total: 32081
+
+
+Array mixed object[] (ProtoBuf): Object reference not set to an instance of an object.
+
+
+Array of huge objects (BinaryFormatter):
+ Serialized Data Size: 6263,
+ Serialization Time: Min:994, Max:2498, Avg:1036.071, Total: 10401798,
+ Deserialization Time: Min:973, Max:2765, Avg:1020.616, Total: 10257042
+
+
+Array of huge objects (DataContractSerializer):
+ Serialized Data Size: 48990,
+ Serialization Time: Min:483, Max:1827, Avg:509.820, Total: 5126683,
+ Deserialization Time: Min:1688, Max:2518, Avg:1758.681, Total: 17610088
+
+
+Array of huge objects (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Collections.Generic.KeyValuePair`2[ObjectSerialization.Performance.TestObjects.StructureHolder,ObjectSerialization.Performance.TestObjects.BasicTypes][]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Array of huge objects (ObjectSerializer):
+ Serialized Data Size: 3521,
+ Serialization Time: Min:54, Max:5933, Avg:58.730, Total: 601127,
+ Deserialization Time: Min:48, Max:252, Avg:51.830, Total: 524127
+
+
+Array of huge objects (ProtoBuf):
+ Serialized Data Size: 600,
+ Serialization Time: Min:91, Max:1249, Avg:95.803, Total: 993539,
+ Deserialization Time: Min:110, Max:1105, Avg:115.950, Total: 1180142
+
+
+Array SimpleClass[] (BinaryFormatter):
+ Serialized Data Size: 431,
+ Serialization Time: Min:27, Max:299, Avg:30.177, Total: 306592,
+ Deserialization Time: Min:29, Max:1300, Avg:32.637, Total: 332881
+
+
+Array SimpleClass[] (DataContractSerializer):
+ Serialized Data Size: 962,
+ Serialization Time: Min:14, Max:61, Avg:16.277, Total: 164896,
+ Deserialization Time: Min:29, Max:690, Avg:33.301, Total: 345456
+
+
+Array SimpleClass[] (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'ObjectSerialization.Performance.TestObjects.SimpleClass[]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Array SimpleClass[] (ObjectSerializer):
+ Serialized Data Size: 123,
+ Serialization Time: Min:3, Max:372, Avg:3.978, Total: 40786,
+ Deserialization Time: Min:2, Max:124, Avg:3.057, Total: 31281
+
+
+Array SimpleClass[] (ProtoBuf):
+ Serialized Data Size: 69,
+ Serialization Time: Min:25, Max:851, Avg:29.032, Total: 299269,
+ Deserialization Time: Min:33, Max:930, Avg:38.058, Total: 385317
+
+
+Array string[] (BinaryFormatter):
+ Serialized Data Size: 73,
+ Serialization Time: Min:7, Max:309, Avg:8.246, Total: 85191,
+ Deserialization Time: Min:6, Max:296, Avg:7.649, Total: 79263
+
+
+Array string[] (DataContractSerializer):
+ Serialized Data Size: 261,
+ Serialization Time: Min:6, Max:30, Avg:6.582, Total: 67266,
+ Deserialization Time: Min:14, Max:524, Avg:15.745, Total: 164325
+
+
+Array string[] (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.String[]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Array string[] (ObjectSerializer):
+ Serialized Data Size: 31,
+ Serialization Time: Min:2, Max:100, Avg:2.946, Total: 30029,
+ Deserialization Time: Min:1, Max:279, Avg:2.196, Total: 22914
+
+
+Array string[] (ProtoBuf):
+ Serialized Data Size: 22,
+ Serialization Time: Min:27, Max:309, Avg:28.840, Total: 291481,
+ Deserialization Time: Min:34, Max:428, Avg:36.518, Total: 369700
+
+
+Collection Dictionary[int,string] (BinaryFormatter):
+ Serialized Data Size: 1387,
+ Serialization Time: Min:39, Max:107, Avg:44.828, Total: 450056,
+ Deserialization Time: Min:51, Max:624, Avg:58.965, Total: 599394
+
+
+Collection Dictionary[int,string] (DataContractSerializer):
+ Serialized Data Size: 327,
+ Serialization Time: Min:6, Max:31, Avg:6.718, Total: 68703,
+ Deserialization Time: Min:17, Max:610, Avg:19.649, Total: 217756
+
+
+Collection Dictionary[int,string] (NewtonBSON):
+ Serialized Data Size: 33,
+ Serialization Time: Min:4, Max:267, Avg:5.029, Total: 52336,
+ Deserialization Time: Min:4, Max:583, Avg:5.318, Total: 55287
+
+
+Collection Dictionary[int,string] (ObjectSerializer):
+ Serialized Data Size: 255,
+ Serialization Time: Min:3, Max:327, Avg:3.735, Total: 38749,
+ Deserialization Time: Min:3, Max:598, Avg:3.854, Total: 40985
+
+
+Collection Dictionary[int,string] (ProtoBuf):
+ Serialized Data Size: 23,
+ Serialization Time: Min:119, Max:838, Avg:133.442, Total: 1345476,
+ Deserialization Time: Min:141, Max:844, Avg:158.787, Total: 1600579
+
+
+Collection LinkedList[SimpleClass] (BinaryFormatter):
+ Serialized Data Size: 766,
+ Serialization Time: Min:33, Max:473, Avg:39.343, Total: 399454,
+ Deserialization Time: Min:38, Max:481, Avg:44.832, Total: 456026
+
+
+Collection LinkedList[SimpleClass] (DataContractSerializer):
+ Serialized Data Size: 692,
+ Serialization Time: Min:10, Max:273, Avg:11.405, Total: 116751,
+ Deserialization Time: Min:23, Max:715, Avg:25.646, Total: 267974
+
+
+Collection LinkedList[SimpleClass] (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Collections.Generic.LinkedList`1[ObjectSerialization.Performance.TestObjects.SimpleClass]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Collection LinkedList[SimpleClass] (ObjectSerializer):
+ Serialized Data Size: 226,
+ Serialization Time: Min:3, Max:244, Avg:3.843, Total: 39561,
+ Deserialization Time: Min:3, Max:269, Avg:3.727, Total: 38824
+
+
+Collection LinkedList[SimpleClass] (ProtoBuf):
+ Serialized Data Size: 34,
+ Serialization Time: Min:108, Max:764, Avg:121.359, Total: 1223086,
+ Deserialization Time: Min:125, Max:770, Avg:141.340, Total: 1423476
+
+
+Collection List[SimpleClass] (BinaryFormatter):
+ Serialized Data Size: 682,
+ Serialization Time: Min:31, Max:397, Avg:35.463, Total: 361078,
+ Deserialization Time: Min:35, Max:394, Avg:39.417, Total: 402810
+
+
+Collection List[SimpleClass] (DataContractSerializer):
+ Serialized Data Size: 692,
+ Serialization Time: Min:10, Max:792, Avg:13.198, Total: 135234,
+ Deserialization Time: Min:23, Max:396, Avg:28.404, Total: 292058
+
+
+Collection List[SimpleClass] (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Collections.Generic.List`1[ObjectSerialization.Performance.TestObjects.SimpleClass]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Collection List[SimpleClass] (ObjectSerializer):
+ Serialized Data Size: 220,
+ Serialization Time: Min:3, Max:69, Avg:3.576, Total: 36658,
+ Deserialization Time: Min:3, Max:1978, Avg:3.387, Total: 37400
+
+
+Collection List[SimpleClass] (ProtoBuf):
+ Serialized Data Size: 34,
+ Serialization Time: Min:102, Max:964, Avg:113.091, Total: 1142788,
+ Deserialization Time: Min:115, Max:891, Avg:126.720, Total: 1278469
+
+
+Instance of BasicTypes (BinaryFormatter):
+ Serialized Data Size: 592,
+ Serialization Time: Min:27, Max:523, Avg:30.940, Total: 316170,
+ Deserialization Time: Min:26, Max:331, Avg:29.650, Total: 301921
+
+
+Instance of BasicTypes (DataContractSerializer):
+ Serialized Data Size: 1233,
+ Serialization Time: Min:15, Max:408, Avg:17.791, Total: 192865,
+ Deserialization Time: Min:38, Max:729, Avg:43.617, Total: 440896
+
+
+Instance of BasicTypes (NewtonBSON):
+ Serialized Data Size: 191,
+ Serialization Time: Min:18, Max:877, Avg:20.284, Total: 207234,
+ Deserialization Time: Min:16, Max:347, Avg:18.641, Total: 189623
+
+
+Instance of BasicTypes (ObjectSerializer):
+ Serialized Data Size: 128,
+ Serialization Time: Min:2, Max:25, Avg:2.549, Total: 26223,
+ Deserialization Time: Min:1, Max:556, Avg:2.278, Total: 24500
+
+
+Instance of BasicTypes (ProtoBuf):
+ Serialized Data Size: 49,
+ Serialization Time: Min:1, Max:17, Avg:2.067, Total: 20785,
+ Deserialization Time: Min:2, Max:291, Avg:2.847, Total: 29230
+
+
+Instance of class with sealed member type (BinaryFormatter):
+ Serialized Data Size: 437,
+ Serialization Time: Min:15, Max:621, Avg:17.214, Total: 177104,
+ Deserialization Time: Min:17, Max:291, Avg:18.470, Total: 189952
+
+
+Instance of class with sealed member type (DataContractSerializer):
+ Serialized Data Size: 482,
+ Serialization Time: Min:7, Max:50, Avg:8.601, Total: 86988,
+ Deserialization Time: Min:17, Max:522, Avg:18.469, Total: 199226
+
+
+Instance of class with sealed member type (NewtonBSON):
+ Serialized Data Size: 62,
+ Serialization Time: Min:7, Max:226, Avg:7.693, Total: 79487,
+ Deserialization Time: Min:6, Max:340, Avg:7.342, Total: 75065
+
+
+Instance of class with sealed member type (ObjectSerializer):
+ Serialized Data Size: 80,
+ Serialization Time: Min:1, Max:292, Avg:1.621, Total: 16916,
+ Deserialization Time: Min:1, Max:487, Avg:1.502, Total: 16815
+
+
+Instance of class with sealed member type (ProtoBuf):
+ Serialized Data Size: 23,
+ Serialization Time: Min:1, Max:317, Avg:1.635, Total: 16961,
+ Deserialization Time: Min:2, Max:337, Avg:2.411, Total: 24904
+
+
+Instance of class with standard member type (BinaryFormatter):
+ Serialized Data Size: 437,
+ Serialization Time: Min:15, Max:281, Avg:17.152, Total: 176155,
+ Deserialization Time: Min:17, Max:423, Avg:18.511, Total: 190693
+
+
+Instance of class with standard member type (DataContractSerializer):
+ Serialized Data Size: 482,
+ Serialization Time: Min:7, Max:50, Avg:8.639, Total: 87988,
+ Deserialization Time: Min:17, Max:607, Avg:18.757, Total: 198836
+
+
+Instance of class with standard member type (NewtonBSON):
+ Serialized Data Size: 62,
+ Serialization Time: Min:7, Max:300, Avg:7.670, Total: 78963,
+ Deserialization Time: Min:6, Max:334, Avg:7.140, Total: 73685
+
+
+Instance of class with standard member type (ObjectSerializer):
+ Serialized Data Size: 80,
+ Serialization Time: Min:1, Max:179, Avg:1.600, Total: 16563,
+ Deserialization Time: Min:1, Max:190, Avg:1.513, Total: 15961
+
+
+Instance of class with standard member type (ProtoBuf):
+ Serialized Data Size: 23,
+ Serialization Time: Min:1, Max:39, Avg:1.714, Total: 17652,
+ Deserialization Time: Min:2, Max:264, Avg:2.506, Total: 26043
+
+
+Instance of class without parameterless ctor (BinaryFormatter):
+ Serialized Data Size: 226,
+ Serialization Time: Min:7, Max:267, Avg:8.395, Total: 87679,
+ Deserialization Time: Min:7, Max:328, Avg:8.809, Total: 91892
+
+
+Instance of class without parameterless ctor (DataContractSerializer):
+ Serialized Data Size: 282,
+ Serialization Time: Min:4, Max:33, Avg:4.704, Total: 48079,
+ Deserialization Time: Min:11, Max:390, Avg:12.043, Total: 127981
+
+
+Instance of class without parameterless ctor (NewtonBSON):
+ Serialized Data Size: 16,
+ Serialization Time: Min:3, Max:258, Avg:4.341, Total: 44966,
+ Deserialization Time: Min:8, Max:208, Avg:8.922, Total: 91481
+
+
+Instance of class without parameterless ctor (ObjectSerializer):
+ Serialized Data Size: 80,
+ Serialization Time: Min:1, Max:176, Avg:1.362, Total: 14223,
+ Deserialization Time: Min:1, Max:608, Avg:1.452, Total: 16029
+
+
+Instance of class without parameterless ctor (ProtoBuf): No parameterless constructor found for ClassWithoutParameterlessCtor
+
+
+Instance of ComplexType (BinaryFormatter):
+ Serialized Data Size: 1835,
+ Serialization Time: Min:114, Max:695, Avg:127.972, Total: 1306678,
+ Deserialization Time: Min:118, Max:885, Avg:131.357, Total: 1341748
+
+
+Instance of ComplexType (DataContractSerializer): Type 'ObjectSerialization.Performance.TestObjects.Impl' with data contract name 'Impl:http://schemas.datacontract.org/2004/07/ObjectSerialization.Performance.TestObjects' is not expected. Consider using a DataContractResolver or add any types not known statically to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding them to the list of known types passed to DataContractSerializer.
+
+
+Instance of ComplexType (NewtonBSON): Could not create an instance of type ObjectSerialization.Performance.TestObjects.IInterface. Type is an interface or abstract class and cannot be instantiated. Path 'InterfaceHolder.Text'.
+
+
+Instance of ComplexType (ObjectSerializer):
+ Serialized Data Size: 446,
+ Serialization Time: Min:9, Max:1288, Avg:10.099, Total: 105412,
+ Deserialization Time: Min:7, Max:307, Avg:8.507, Total: 87659
+
+
+Instance of ComplexType (ProtoBuf):
+ Serialized Data Size: 184,
+ Serialization Time: Min:5, Max:351, Avg:5.779, Total: 59065,
+ Deserialization Time: Min:8, Max:3886, Avg:9.369, Total: 99317
+
+
+Instance of ComplexTypeWithObject (BinaryFormatter):
+ Serialized Data Size: 871,
+ Serialization Time: Min:37, Max:497, Avg:40.548, Total: 413389,
+ Deserialization Time: Min:36, Max:416, Avg:39.604, Total: 404882
+
+
+Instance of ComplexTypeWithObject (DataContractSerializer): Type 'ObjectSerialization.Performance.TestObjects.Impl' with data contract name 'Impl:http://schemas.datacontract.org/2004/07/ObjectSerialization.Performance.TestObjects' is not expected. Consider using a DataContractResolver or add any types not known statically to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding them to the list of known types passed to DataContractSerializer.
+
+
+Instance of ComplexTypeWithObject (NewtonBSON): Could not create an instance of type ObjectSerialization.Performance.TestObjects.IInterface. Type is an interface or abstract class and cannot be instantiated. Path 'InterfaceHolder.Text'.
+
+
+Instance of ComplexTypeWithObject (ObjectSerializer):
+ Serialized Data Size: 275,
+ Serialization Time: Min:4, Max:345, Avg:5.488, Total: 56484,
+ Deserialization Time: Min:4, Max:1934, Avg:4.843, Total: 51966
+
+
+Instance of ComplexTypeWithObject (ProtoBuf): No serializer defined for type: System.Object
+
+
+Instance of POCO (BinaryFormatter): Type 'ObjectSerialization.Performance.TestObjects.POCO' in Assembly 'ObjectSerialization.Performance, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' is not marked as serializable.
+
+
+Instance of POCO (DataContractSerializer): Type 'ObjectSerialization.Performance.TestObjects.POCO' cannot be serialized. Consider marking it with the DataContractAttribute attribute, and marking all of its members you want serialized with the DataMemberAttribute attribute.  If the type is a collection, consider marking it with the CollectionDataContractAttribute.  See the Microsoft .NET Framework documentation for other supported types.
+
+
+Instance of POCO (NewtonBSON):
+ Serialized Data Size: 56,
+ Serialization Time: Min:7, Max:597, Avg:8.520, Total: 87629,
+ Deserialization Time: Min:8, Max:1269, Avg:9.021, Total: 93568
+
+
+Instance of POCO (ObjectSerializer):
+ Serialized Data Size: 69,
+ Serialization Time: Min:1, Max:85, Avg:1.536, Total: 15868,
+ Deserialization Time: Min:1, Max:1999, Avg:1.367, Total: 16417
+
+
+Instance of POCO (ProtoBuf): Type is not expected, and no contract can be inferred: ObjectSerialization.Performance.TestObjects.POCO
+
+
+Instance of PolymorphicHolder (BinaryFormatter):
+ Serialized Data Size: 618,
+ Serialization Time: Min:22, Max:423, Avg:24.200, Total: 246701,
+ Deserialization Time: Min:22, Max:453, Avg:24.954, Total: 255526
+
+
+Instance of PolymorphicHolder (DataContractSerializer):
+ Serialized Data Size: 420,
+ Serialization Time: Min:13, Max:56, Avg:14.110, Total: 143145,
+ Deserialization Time: Min:28, Max:722, Avg:31.382, Total: 329551
+
+
+Instance of PolymorphicHolder (NewtonBSON): Deserialized object does not equal expected one
+
+
+Instance of PolymorphicHolder (ObjectSerializer):
+ Serialized Data Size: 196,
+ Serialization Time: Min:2, Max:227, Avg:3.113, Total: 32170,
+ Deserialization Time: Min:2, Max:418, Avg:2.756, Total: 29273
+
+
+Instance of PolymorphicHolder (ProtoBuf):
+ Serialized Data Size: 30,
+ Serialization Time: Min:1, Max:267, Avg:1.768, Total: 18554,
+ Deserialization Time: Min:2, Max:28, Avg:3.092, Total: 31484
+
+
+Instance of SimpleClass (BinaryFormatter):
+ Serialized Data Size: 276,
+ Serialization Time: Min:10, Max:57, Avg:12.099, Total: 122967,
+ Deserialization Time: Min:11, Max:57, Avg:12.644, Total: 128424
+
+
+Instance of SimpleClass (DataContractSerializer):
+ Serialized Data Size: 402,
+ Serialization Time: Min:6, Max:51, Avg:7.089, Total: 72521,
+ Deserialization Time: Min:14, Max:2384, Avg:16.160, Total: 171361
+
+
+Instance of SimpleClass (NewtonBSON):
+ Serialized Data Size: 48,
+ Serialization Time: Min:5, Max:345, Avg:5.765, Total: 59854,
+ Deserialization Time: Min:4, Max:369, Avg:5.441, Total: 56063
+
+
+Instance of SimpleClass (ObjectSerializer):
+ Serialized Data Size: 76,
+ Serialization Time: Min:1, Max:1684, Avg:1.612, Total: 19050,
+ Deserialization Time: Min:1, Max:80, Avg:1.437, Total: 15495
+
+
+Instance of SimpleClass (ProtoBuf):
+ Serialized Data Size: 17,
+ Serialization Time: Min:0, Max:23, Avg:0.975, Total: 10007,
+ Deserialization Time: Min:1, Max:166, Avg:1.508, Total: 15883
+
+
+Instance of SimpleClass as object (BinaryFormatter):
+ Serialized Data Size: 276,
+ Serialization Time: Min:10, Max:404, Avg:11.915, Total: 121980,
+ Deserialization Time: Min:11, Max:282, Avg:12.468, Total: 130276
+
+
+Instance of SimpleClass as object (DataContractSerializer): Type 'ObjectSerialization.Performance.TestObjects.SimpleClass' with data contract name 'SimpleClass:http://schemas.datacontract.org/2004/07/ObjectSerialization.Performance.TestObjects' is not expected. Consider using a DataContractResolver or add any types not known statically to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding them to the list of known types passed to DataContractSerializer.
+
+
+Instance of SimpleClass as object (NewtonBSON): Unable to cast object of type 'ObjectSerialization.Performance.TestObjects.SimpleClass' to type 'System.Collections.IEnumerable'.
+
+
+Instance of SimpleClass as object (ObjectSerializer):
+ Serialized Data Size: 76,
+ Serialization Time: Min:1, Max:232, Avg:1.431, Total: 14964,
+ Deserialization Time: Min:1, Max:328, Avg:1.318, Total: 13967
+
+
+Instance of SimpleClass as object (ProtoBuf): Type is not expected, and no contract can be inferred: System.Object
+
+
+Instance of SimpleClass null text (BinaryFormatter):
+ Serialized Data Size: 267,
+ Serialization Time: Min:10, Max:172, Avg:11.316, Total: 116098,
+ Deserialization Time: Min:10, Max:325, Avg:11.269, Total: 115998
+
+
+Instance of SimpleClass null text (DataContractSerializer):
+ Serialized Data Size: 376,
+ Serialization Time: Min:7, Max:130, Avg:8.290, Total: 84821,
+ Deserialization Time: Min:16, Max:425, Avg:17.662, Total: 182347
+
+
+Instance of SimpleClass null text (NewtonBSON):
+ Serialized Data Size: 39,
+ Serialization Time: Min:4, Max:328, Avg:5.372, Total: 55380,
+ Deserialization Time: Min:4, Max:125, Avg:5.074, Total: 51937
+
+
+Instance of SimpleClass null text (ObjectSerializer):
+ Serialized Data Size: 71,
+ Serialization Time: Min:1, Max:211, Avg:1.366, Total: 14420,
+ Deserialization Time: Min:1, Max:87, Avg:1.189, Total: 12387
+
+
+Instance of SimpleClass null text (ProtoBuf):
+ Serialized Data Size: 11,
+ Serialization Time: Min:0, Max:138, Avg:0.779, Total: 8041,
+ Deserialization Time: Min:0, Max:177, Avg:1.091, Total: 11405
+
+
+Instance of StructureHolder (BinaryFormatter):
+ Serialized Data Size: 1086,
+ Serialization Time: Min:43, Max:410, Avg:46.240, Total: 469651,
+ Deserialization Time: Min:48, Max:1075, Avg:51.986, Total: 527968
+
+
+Instance of StructureHolder (DataContractSerializer):
+ Serialized Data Size: 830,
+ Serialization Time: Min:17, Max:411, Avg:18.856, Total: 193798,
+ Deserialization Time: Min:35, Max:2289, Avg:38.961, Total: 403634
+
+
+Instance of StructureHolder (NewtonBSON): Deserialized object does not equal expected one
+
+
+Instance of StructureHolder (ObjectSerializer):
+ Serialized Data Size: 126,
+ Serialization Time: Min:2, Max:167, Avg:2.470, Total: 25609,
+ Deserialization Time: Min:1, Max:130, Avg:2.164, Total: 22285
+
+
+Instance of StructureHolder (ProtoBuf):
+ Serialized Data Size: 63,
+ Serialization Time: Min:2, Max:151, Avg:3.146, Total: 32269,
+ Deserialization Time: Min:3, Max:421, Avg:3.155, Total: 32841
+
+
+Object array (BinaryFormatter):
+ Serialized Data Size: 414,
+ Serialization Time: Min:31, Max:283, Avg:34.159, Total: 345492,
+ Deserialization Time: Min:30, Max:274, Avg:32.805, Total: 332675
+
+
+Object array (DataContractSerializer): Type 'ObjectSerialization.Performance.TestObjects.SimpleClass' with data contract name 'SimpleClass:http://schemas.datacontract.org/2004/07/ObjectSerialization.Performance.TestObjects' is not expected. Consider using a DataContractResolver or add any types not known statically to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding them to the list of known types passed to DataContractSerializer.
+
+
+Object array (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Object[]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Object array (ObjectSerializer):
+ Serialized Data Size: 394,
+ Serialization Time: Min:6, Max:151, Avg:7.343, Total: 75016,
+ Deserialization Time: Min:5, Max:152, Avg:5.874, Total: 60396
+
+
+Object array (ProtoBuf): Type is not expected, and no contract can be inferred: System.Object
+
+
+Object array with registered type (BinaryFormatter):
+ Serialized Data Size: 460,
+ Serialization Time: Min:32, Max:268, Avg:35.155, Total: 356229,
+ Deserialization Time: Min:31, Max:385, Avg:33.650, Total: 342026
+
+
+Object array with registered type (DataContractSerializer): Type 'ObjectSerialization.Performance.TestObjects.RegisteredSimpleClass' with data contract name 'RegisteredSimpleClass:http://schemas.datacontract.org/2004/07/ObjectSerialization.Performance.TestObjects' is not expected. Consider using a DataContractResolver or add any types not known statically to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding them to the list of known types passed to DataContractSerializer.
+
+
+Object array with registered type (NewtonBSON): Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Object[]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path '0'.
+
+
+Object array with registered type (ObjectSerializer):
+ Serialized Data Size: 134,
+ Serialization Time: Min:5, Max:223, Avg:5.787, Total: 59654,
+ Deserialization Time: Min:3, Max:165, Avg:3.667, Total: 37890
+
+
+Object array with registered type (ProtoBuf): Type is not expected, and no contract can be inferred: System.Object
+
+

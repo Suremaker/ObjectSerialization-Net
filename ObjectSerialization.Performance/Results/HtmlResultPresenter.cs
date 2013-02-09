@@ -22,11 +22,12 @@ namespace ObjectSerialization.Performance.Results
             return color;
         }
 
-        public override string Present()
+        public override string Present(string title)
         {
             var sb = new StringBuilder();
 
             sb.Append("<html colspan=\"5\" rowspan=\"5\"><head><title>Results</title></head><body><table>");
+            sb.AppendFormat("<h1>{0}</h1>\n", title);
             WriteHeader(sb);
             WriteCases(sb);
 
@@ -59,20 +60,17 @@ namespace ObjectSerialization.Performance.Results
 
             foreach (PerformanceResult result in results)
             {
+                string color = GetColor(valueGetter, result, min);
+
                 string text = result.Failure == null
                     ? formatter(valueGetter(result))
                     : "error";
-                string color = GetColor(valueGetter, result, min);
                 WriteCell(sb, text, color);
-            }
 
-            foreach (PerformanceResult result in results)
-            {
-                string text = result.Failure == null
+                string textPercent = result.Failure == null
                     ? GetPercent(valueGetter(result), max)
                     : "error";
-                string color = GetColor(valueGetter, result, min);
-                WriteCell(sb, text, color);
+                WriteCell(sb, textPercent, color);
             }
 
             sb.Append("</tr>");
@@ -103,9 +101,11 @@ namespace ObjectSerialization.Performance.Results
             WriteHead(sb, "Case");
             WriteHead(sb, "Category");
             foreach (string name in SerializerNames)
+            {
                 WriteHead(sb, name);
-            foreach (string name in SerializerNames)
                 WriteHead(sb, name + " %");
+            }
+
             sb.Append("</tr>");
         }
     }

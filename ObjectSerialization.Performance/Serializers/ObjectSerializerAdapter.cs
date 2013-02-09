@@ -1,4 +1,6 @@
-﻿namespace ObjectSerialization.Performance.Serializers
+﻿using System.IO;
+
+namespace ObjectSerialization.Performance.Serializers
 {
     internal class ObjectSerializerAdapter : ISerializerAdapter
     {
@@ -6,14 +8,19 @@
 
         #region ISerializerAdapter Members
 
-        public byte[] Serialize<T>(T value)
+        public byte[] Serialize<T>(T value, out long operationTime)
         {
-            return _serializer.Serialize(value);
+            using (var stream = new MemoryStream())
+            {
+                ExecutionTimer.Measure(() => _serializer.Serialize(stream, value), out operationTime);
+                return stream.ToArray();
+            }
         }
 
-        public T Deserialize<T>(byte[] data)
+        public T Deserialize<T>(byte[] data, out long operationTime)
         {
-            return _serializer.Deserialize<T>(data);
+            using (var stream = new MemoryStream(data))
+                return ExecutionTimer.Measure(() => _serializer.Deserialize<T>(stream), out operationTime);
         }
 
         public string Name { get { return "ObjectSerializer"; } }

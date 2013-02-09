@@ -9,21 +9,21 @@ namespace ObjectSerialization.Performance.Serializers
         readonly JsonSerializer _serializer = new JsonSerializer();
         #region ISerializerAdapter Members
 
-        public byte[] Serialize<T>(T value)
+        public byte[] Serialize<T>(T value, out long operationTime)
         {
             using (var stream = new MemoryStream())
             using (var writer = new BsonWriter(stream))
             {
-                _serializer.Serialize(writer, value);
+                ExecutionTimer.Measure(() => _serializer.Serialize(writer, value), out operationTime);
                 return stream.ToArray();
             }
         }
 
-        public T Deserialize<T>(byte[] data)
+        public T Deserialize<T>(byte[] data, out long operationTime)
         {
             using (var stream = new MemoryStream(data))
             using (var reader = new BsonReader(stream))
-                return _serializer.Deserialize<T>(reader);
+                return ExecutionTimer.Measure(() => _serializer.Deserialize<T>(reader), out operationTime);
         }
 
         public string Name { get { return "NewtonBSON"; } }

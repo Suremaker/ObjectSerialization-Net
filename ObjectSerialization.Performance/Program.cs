@@ -22,7 +22,7 @@ namespace ObjectSerialization.Performance
 
             PerformMeasurement(monitor);
 
-            string date = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
+            var date = DateTime.Now;
             WriteResult(date, new CsvResultPresenter(monitor.GetResults()));
             WriteResult(date, new HtmlResultPresenter(monitor.GetResults()));
             WriteResult(date, new TextResultPresenter(monitor.GetResults()));
@@ -136,9 +136,11 @@ namespace ObjectSerialization.Performance
             monitor.MeasureFor(Case.For("Instance of class without parameterless ctor", new ClassWithoutParameterlessCtor(32)));
         }
 
-        private static void WriteResult(string date, ResultPresenter presenter)
+        private static void WriteResult(DateTime date, ResultPresenter presenter)
         {
-            File.WriteAllText(string.Format("results {0}.{1}", date, presenter.Extension), presenter.Present());
+            var version = typeof(ObjectSerializer).Assembly.GetName().Version;
+            var title = string.Format("Performance results for ver {0} - {1}", version, date.ToString("yyyy-MM-dd HH:mm:ss"));
+            File.WriteAllText(string.Format("results_{0}.{1}", date.ToString("yyyy-MM-dd_HH-mm-ss"), presenter.Extension), presenter.Present(title));
         }
     }
 }

@@ -9,6 +9,7 @@ Version 1.0.23
 + added text result presenter for performance results
 + extended performance tests
 + added tests for Newsoft BSON and DataContractSerializer
++ reorganized performance tests and improved time measurement to exclude stream/writers creation
 
 Version 1.0.22
 -------------------------------------------

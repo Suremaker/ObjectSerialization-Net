@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
@@ -7,9 +8,13 @@ namespace ObjectSerialization.Performance.TestObjects
     [ProtoContract]
     [ProtoInclude(2, typeof(Derived))]
     [ProtoInclude(3, typeof(Derived2))]
+    [DataContract]
+    [KnownType(typeof(Derived))]
+    [KnownType(typeof(Derived2))]
     internal class BaseType
     {
         [ProtoMember(1)]
+        [DataMember]
         public double Value { get; set; }
 
         public override bool Equals(object obj)

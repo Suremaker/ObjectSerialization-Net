@@ -18,9 +18,9 @@ namespace ObjectSerialization.Performance.TestCases
             _value = value;
         }
 
-        protected override object Deserialize(ISerializerAdapter serializer, byte[] data)
+        protected override object Deserialize(ISerializerAdapter serializer, byte[] data, out long operationTime)
         {
-            return serializer.Deserialize<T>(data);
+            return serializer.Deserialize<T>(data, out operationTime);
         }
 
         protected override object GetValue()
@@ -28,9 +28,9 @@ namespace ObjectSerialization.Performance.TestCases
             return _value;
         }
 
-        protected override byte[] Serialize(ISerializerAdapter serializer)
+        protected override byte[] Serialize(ISerializerAdapter serializer, out long operationTime)
         {
-            return serializer.Serialize(_value);
+            return serializer.Serialize(_value, out operationTime);
         }
     }
 }
