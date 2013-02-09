@@ -9,7 +9,7 @@ A fast object graph binary serialization for .NET.
 * support for serialization of POCO objects;
 * support for standard `NonSerializedAttribute` and dedicated `NonSerializedBackendAttribute` for automatic properties;
 * support for serialization of classes without parameter-less constructor;
-* support for arrays and collections implementing `ICollection<T>`;
+* support for serialization of arrays and collections implementing `ICollection<T>`;
 
 ## Usage:
 
