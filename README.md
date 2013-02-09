@@ -34,4 +34,4 @@ The ObjectSerializer performs serialization/deserialization faster than standard
 
 Solution contains [ObjectSerialization.Performance](https://github.com/Suremaker/ObjectSerialization-Net/tree/master/ObjectSerialization.Performance) project that allows to compare ObjectSerializer performance with other serializers like (BinaryFormatter, DataContractSerializer, Protobuf or Newton BSON).
 
-The last performance comparison can be found here: [Performance test results](http://htmlpreview.github.com/?https://github.com/Suremaker/ObjectSerialization-Net/blob/master/PerformanceResults/results_2013-02-09_00-36-46.html)
+The last performance comparison can be found here: [Performance test results](http://htmlpreview.github.com/?https://github.com/Suremaker/ObjectSerialization-Net/blob/master/PerformanceResults/results.html)

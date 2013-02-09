@@ -1,15 +1,15 @@
-Performance results for ver 1.0.23.0 - 2013-02-09 00:36:46
+Performance results for ver 1.0.23.0 - 2013-02-09 11:29:41
 
 Array byte[] (BinaryFormatter):
  Serialized Data Size: 38,
- Serialization Time: Min:3, Max:315, Avg:4.113, Total: 43074,
- Deserialization Time: Min:2, Max:158, Avg:3.253, Total: 33642
+ Serialization Time: Min:3, Max:282, Avg:4.540, Total: 46764,
+ Deserialization Time: Min:2, Max:149, Avg:3.164, Total: 32579
 
 
 Array byte[] (DataContractSerializer):
  Serialized Data Size: 105,
- Serialization Time: Min:3, Max:118, Avg:3.471, Total: 36826,
- Deserialization Time: Min:6, Max:425, Avg:7.397, Total: 77546
+ Serialization Time: Min:2, Max:167, Avg:3.226, Total: 34451,
+ Deserialization Time: Min:5, Max:537, Avg:6.454, Total: 68509
 
 
 Array byte[] (NewtonBSON):
@@ -18,26 +18,26 @@ Array byte[] (NewtonBSON):
 
 Array byte[] (ObjectSerializer):
  Serialized Data Size: 19,
- Serialization Time: Min:1, Max:250, Avg:1.653, Total: 17231,
- Deserialization Time: Min:0, Max:28, Avg:1.110, Total: 11464
+ Serialization Time: Min:1, Max:344, Avg:1.489, Total: 15720,
+ Deserialization Time: Min:0, Max:313, Avg:0.986, Total: 10360
 
 
 Array byte[] (ProtoBuf):
  Serialized Data Size: 12,
- Serialization Time: Min:12, Max:657, Avg:13.445, Total: 137493,
- Deserialization Time: Min:12, Max:77, Avg:13.272, Total: 134788
+ Serialization Time: Min:12, Max:59, Avg:13.210, Total: 133950,
+ Deserialization Time: Min:11, Max:392, Avg:12.897, Total: 132298
 
 
 Array double[] (BinaryFormatter):
  Serialized Data Size: 108,
- Serialization Time: Min:4, Max:280, Avg:5.391, Total: 57633,
- Deserialization Time: Min:3, Max:205, Avg:4.439, Total: 46685
+ Serialization Time: Min:4, Max:191, Avg:5.293, Total: 56781,
+ Deserialization Time: Min:3, Max:212, Avg:4.048, Total: 42922
 
 
 Array double[] (DataContractSerializer):
  Serialized Data Size: 329,
- Serialization Time: Min:11, Max:446, Avg:12.444, Total: 126758,
- Deserialization Time: Min:18, Max:501, Avg:19.767, Total: 202631
+ Serialization Time: Min:11, Max:438, Avg:12.385, Total: 126134,
+ Deserialization Time: Min:17, Max:428, Avg:18.793, Total: 193147
 
 
 Array double[] (NewtonBSON):
@@ -48,26 +48,26 @@ Path '0'.
 
 Array double[] (ObjectSerializer):
  Serialized Data Size: 89,
- Serialization Time: Min:2, Max:230, Avg:2.480, Total: 25573,
- Deserialization Time: Min:1, Max:215, Avg:1.744, Total: 18141
+ Serialization Time: Min:1, Max:167, Avg:2.071, Total: 21441,
+ Deserialization Time: Min:1, Max:231, Avg:1.461, Total: 15314
 
 
 Array double[] (ProtoBuf):
  Serialized Data Size: 90,
- Serialization Time: Min:29, Max:304, Avg:31.593, Total: 319325,
- Deserialization Time: Min:34, Max:330, Avg:36.372, Total: 367805
+ Serialization Time: Min:29, Max:401, Avg:32.573, Total: 329736,
+ Deserialization Time: Min:34, Max:323, Avg:38.208, Total: 386749
 
 
 Array long[] (BinaryFormatter):
  Serialized Data Size: 108,
- Serialization Time: Min:4, Max:282, Avg:5.404, Total: 57564,
- Deserialization Time: Min:3, Max:219, Avg:4.446, Total: 47241
+ Serialization Time: Min:4, Max:285, Avg:5.333, Total: 56683,
+ Deserialization Time: Min:3, Max:202, Avg:4.077, Total: 43545
 
 
 Array long[] (DataContractSerializer):
  Serialized Data Size: 285,
- Serialization Time: Min:6, Max:335, Avg:7.342, Total: 76728,
- Deserialization Time: Min:17, Max:473, Avg:19.050, Total: 194911
+ Serialization Time: Min:6, Max:148, Avg:7.825, Total: 81771,
+ Deserialization Time: Min:16, Max:569, Avg:18.193, Total: 187200
 
 
 Array long[] (NewtonBSON):
@@ -78,20 +78,20 @@ Path '0'.
 
 Array long[] (ObjectSerializer):
  Serialized Data Size: 89,
- Serialization Time: Min:2, Max:163, Avg:2.312, Total: 23879,
- Deserialization Time: Min:1, Max:117, Avg:1.581, Total: 16360
+ Serialization Time: Min:1, Max:172, Avg:2.194, Total: 22534,
+ Deserialization Time: Min:1, Max:193, Avg:1.545, Total: 15963
 
 
 Array long[] (ProtoBuf):
  Serialized Data Size: 20,
- Serialization Time: Min:29, Max:253, Avg:30.996, Total: 312442,
- Deserialization Time: Min:34, Max:489, Avg:36.335, Total: 368474
+ Serialization Time: Min:28, Max:345, Avg:31.573, Total: 321085,
+ Deserialization Time: Min:34, Max:111, Avg:37.254, Total: 375105
 
 
 Array mixed object[] (BinaryFormatter):
  Serialized Data Size: 322,
- Serialization Time: Min:18, Max:306, Avg:19.722, Total: 202002,
- Deserialization Time: Min:18, Max:432, Avg:19.864, Total: 203607
+ Serialization Time: Min:18, Max:298, Avg:21.588, Total: 220142,
+ Deserialization Time: Min:19, Max:443, Avg:22.439, Total: 228870
 
 
 Array mixed object[] (DataContractSerializer):
@@ -106,8 +106,8 @@ Path '0'.
 
 Array mixed object[] (ObjectSerializer):
  Serialized Data Size: 137,
- Serialization Time: Min:4, Max:31, Avg:4.835, Total: 49280,
- Deserialization Time: Min:2, Max:213, Avg:3.016, Total: 31648
+ Serialization Time: Min:4, Max:40, Avg:4.586, Total: 46893,
+ Deserialization Time: Min:2, Max:143, Avg:3.104, Total: 32136
 
 
 Array mixed object[] (ProtoBuf):
@@ -116,14 +116,14 @@ Array mixed object[] (ProtoBuf):
 
 Array of huge objects (BinaryFormatter):
  Serialized Data Size: 6263,
- Serialization Time: Min:992, Max:5516, Avg:1034.577, Total: 10390305,
- Deserialization Time: Min:969, Max:2761, Avg:1018.445, Total: 10235463
+ Serialization Time: Min:969, Max:1878, Avg:1024.594, Total: 10289638,
+ Deserialization Time: Min:1044, Max:4828, Avg:1107.184, Total: 11129622
 
 
 Array of huge objects (DataContractSerializer):
  Serialized Data Size: 48990,
- Serialization Time: Min:489, Max:1546, Avg:517.334, Total: 5201431,
- Deserialization Time: Min:1684, Max:2818, Avg:1759.067, Total: 17613756
+ Serialization Time: Min:472, Max:1660, Avg:512.638, Total: 5159524,
+ Deserialization Time: Min:1628, Max:3297, Avg:1741.841, Total: 17453312
 
 
 Array of huge objects (NewtonBSON):
@@ -134,26 +134,26 @@ Path '0'.
 
 Array of huge objects (ObjectSerializer):
  Serialized Data Size: 3521,
- Serialization Time: Min:54, Max:813, Avg:58.007, Total: 587167,
- Deserialization Time: Min:48, Max:5673, Avg:50.466, Total: 515571
+ Serialization Time: Min:52, Max:270, Avg:55.544, Total: 564457,
+ Deserialization Time: Min:46, Max:336, Avg:50.781, Total: 515015
 
 
 Array of huge objects (ProtoBuf):
  Serialized Data Size: 600,
- Serialization Time: Min:91, Max:1296, Avg:94.609, Total: 980324,
- Deserialization Time: Min:113, Max:1054, Avg:116.328, Total: 1183923
+ Serialization Time: Min:92, Max:1369, Avg:98.615, Total: 1018286,
+ Deserialization Time: Min:112, Max:1491, Avg:118.954, Total: 1219081
 
 
 Array SimpleClass[] (BinaryFormatter):
  Serialized Data Size: 431,
- Serialization Time: Min:26, Max:240, Avg:28.524, Total: 288851,
- Deserialization Time: Min:29, Max:1200, Avg:30.840, Total: 313870
+ Serialization Time: Min:28, Max:389, Avg:31.517, Total: 319325,
+ Deserialization Time: Min:32, Max:1520, Avg:35.731, Total: 362879
 
 
 Array SimpleClass[] (DataContractSerializer):
  Serialized Data Size: 962,
- Serialization Time: Min:14, Max:759, Avg:15.824, Total: 167948,
- Deserialization Time: Min:29, Max:238, Avg:31.928, Total: 321595
+ Serialization Time: Min:14, Max:62, Avg:16.640, Total: 168237,
+ Deserialization Time: Min:28, Max:768, Avg:32.187, Total: 334432
 
 
 Array SimpleClass[] (NewtonBSON):
@@ -164,26 +164,26 @@ Path '0'.
 
 Array SimpleClass[] (ObjectSerializer):
  Serialized Data Size: 123,
- Serialization Time: Min:3, Max:292, Avg:3.681, Total: 37754,
- Deserialization Time: Min:2, Max:165, Avg:2.829, Total: 29358
+ Serialization Time: Min:3, Max:142, Avg:3.512, Total: 36076,
+ Deserialization Time: Min:2, Max:300, Avg:2.800, Total: 28866
 
 
 Array SimpleClass[] (ProtoBuf):
  Serialized Data Size: 69,
- Serialization Time: Min:25, Max:706, Avg:27.418, Total: 282057,
- Deserialization Time: Min:34, Max:965, Avg:36.329, Total: 367176
+ Serialization Time: Min:26, Max:792, Avg:29.014, Total: 298545,
+ Deserialization Time: Min:34, Max:668, Avg:38.071, Total: 385311
 
 
 Array string[] (BinaryFormatter):
  Serialized Data Size: 73,
- Serialization Time: Min:7, Max:323, Avg:8.494, Total: 87387,
- Deserialization Time: Min:7, Max:251, Avg:7.772, Total: 80134
+ Serialization Time: Min:7, Max:154, Avg:8.336, Total: 85400,
+ Deserialization Time: Min:6, Max:351, Avg:6.966, Total: 72207
 
 
 Array string[] (DataContractSerializer):
  Serialized Data Size: 261,
- Serialization Time: Min:6, Max:30, Avg:6.752, Total: 68697,
- Deserialization Time: Min:14, Max:510, Avg:15.940, Total: 166437
+ Serialization Time: Min:5, Max:31, Avg:6.492, Total: 66131,
+ Deserialization Time: Min:13, Max:524, Avg:15.258, Total: 159317
 
 
 Array string[] (NewtonBSON):
@@ -194,56 +194,56 @@ Path '0'.
 
 Array string[] (ObjectSerializer):
  Serialized Data Size: 31,
- Serialization Time: Min:2, Max:125, Avg:3.123, Total: 31819,
- Deserialization Time: Min:2, Max:220, Avg:2.264, Total: 23575
+ Serialization Time: Min:2, Max:365, Avg:2.412, Total: 25429,
+ Deserialization Time: Min:1, Max:257, Avg:2.143, Total: 22004
 
 
 Array string[] (ProtoBuf):
  Serialized Data Size: 22,
- Serialization Time: Min:27, Max:241, Avg:28.663, Total: 289509,
- Deserialization Time: Min:35, Max:385, Avg:36.937, Total: 373801
+ Serialization Time: Min:26, Max:416, Avg:29.311, Total: 296619,
+ Deserialization Time: Min:35, Max:328, Avg:38.597, Total: 390226
 
 
 Collection Dictionary[int,string] (BinaryFormatter):
  Serialized Data Size: 1387,
- Serialization Time: Min:38, Max:333, Avg:41.689, Total: 424741,
- Deserialization Time: Min:51, Max:613, Avg:54.542, Total: 554369
+ Serialization Time: Min:43, Max:403, Avg:47.943, Total: 489158,
+ Deserialization Time: Min:59, Max:1148, Avg:64.651, Total: 657871
 
 
 Collection Dictionary[int,string] (DataContractSerializer):
  Serialized Data Size: 327,
- Serialization Time: Min:6, Max:567, Avg:6.625, Total: 68105,
- Deserialization Time: Min:16, Max:434, Avg:18.577, Total: 200855
+ Serialization Time: Min:6, Max:196, Avg:6.702, Total: 70187,
+ Deserialization Time: Min:15, Max:4186, Avg:17.771, Total: 190069
 
 
 Collection Dictionary[int,string] (NewtonBSON):
  Serialized Data Size: 33,
- Serialization Time: Min:4, Max:228, Avg:5.267, Total: 54609,
- Deserialization Time: Min:4, Max:222, Avg:5.387, Total: 55657
+ Serialization Time: Min:4, Max:320, Avg:4.783, Total: 49560,
+ Deserialization Time: Min:4, Max:504, Avg:5.539, Total: 57486
 
 
 Collection Dictionary[int,string] (ObjectSerializer):
  Serialized Data Size: 255,
- Serialization Time: Min:3, Max:309, Avg:3.585, Total: 37246,
- Deserialization Time: Min:3, Max:552, Avg:3.660, Total: 39256
+ Serialization Time: Min:3, Max:367, Avg:3.832, Total: 40000,
+ Deserialization Time: Min:3, Max:591, Avg:3.896, Total: 40916
 
 
 Collection Dictionary[int,string] (ProtoBuf):
  Serialized Data Size: 23,
- Serialization Time: Min:118, Max:755, Avg:124.244, Total: 1254057,
- Deserialization Time: Min:140, Max:750, Avg:147.660, Total: 1489049
+ Serialization Time: Min:110, Max:805, Avg:117.758, Total: 1188324,
+ Deserialization Time: Min:134, Max:936, Avg:143.872, Total: 1451608
 
 
 Collection LinkedList[SimpleClass] (BinaryFormatter):
  Serialized Data Size: 766,
- Serialization Time: Min:34, Max:332, Avg:36.692, Total: 372746,
- Deserialization Time: Min:38, Max:449, Avg:41.658, Total: 423603
+ Serialization Time: Min:37, Max:456, Avg:40.572, Total: 411157,
+ Deserialization Time: Min:45, Max:325, Avg:48.921, Total: 495447
 
 
 Collection LinkedList[SimpleClass] (DataContractSerializer):
  Serialized Data Size: 692,
- Serialization Time: Min:10, Max:291, Avg:11.231, Total: 115068,
- Deserialization Time: Min:22, Max:716, Avg:24.622, Total: 256824
+ Serialization Time: Min:10, Max:210, Avg:10.989, Total: 112286,
+ Deserialization Time: Min:21, Max:481, Avg:23.216, Total: 242664
 
 
 Collection LinkedList[SimpleClass] (NewtonBSON):
@@ -254,26 +254,26 @@ Path '0'.
 
 Collection LinkedList[SimpleClass] (ObjectSerializer):
  Serialized Data Size: 226,
- Serialization Time: Min:3, Max:163, Avg:3.527, Total: 36308,
- Deserialization Time: Min:3, Max:616, Avg:3.510, Total: 37149
+ Serialization Time: Min:2, Max:321, Avg:3.239, Total: 33464,
+ Deserialization Time: Min:2, Max:226, Avg:3.368, Total: 35401
 
 
 Collection LinkedList[SimpleClass] (ProtoBuf):
  Serialized Data Size: 34,
- Serialization Time: Min:108, Max:630, Avg:113.586, Total: 1145668,
- Deserialization Time: Min:126, Max:733, Avg:132.324, Total: 1333566
+ Serialization Time: Min:98, Max:670, Avg:104.140, Total: 1051295,
+ Deserialization Time: Min:118, Max:641, Avg:124.836, Total: 1258679
 
 
 Collection List[SimpleClass] (BinaryFormatter):
  Serialized Data Size: 682,
- Serialization Time: Min:31, Max:386, Avg:34.344, Total: 348257,
- Deserialization Time: Min:35, Max:335, Avg:37.615, Total: 382975
+ Serialization Time: Min:34, Max:353, Avg:37.707, Total: 382416,
+ Deserialization Time: Min:39, Max:431, Avg:43.379, Total: 441661
 
 
 Collection List[SimpleClass] (DataContractSerializer):
  Serialized Data Size: 692,
- Serialization Time: Min:10, Max:602, Avg:11.487, Total: 118955,
- Deserialization Time: Min:22, Max:295, Avg:24.799, Total: 254598
+ Serialization Time: Min:10, Max:247, Avg:11.321, Total: 116444,
+ Deserialization Time: Min:21, Max:779, Avg:23.833, Total: 247154
 
 
 Collection List[SimpleClass] (NewtonBSON):
@@ -284,62 +284,84 @@ Path '0'.
 
 Collection List[SimpleClass] (ObjectSerializer):
  Serialized Data Size: 220,
- Serialization Time: Min:3, Max:33, Avg:3.752, Total: 38317,
- Deserialization Time: Min:3, Max:2019, Avg:3.522, Total: 38724
+ Serialization Time: Min:3, Max:683, Avg:3.429, Total: 36395,
+ Deserialization Time: Min:2, Max:26, Avg:3.406, Total: 34717
 
 
 Collection List[SimpleClass] (ProtoBuf):
  Serialized Data Size: 34,
- Serialization Time: Min:101, Max:818, Avg:106.685, Total: 1079360,
- Deserialization Time: Min:114, Max:835, Avg:120.036, Total: 1211499
+ Serialization Time: Min:95, Max:891, Avg:102.353, Total: 1035283,
+ Deserialization Time: Min:109, Max:991, Avg:116.958, Total: 1182497
 
 
 Instance of BasicTypes (BinaryFormatter):
  Serialized Data Size: 592,
- Serialization Time: Min:27, Max:494, Avg:29.608, Total: 301029,
- Deserialization Time: Min:26, Max:1154, Avg:28.543, Total: 291042
+ Serialization Time: Min:27, Max:341, Avg:30.476, Total: 310378,
+ Deserialization Time: Min:27, Max:393, Avg:30.230, Total: 308073
 
 
 Instance of BasicTypes (DataContractSerializer):
  Serialized Data Size: 1233,
- Serialization Time: Min:15, Max:309, Avg:16.926, Total: 181214,
- Deserialization Time: Min:38, Max:652, Avg:41.018, Total: 413372
+ Serialization Time: Min:14, Max:294, Avg:15.954, Total: 172141,
+ Deserialization Time: Min:35, Max:699, Avg:39.400, Total: 397396
 
 
 Instance of BasicTypes (NewtonBSON):
  Serialized Data Size: 191,
- Serialization Time: Min:18, Max:782, Avg:19.957, Total: 203495,
- Deserialization Time: Min:17, Max:231, Avg:18.296, Total: 185736
+ Serialization Time: Min:17, Max:1082, Avg:19.687, Total: 201252,
+ Deserialization Time: Min:16, Max:280, Avg:18.663, Total: 189503
 
 
 Instance of BasicTypes (ObjectSerializer):
  Serialized Data Size: 128,
- Serialization Time: Min:2, Max:251, Avg:2.277, Total: 23562,
- Deserialization Time: Min:1, Max:489, Avg:2.175, Total: 23184
+ Serialization Time: Min:2, Max:15, Avg:2.376, Total: 23939,
+ Deserialization Time: Min:2, Max:199, Avg:2.312, Total: 23689
 
 
 Instance of BasicTypes (ProtoBuf):
  Serialized Data Size: 49,
- Serialization Time: Min:1, Max:24, Avg:1.817, Total: 18525,
- Deserialization Time: Min:2, Max:661, Avg:2.502, Total: 26273
+ Serialization Time: Min:1, Max:23, Avg:1.896, Total: 19310,
+ Deserialization Time: Min:2, Max:751, Avg:2.729, Total: 28482
+
+
+Instance of class with all fields referring to the same object (BinaryFormatter):
+ Serialized Data Size: 539,
+ Serialization Time: Min:19, Max:878, Avg:21.585, Total: 219858,
+ Deserialization Time: Min:20, Max:266, Avg:22.651, Total: 230934
+
+
+Instance of class with all fields referring to the same object (DataContractSerializer):
+ Deserialized object does not equal expected one
+
+
+Instance of class with all fields referring to the same object (NewtonBSON):
+ Deserialized object does not equal expected one
+
+
+Instance of class with all fields referring to the same object (ObjectSerializer):
+ Deserialized object does not equal expected one
+
+
+Instance of class with all fields referring to the same object (ProtoBuf):
+ Deserialized object does not equal expected one
 
 
 Instance of class with readonly field (BinaryFormatter):
  Serialized Data Size: 202,
- Serialization Time: Min:7, Max:35, Avg:8.573, Total: 87506,
- Deserialization Time: Min:7, Max:646, Avg:8.832, Total: 93484
+ Serialization Time: Min:7, Max:58, Avg:8.483, Total: 86400,
+ Deserialization Time: Min:8, Max:3769, Avg:9.467, Total: 103216
 
 
 Instance of class with readonly field (DataContractSerializer):
  Serialized Data Size: 210,
- Serialization Time: Min:4, Max:165, Avg:4.467, Total: 46753,
- Deserialization Time: Min:10, Max:635, Avg:11.335, Total: 119960
+ Serialization Time: Min:4, Max:231, Avg:4.626, Total: 48800,
+ Deserialization Time: Min:9, Max:412, Avg:10.394, Total: 111676
 
 
 Instance of class with readonly field (NewtonBSON):
  Serialized Data Size: 16,
- Serialization Time: Min:2, Max:209, Avg:3.280, Total: 33566,
- Deserialization Time: Min:2, Max:250, Avg:3.159, Total: 32405
+ Serialization Time: Min:2, Max:165, Avg:2.995, Total: 30887,
+ Deserialization Time: Min:2, Max:159, Avg:3.222, Total: 33064
 
 
 Instance of class with readonly field (ObjectSerializer):
@@ -348,92 +370,92 @@ Instance of class with readonly field (ObjectSerializer):
 
 Instance of class with readonly field (ProtoBuf):
  Serialized Data Size: 2,
- Serialization Time: Min:1, Max:21, Avg:1.091, Total: 11068,
- Deserialization Time: Min:1, Max:27, Avg:1.441, Total: 14563
+ Serialization Time: Min:0, Max:128, Avg:1.059, Total: 10956,
+ Deserialization Time: Min:1, Max:296, Avg:1.356, Total: 14419
 
 
 Instance of class with sealed member type (BinaryFormatter):
  Serialized Data Size: 437,
- Serialization Time: Min:16, Max:308, Avg:17.667, Total: 181331,
- Deserialization Time: Min:16, Max:485, Avg:18.842, Total: 193950
+ Serialization Time: Min:16, Max:340, Avg:18.201, Total: 186797,
+ Deserialization Time: Min:18, Max:1228, Avg:20.803, Total: 214713
 
 
 Instance of class with sealed member type (DataContractSerializer):
  Serialized Data Size: 482,
- Serialization Time: Min:7, Max:39, Avg:8.661, Total: 88390,
- Deserialization Time: Min:17, Max:684, Avg:18.764, Total: 199777
+ Serialization Time: Min:7, Max:38, Avg:8.507, Total: 86629,
+ Deserialization Time: Min:16, Max:598, Avg:17.589, Total: 187628
 
 
 Instance of class with sealed member type (NewtonBSON):
  Serialized Data Size: 62,
- Serialization Time: Min:7, Max:589, Avg:7.696, Total: 80252,
- Deserialization Time: Min:6, Max:323, Avg:7.221, Total: 73798
+ Serialization Time: Min:6, Max:328, Avg:7.244, Total: 74729,
+ Deserialization Time: Min:6, Max:588, Avg:7.452, Total: 77523
 
 
 Instance of class with sealed member type (ObjectSerializer):
  Serialized Data Size: 80,
- Serialization Time: Min:1, Max:204, Avg:1.553, Total: 16204,
- Deserialization Time: Min:1, Max:509, Avg:1.473, Total: 15802
+ Serialization Time: Min:1, Max:158, Avg:1.449, Total: 15072,
+ Deserialization Time: Min:1, Max:250, Avg:1.438, Total: 15039
 
 
 Instance of class with sealed member type (ProtoBuf):
  Serialized Data Size: 23,
- Serialization Time: Min:1, Max:660, Avg:1.668, Total: 17732,
- Deserialization Time: Min:2, Max:24, Avg:2.477, Total: 25219
+ Serialization Time: Min:1, Max:291, Avg:1.710, Total: 17698,
+ Deserialization Time: Min:2, Max:605, Avg:2.484, Total: 25996
 
 
 Instance of class with standard member type (BinaryFormatter):
  Serialized Data Size: 437,
- Serialization Time: Min:15, Max:357, Avg:17.392, Total: 178428,
- Deserialization Time: Min:16, Max:273, Avg:18.516, Total: 190155
+ Serialization Time: Min:16, Max:273, Avg:17.817, Total: 182463,
+ Deserialization Time: Min:18, Max:1217, Avg:20.340, Total: 209615
 
 
 Instance of class with standard member type (DataContractSerializer):
  Serialized Data Size: 482,
- Serialization Time: Min:7, Max:299, Avg:8.707, Total: 89698,
- Deserialization Time: Min:17, Max:391, Avg:18.819, Total: 199157
+ Serialization Time: Min:7, Max:252, Avg:8.287, Total: 84880,
+ Deserialization Time: Min:15, Max:420, Avg:17.409, Total: 185857
 
 
 Instance of class with standard member type (NewtonBSON):
  Serialized Data Size: 62,
- Serialization Time: Min:7, Max:281, Avg:7.950, Total: 81794,
- Deserialization Time: Min:6, Max:528, Avg:7.322, Total: 75343
+ Serialization Time: Min:6, Max:209, Avg:7.425, Total: 76356,
+ Deserialization Time: Min:6, Max:287, Avg:7.509, Total: 77133
 
 
 Instance of class with standard member type (ObjectSerializer):
  Serialized Data Size: 80,
- Serialization Time: Min:1, Max:205, Avg:1.538, Total: 16197,
- Deserialization Time: Min:1, Max:166, Avg:1.439, Total: 15152
+ Serialization Time: Min:1, Max:783, Avg:1.495, Total: 16363,
+ Deserialization Time: Min:1, Max:249, Avg:1.494, Total: 15778
 
 
 Instance of class with standard member type (ProtoBuf):
  Serialized Data Size: 23,
- Serialization Time: Min:1, Max:23, Avg:1.692, Total: 17304,
- Deserialization Time: Min:2, Max:225, Avg:2.434, Total: 25172
+ Serialization Time: Min:1, Max:209, Avg:1.693, Total: 17531,
+ Deserialization Time: Min:2, Max:32, Avg:2.456, Total: 25145
 
 
 Instance of class without parameterless ctor (BinaryFormatter):
  Serialized Data Size: 226,
- Serialization Time: Min:7, Max:378, Avg:8.388, Total: 87806,
- Deserialization Time: Min:8, Max:538, Avg:8.959, Total: 93269
+ Serialization Time: Min:7, Max:586, Avg:8.972, Total: 92804,
+ Deserialization Time: Min:8, Max:336, Avg:10.037, Total: 104190
 
 
 Instance of class without parameterless ctor (DataContractSerializer):
  Serialized Data Size: 282,
- Serialization Time: Min:4, Max:39, Avg:4.667, Total: 47595,
- Deserialization Time: Min:10, Max:344, Avg:11.684, Total: 123347
+ Serialization Time: Min:4, Max:37, Avg:4.866, Total: 49583,
+ Deserialization Time: Min:10, Max:329, Avg:11.035, Total: 120522
 
 
 Instance of class without parameterless ctor (NewtonBSON):
  Serialized Data Size: 16,
- Serialization Time: Min:4, Max:162, Avg:4.407, Total: 45461,
- Deserialization Time: Min:8, Max:190, Avg:9.019, Total: 92434
+ Serialization Time: Min:3, Max:585, Avg:3.885, Total: 41080,
+ Deserialization Time: Min:7, Max:1301, Avg:8.806, Total: 91265
 
 
 Instance of class without parameterless ctor (ObjectSerializer):
  Serialized Data Size: 80,
- Serialization Time: Min:1, Max:255, Avg:1.376, Total: 14649,
- Deserialization Time: Min:1, Max:386, Avg:1.478, Total: 15856
+ Serialization Time: Min:1, Max:550, Avg:1.181, Total: 12991,
+ Deserialization Time: Min:1, Max:286, Avg:1.326, Total: 14207
 
 
 Instance of class without parameterless ctor (ProtoBuf):
@@ -442,8 +464,8 @@ Instance of class without parameterless ctor (ProtoBuf):
 
 Instance of ComplexType (BinaryFormatter):
  Serialized Data Size: 1835,
- Serialization Time: Min:114, Max:558, Avg:120.135, Total: 1220836,
- Deserialization Time: Min:118, Max:778, Avg:124.078, Total: 1261198
+ Serialization Time: Min:120, Max:894, Avg:133.417, Total: 1361837,
+ Deserialization Time: Min:129, Max:806, Avg:143.642, Total: 1465486
 
 
 Instance of ComplexType (DataContractSerializer):
@@ -456,20 +478,20 @@ Instance of ComplexType (NewtonBSON):
 
 Instance of ComplexType (ObjectSerializer):
  Serialized Data Size: 446,
- Serialization Time: Min:9, Max:197, Avg:9.794, Total: 100735,
- Deserialization Time: Min:7, Max:259, Avg:8.311, Total: 85802
+ Serialization Time: Min:8, Max:51, Avg:9.484, Total: 96815,
+ Deserialization Time: Min:7, Max:240, Avg:8.116, Total: 83653
 
 
 Instance of ComplexType (ProtoBuf):
  Serialized Data Size: 184,
- Serialization Time: Min:4, Max:27, Avg:4.850, Total: 49366,
- Deserialization Time: Min:7, Max:3379, Avg:7.752, Total: 82823
+ Serialization Time: Min:4, Max:28, Avg:4.908, Total: 49937,
+ Deserialization Time: Min:7, Max:1219, Avg:8.116, Total: 84595
 
 
 Instance of ComplexTypeWithObject (BinaryFormatter):
  Serialized Data Size: 871,
- Serialization Time: Min:37, Max:395, Avg:40.122, Total: 408508,
- Deserialization Time: Min:35, Max:557, Avg:38.757, Total: 396666
+ Serialization Time: Min:38, Max:351, Avg:43.258, Total: 438648,
+ Deserialization Time: Min:40, Max:1314, Avg:44.811, Total: 455787
 
 
 Instance of ComplexTypeWithObject (DataContractSerializer):
@@ -482,8 +504,8 @@ Instance of ComplexTypeWithObject (NewtonBSON):
 
 Instance of ComplexTypeWithObject (ObjectSerializer):
  Serialized Data Size: 275,
- Serialization Time: Min:5, Max:239, Avg:5.696, Total: 58273,
- Deserialization Time: Min:4, Max:1853, Avg:4.992, Total: 53385
+ Serialization Time: Min:4, Max:1950, Avg:5.550, Total: 58730,
+ Deserialization Time: Min:4, Max:6240, Avg:5.104, Total: 58531
 
 
 Instance of ComplexTypeWithObject (ProtoBuf):
@@ -500,14 +522,14 @@ Instance of POCO (DataContractSerializer):
 
 Instance of POCO (NewtonBSON):
  Serialized Data Size: 56,
- Serialization Time: Min:7, Max:817, Avg:8.614, Total: 89542,
- Deserialization Time: Min:8, Max:1218, Avg:8.998, Total: 93396
+ Serialization Time: Min:7, Max:1343, Avg:8.115, Total: 84367,
+ Deserialization Time: Min:8, Max:160, Avg:9.421, Total: 96109
 
 
 Instance of POCO (ObjectSerializer):
  Serialized Data Size: 69,
- Serialization Time: Min:1, Max:161, Avg:1.551, Total: 16210,
- Deserialization Time: Min:1, Max:2266, Avg:1.367, Total: 16462
+ Serialization Time: Min:1, Max:5491, Avg:1.600, Total: 21966,
+ Deserialization Time: Min:1, Max:1012, Avg:1.441, Total: 15861
 
 
 Instance of POCO (ProtoBuf):
@@ -516,14 +538,14 @@ Instance of POCO (ProtoBuf):
 
 Instance of PolymorphicHolder (BinaryFormatter):
  Serialized Data Size: 618,
- Serialization Time: Min:22, Max:451, Avg:24.356, Total: 248384,
- Deserialization Time: Min:23, Max:347, Avg:25.161, Total: 256917
+ Serialization Time: Min:22, Max:446, Avg:25.437, Total: 259152,
+ Deserialization Time: Min:25, Max:358, Avg:28.353, Total: 288987
 
 
 Instance of PolymorphicHolder (DataContractSerializer):
  Serialized Data Size: 420,
- Serialization Time: Min:13, Max:323, Avg:14.077, Total: 143501,
- Deserialization Time: Min:28, Max:687, Avg:31.206, Total: 326004
+ Serialization Time: Min:13, Max:73, Avg:14.983, Total: 151844,
+ Deserialization Time: Min:27, Max:809, Avg:32.552, Total: 341802
 
 
 Instance of PolymorphicHolder (NewtonBSON):
@@ -532,50 +554,50 @@ Instance of PolymorphicHolder (NewtonBSON):
 
 Instance of PolymorphicHolder (ObjectSerializer):
  Serialized Data Size: 196,
- Serialization Time: Min:2, Max:304, Avg:3.263, Total: 33826,
- Deserialization Time: Min:2, Max:426, Avg:2.904, Total: 30930
+ Serialization Time: Min:2, Max:141, Avg:3.018, Total: 30827,
+ Deserialization Time: Min:2, Max:398, Avg:2.879, Total: 30070
 
 
 Instance of PolymorphicHolder (ProtoBuf):
  Serialized Data Size: 30,
- Serialization Time: Min:1, Max:298, Avg:1.837, Total: 19212,
- Deserialization Time: Min:2, Max:31, Avg:3.113, Total: 31691
+ Serialization Time: Min:1, Max:207, Avg:1.763, Total: 18336,
+ Deserialization Time: Min:2, Max:24, Avg:3.108, Total: 31500
 
 
 Instance of SimpleClass (BinaryFormatter):
  Serialized Data Size: 276,
- Serialization Time: Min:10, Max:495, Avg:12.155, Total: 125473,
- Deserialization Time: Min:11, Max:181, Avg:12.700, Total: 130078
+ Serialization Time: Min:11, Max:487, Avg:12.796, Total: 131917,
+ Deserialization Time: Min:11, Max:179, Avg:13.745, Total: 140448
 
 
 Instance of SimpleClass (DataContractSerializer):
  Serialized Data Size: 402,
- Serialization Time: Min:6, Max:30, Avg:7.155, Total: 73147,
- Deserialization Time: Min:14, Max:2228, Avg:16.132, Total: 170911
+ Serialization Time: Min:6, Max:2760, Avg:7.151, Total: 78904,
+ Deserialization Time: Min:13, Max:102, Avg:15.391, Total: 155895
 
 
 Instance of SimpleClass (NewtonBSON):
  Serialized Data Size: 48,
- Serialization Time: Min:5, Max:309, Avg:5.691, Total: 58816,
- Deserialization Time: Min:4, Max:346, Avg:5.396, Total: 55964
+ Serialization Time: Min:4, Max:604, Avg:5.643, Total: 59180,
+ Deserialization Time: Min:5, Max:355, Avg:5.834, Total: 60029
 
 
 Instance of SimpleClass (ObjectSerializer):
  Serialized Data Size: 76,
- Serialization Time: Min:1, Max:1795, Avg:1.541, Total: 19276,
- Deserialization Time: Min:1, Max:1038, Avg:1.381, Total: 15756
+ Serialization Time: Min:1, Max:1051, Avg:1.514, Total: 17038,
+ Deserialization Time: Min:1, Max:1147, Avg:1.401, Total: 15881
 
 
 Instance of SimpleClass (ProtoBuf):
  Serialized Data Size: 17,
- Serialization Time: Min:0, Max:25, Avg:0.987, Total: 10121,
- Deserialization Time: Min:1, Max:616, Avg:1.516, Total: 16259
+ Serialization Time: Min:0, Max:25, Avg:1.023, Total: 10574,
+ Deserialization Time: Min:1, Max:566, Avg:1.562, Total: 16584
 
 
 Instance of SimpleClass as object (BinaryFormatter):
  Serialized Data Size: 276,
- Serialization Time: Min:10, Max:466, Avg:11.995, Total: 125888,
- Deserialization Time: Min:11, Max:302, Avg:12.565, Total: 128342
+ Serialization Time: Min:11, Max:42, Avg:12.349, Total: 124579,
+ Deserialization Time: Min:12, Max:462, Avg:13.267, Total: 138596
 
 
 Instance of SimpleClass as object (DataContractSerializer):
@@ -588,8 +610,8 @@ Instance of SimpleClass as object (NewtonBSON):
 
 Instance of SimpleClass as object (ObjectSerializer):
  Serialized Data Size: 76,
- Serialization Time: Min:1, Max:243, Avg:1.403, Total: 14721,
- Deserialization Time: Min:1, Max:226, Avg:1.318, Total: 13954
+ Serialization Time: Min:1, Max:313, Avg:1.383, Total: 14596,
+ Deserialization Time: Min:1, Max:217, Avg:1.433, Total: 15085
 
 
 Instance of SimpleClass as object (ProtoBuf):
@@ -598,44 +620,44 @@ Instance of SimpleClass as object (ProtoBuf):
 
 Instance of SimpleClass null text (BinaryFormatter):
  Serialized Data Size: 267,
- Serialization Time: Min:10, Max:267, Avg:11.327, Total: 116232,
- Deserialization Time: Min:10, Max:161, Avg:11.359, Total: 116445
+ Serialization Time: Min:10, Max:162, Avg:11.863, Total: 121587,
+ Deserialization Time: Min:10, Max:989, Avg:12.108, Total: 124697
 
 
 Instance of SimpleClass null text (DataContractSerializer):
  Serialized Data Size: 376,
- Serialization Time: Min:7, Max:137, Avg:8.292, Total: 85121,
- Deserialization Time: Min:16, Max:287, Avg:17.465, Total: 180258
+ Serialization Time: Min:6, Max:118, Avg:7.429, Total: 76201,
+ Deserialization Time: Min:14, Max:366, Avg:15.752, Total: 162609
 
 
 Instance of SimpleClass null text (NewtonBSON):
  Serialized Data Size: 39,
- Serialization Time: Min:4, Max:168, Avg:5.544, Total: 57320,
- Deserialization Time: Min:4, Max:174, Avg:4.982, Total: 51089
+ Serialization Time: Min:4, Max:227, Avg:5.193, Total: 53290,
+ Deserialization Time: Min:4, Max:122, Avg:5.264, Total: 53645
 
 
 Instance of SimpleClass null text (ObjectSerializer):
  Serialized Data Size: 71,
- Serialization Time: Min:1, Max:71, Avg:1.304, Total: 13476,
- Deserialization Time: Min:1, Max:110, Avg:1.191, Total: 12425
+ Serialization Time: Min:1, Max:186, Avg:1.319, Total: 13644,
+ Deserialization Time: Min:0, Max:102, Avg:1.162, Total: 12201
 
 
 Instance of SimpleClass null text (ProtoBuf):
  Serialized Data Size: 11,
- Serialization Time: Min:0, Max:118, Avg:0.755, Total: 7879,
- Deserialization Time: Min:0, Max:95, Avg:1.059, Total: 10948
+ Serialization Time: Min:0, Max:233, Avg:0.742, Total: 7997,
+ Deserialization Time: Min:0, Max:29, Avg:0.997, Total: 10247
 
 
 Instance of StructureHolder (BinaryFormatter):
  Serialized Data Size: 1086,
- Serialization Time: Min:43, Max:387, Avg:45.861, Total: 465510,
- Deserialization Time: Min:48, Max:1182, Avg:51.290, Total: 520766
+ Serialization Time: Min:44, Max:322, Avg:48.965, Total: 497188,
+ Deserialization Time: Min:51, Max:437, Avg:56.659, Total: 575063
 
 
 Instance of StructureHolder (DataContractSerializer):
  Serialized Data Size: 830,
- Serialization Time: Min:17, Max:346, Avg:19.176, Total: 196748,
- Deserialization Time: Min:36, Max:2250, Avg:39.303, Total: 406859
+ Serialization Time: Min:16, Max:1042, Avg:18.703, Total: 192017,
+ Deserialization Time: Min:32, Max:1065, Avg:36.432, Total: 374826
 
 
 Instance of StructureHolder (NewtonBSON):
@@ -644,20 +666,20 @@ Instance of StructureHolder (NewtonBSON):
 
 Instance of StructureHolder (ObjectSerializer):
  Serialized Data Size: 126,
- Serialization Time: Min:2, Max:427, Avg:2.435, Total: 25608,
- Deserialization Time: Min:1, Max:338, Avg:2.222, Total: 23336
+ Serialization Time: Min:1, Max:477, Avg:2.219, Total: 23338,
+ Deserialization Time: Min:1, Max:305, Avg:2.092, Total: 21957
 
 
 Instance of StructureHolder (ProtoBuf):
  Serialized Data Size: 63,
- Serialization Time: Min:2, Max:147, Avg:3.168, Total: 32469,
- Deserialization Time: Min:3, Max:377, Avg:3.162, Total: 32775
+ Serialization Time: Min:2, Max:646, Avg:3.057, Total: 31936,
+ Deserialization Time: Min:2, Max:424, Avg:3.177, Total: 32709
 
 
 Object array (BinaryFormatter):
  Serialized Data Size: 414,
- Serialization Time: Min:32, Max:285, Avg:34.333, Total: 348200,
- Deserialization Time: Min:30, Max:428, Avg:32.748, Total: 331926
+ Serialization Time: Min:32, Max:366, Avg:35.324, Total: 358147,
+ Deserialization Time: Min:33, Max:310, Avg:36.239, Total: 367649
 
 
 Object array (DataContractSerializer):
@@ -672,8 +694,8 @@ Path '0'.
 
 Object array (ObjectSerializer):
  Serialized Data Size: 394,
- Serialization Time: Min:6, Max:172, Avg:7.180, Total: 73696,
- Deserialization Time: Min:5, Max:280, Avg:5.763, Total: 59960
+ Serialization Time: Min:6, Max:31, Avg:6.876, Total: 70214,
+ Deserialization Time: Min:5, Max:177, Avg:5.839, Total: 60038
 
 
 Object array (ProtoBuf):
@@ -682,8 +704,8 @@ Object array (ProtoBuf):
 
 Object array with registered type (BinaryFormatter):
  Serialized Data Size: 460,
- Serialization Time: Min:33, Max:264, Avg:35.302, Total: 357549,
- Deserialization Time: Min:31, Max:1275, Avg:33.549, Total: 341695
+ Serialization Time: Min:33, Max:285, Avg:36.355, Total: 368314,
+ Deserialization Time: Min:34, Max:1306, Avg:37.232, Total: 378871
 
 
 Object array with registered type (DataContractSerializer):
@@ -698,8 +720,8 @@ Path '0'.
 
 Object array with registered type (ObjectSerializer):
  Serialized Data Size: 134,
- Serialization Time: Min:5, Max:35, Avg:5.758, Total: 58137,
- Deserialization Time: Min:3, Max:445, Avg:3.730, Total: 38319
+ Serialization Time: Min:5, Max:34, Avg:5.315, Total: 53889,
+ Deserialization Time: Min:3, Max:479, Avg:3.495, Total: 36035
 
 
 Object array with registered type (ProtoBuf):
