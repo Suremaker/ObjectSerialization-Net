@@ -14,7 +14,7 @@ namespace ObjectSerialization.Performance.Results
             var sb = new StringBuilder();
             sb.AppendLine(title);
             sb.AppendLine();
-            foreach (var result in TestCases.SelectMany(testCase => GetResultsFor(testCase).ToArray()))
+            foreach (PerformanceResult result in TestCases.SelectMany(testCase => GetResultsFor(testCase).ToArray()))
                 sb.AppendLine(result.ToString());
             return sb.ToString();
         }

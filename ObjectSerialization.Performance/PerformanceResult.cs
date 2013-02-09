@@ -21,7 +21,7 @@
         public override string ToString()
         {
             if (!string.IsNullOrWhiteSpace(Failure))
-                return string.Format("{0} ({1}): {2}\n\n", TestCase, SerializerName, Failure);
+                return string.Format("{0} ({1}):\n {2}\n\n", TestCase, SerializerName, Failure);
 
             return string.Format("{0} ({1}):\n Serialized Data Size: {2},\n Serialization Time: {3},\n Deserialization Time: {4}\n\n",
                 TestCase, SerializerName, Size, SerializeTime, DeserializeTime);

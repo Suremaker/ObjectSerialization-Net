@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using ProtoBuf;
 
 namespace ObjectSerialization.Performance.TestObjects
 {
-    [Serializable]
     [ProtoContract]
-    internal class ClassWithoutParameterlessCtor
+    [Serializable]
+    [DataContract]
+    internal class ClassWithReadonlyField
     {
         [ProtoMember(1)]
-        public int Value { get; set; }
+        [DataMember]
+        public readonly int Value;
 
-        public ClassWithoutParameterlessCtor(int value)
+        public ClassWithReadonlyField() { }
+        public ClassWithReadonlyField(int value)
         {
             Value = value;
         }
@@ -20,7 +24,7 @@ namespace ObjectSerialization.Performance.TestObjects
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((ClassWithoutParameterlessCtor)obj);
+            return Equals((ClassWithReadonlyField)obj);
         }
 
         public override int GetHashCode()
@@ -28,7 +32,7 @@ namespace ObjectSerialization.Performance.TestObjects
             return Value;
         }
 
-        protected bool Equals(ClassWithoutParameterlessCtor other)
+        protected bool Equals(ClassWithReadonlyField other)
         {
             return Value == other.Value;
         }

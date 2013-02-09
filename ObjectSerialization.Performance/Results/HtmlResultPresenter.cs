@@ -55,8 +55,9 @@ namespace ObjectSerialization.Performance.Results
             WriteCell(sb, testCase);
             WriteCell(sb, category, categoryColor);
 
-            double max = results.Where(c => c.Failure == null).Select(valueGetter).Max();
-            double min = results.Where(c => c.Failure == null).Select(valueGetter).Min();
+            double[] values = results.Where(c => c.Failure == null).Select(valueGetter).ToArray();
+            double max = values.DefaultIfEmpty().Max();
+            double min = values.DefaultIfEmpty().Min();
 
             foreach (PerformanceResult result in results)
             {

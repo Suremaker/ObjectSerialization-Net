@@ -22,7 +22,7 @@ namespace ObjectSerialization.Performance
 
             PerformMeasurement(monitor);
 
-            var date = DateTime.Now;
+            DateTime date = DateTime.Now;
             WriteResult(date, new CsvResultPresenter(monitor.GetResults()));
             WriteResult(date, new HtmlResultPresenter(monitor.GetResults()));
             WriteResult(date, new TextResultPresenter(monitor.GetResults()));
@@ -134,12 +134,13 @@ namespace ObjectSerialization.Performance
             monitor.MeasureFor(Case.For("Instance of class with standard member type", new SimpleHolder { Value = new SimpleClass { Double = 3.65, Number = 99999, Text = "abcdef" } }));
             monitor.MeasureFor(Case.For("Instance of class with sealed member type", new SealedHolder { Value = new SealedClass { Double = 3.65, Number = 99999, Text = "abcdef" } }));
             monitor.MeasureFor(Case.For("Instance of class without parameterless ctor", new ClassWithoutParameterlessCtor(32)));
+            monitor.MeasureFor(Case.For("Instance of class with readonly field", new ClassWithReadonlyField(12)));
         }
 
         private static void WriteResult(DateTime date, ResultPresenter presenter)
         {
-            var version = typeof(ObjectSerializer).Assembly.GetName().Version;
-            var title = string.Format("Performance results for ver {0} - {1}", version, date.ToString("yyyy-MM-dd HH:mm:ss"));
+            Version version = typeof(ObjectSerializer).Assembly.GetName().Version;
+            string title = string.Format("Performance results for ver {0} - {1}", version, date.ToString("yyyy-MM-dd HH:mm:ss"));
             File.WriteAllText(string.Format("results_{0}.{1}", date.ToString("yyyy-MM-dd_HH-mm-ss"), presenter.Extension), presenter.Present(title));
         }
     }

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.Serialization;
 using ObjectSerialization.Builders.Types;
 
 namespace ObjectSerialization.Builders

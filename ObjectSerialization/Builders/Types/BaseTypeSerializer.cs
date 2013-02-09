@@ -6,6 +6,13 @@ namespace ObjectSerialization.Builders.Types
 {
     internal class BaseTypeSerializer
     {
+        public static Expression InstantiateNew(Type type)
+        {
+            if (type.IsClass && type.GetConstructor(new Type[0]) == null)
+                return Expression.TypeAs(Expression.Call(typeof(FormatterServices), "GetUninitializedObject", null, Expression.Constant(type)), type);
+            return Expression.New(type);
+        }
+
         protected static Expression CallDeserialize(Expression deserializer, Type propertyType, Expression readerObject)
         {
             return Expression.Convert(Expression.Call(deserializer, "Invoke", null, readerObject), propertyType);
@@ -71,13 +78,6 @@ namespace ObjectSerialization.Builders.Types
         protected Expression GetDirectSerializer(Type builderType, Type valueType)
         {
             return Expression.Property(null, builderType.MakeGenericType(valueType), "SerializeFn");
-        }
-
-        public static Expression InstantiateNew(Type type)
-        {
-            if (type.IsClass && type.GetConstructor(new Type[0]) == null)
-                return Expression.TypeAs(Expression.Call(typeof(FormatterServices), "GetUninitializedObject", null, Expression.Constant(type)), type);
-            return Expression.New(type);
         }
     }
 }

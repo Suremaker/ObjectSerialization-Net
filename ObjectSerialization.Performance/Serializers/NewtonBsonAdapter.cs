@@ -7,6 +7,7 @@ namespace ObjectSerialization.Performance.Serializers
     internal class NewtonBsonAdapter : ISerializerAdapter
     {
         readonly JsonSerializer _serializer = new JsonSerializer();
+
         #region ISerializerAdapter Members
 
         public byte[] Serialize<T>(T value, out long operationTime)

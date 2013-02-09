@@ -9,11 +9,6 @@
             Value = value;
         }
 
-        protected bool Equals(ClassWithoutEmptyCtor other)
-        {
-            return Value == other.Value;
-        }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -25,6 +20,11 @@
         public override int GetHashCode()
         {
             return Value;
+        }
+
+        protected bool Equals(ClassWithoutEmptyCtor other)
+        {
+            return Value == other.Value;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ObjectSerialization.Performance.Serializers
         public static T Measure<T>(Func<T> fun, out long operationTime)
         {
             _stopwatch.Restart();
-            var result = fun();
+            T result = fun();
             _stopwatch.Stop();
             operationTime = _stopwatch.ElapsedTicks;
             return result;

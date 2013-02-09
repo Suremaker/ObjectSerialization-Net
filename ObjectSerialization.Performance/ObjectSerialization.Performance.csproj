@@ -72,6 +72,7 @@
     <Compile Include="TestObjects\BaseType.cs" />
     <Compile Include="TestObjects\BasicTypes.cs" />
     <Compile Include="TestObjects\ClassWithoutParameterlessCtor.cs" />
+    <Compile Include="TestObjects\ClassWithReadonlyField.cs" />
     <Compile Include="TestObjects\ComplexTypeWithObject.cs" />
     <Compile Include="TestObjects\ComplexType.cs" />
     <Compile Include="TestObjects\CustomStruct.cs" />
