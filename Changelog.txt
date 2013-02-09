@@ -1,6 +1,10 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.24
+-------------------------------------------
++ created NuGet package
+
 Version 1.0.23
 -------------------------------------------
 + added support for serialization of classes without parameterless constructor
