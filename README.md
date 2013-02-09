@@ -11,6 +11,11 @@ A fast object graph binary serialization for .NET.
 * support for serialization of classes without parameter-less constructor;
 * support for serialization of arrays and collections implementing `ICollection<T>`;
 
+## Download
+It is possible to download package using [NuGet](http://nuget.org): `PM> Install-Package ObjectSerialization-Net`
+
+or compile from sources available on Git: `git clone git://github.com/Suremaker/ObjectSerialization-Net.git`
+
 ## Usage:
 
 ```c#
