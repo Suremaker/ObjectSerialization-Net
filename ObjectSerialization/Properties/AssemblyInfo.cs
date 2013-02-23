@@ -14,5 +14,5 @@ using System.Runtime.InteropServices;
 [assembly: Guid("561739c2-5436-4788-a357-68a8d03efcc1")]
 
 [assembly:InternalsVisibleTo("ObjectSerialization.UT")]
-[assembly: AssemblyVersion("1.0.25.0")]
-[assembly: AssemblyFileVersion("1.0.25.0")]
+[assembly: AssemblyVersion("1.0.26.0")]
+[assembly: AssemblyFileVersion("1.0.26.0")]

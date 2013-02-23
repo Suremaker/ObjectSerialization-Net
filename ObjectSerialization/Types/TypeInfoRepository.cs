@@ -60,7 +60,8 @@ namespace ObjectSerialization.Types
 		{
 			foreach (var type in asm.GetTypes()
 				.Where(t => t.GetCustomAttributes(typeof(SerializableAttribute), true).Any())
-				.Where(t => !t.ContainsGenericParameters))
+				.Where(t => !t.ContainsGenericParameters)
+				.OrderBy(t => t.FullName))
 			{
 				RegisterPredefined(type);
 				RegisterPredefined(type.MakeArrayType());
