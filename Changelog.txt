@@ -1,6 +1,10 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.25
+-------------------------------------------
++ added RegisterPredefinedUsingSerializableFrom to TypeInfoRepository
+
 Version 1.0.24
 -------------------------------------------
 + created NuGet package

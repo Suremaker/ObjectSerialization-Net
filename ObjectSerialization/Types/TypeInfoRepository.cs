@@ -20,6 +20,7 @@ namespace ObjectSerialization.Types
 				typeof (string),
 				typeof (bool),
 				typeof (byte),
+				typeof (sbyte),
 				typeof (ushort),
 				typeof (short),
 				typeof (uint),
@@ -32,7 +33,8 @@ namespace ObjectSerialization.Types
 				typeof (decimal),
 				typeof (object),
 				typeof (DateTime),
-				typeof (TimeSpan)
+				typeof (TimeSpan),
+				typeof (Guid)
 			};
 
 			foreach (Type type in predefinedTypes)
@@ -42,19 +44,30 @@ namespace ObjectSerialization.Types
 			}
 		}
 
-	    public static void RegisterPredefined(Type type)
-	    {
-	        TypeInfo info = LoadTypeInfo(type);
-	        if (!_typeDictionary.TryAdd(type.FullName, info))
-	            throw new ArgumentException("Type {0} cannot be registered as predefined one, because it already exist in repository", type.FullName);
-	        lock (_predefinedTypeList)
-	        {
-	            info.ShortTypeId = _predefinedTypeList.Count;
-	            _predefinedTypeList.Add(info);
-	        }
-	    }
+		public static void RegisterPredefined(Type type)
+		{
+			TypeInfo info = LoadTypeInfo(type);
+			if (!_typeDictionary.TryAdd(type.FullName, info))
+				throw new ArgumentException("Type {0} cannot be registered as predefined one, because it already exist in repository", type.FullName);
+			lock (_predefinedTypeList)
+			{
+				info.ShortTypeId = _predefinedTypeList.Count;
+				_predefinedTypeList.Add(info);
+			}
+		}
 
-	    internal static TypeInfo GetTypeInfo(Type type)
+		public static void RegisterPredefinedUsingSerializableFrom(Assembly asm)
+		{
+			foreach (var type in asm.GetTypes()
+				.Where(t => t.GetCustomAttributes(typeof(SerializableAttribute), true).Any())
+				.Where(t => !t.ContainsGenericParameters))
+			{
+				RegisterPredefined(type);
+				RegisterPredefined(type.MakeArrayType());
+			}
+		}
+
+		internal static TypeInfo GetTypeInfo(Type type)
 		{
 			TypeInfo info;
 			if (_typeDictionary.TryGetValue(type.FullName, out info))
@@ -83,7 +96,7 @@ namespace ObjectSerialization.Types
 			return _predefinedTypeList[shortTypeId];
 		}
 
-	    private static Type FindType(string type)
+		private static Type FindType(string type)
 		{
 			return AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetType(type, false)).First(t => t != null);
 		}

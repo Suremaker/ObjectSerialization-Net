@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("ObjectSerialization")]
@@ -12,5 +13,6 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: Guid("561739c2-5436-4788-a357-68a8d03efcc1")]
 
-[assembly: AssemblyVersion("1.0.24.0")]
-[assembly: AssemblyFileVersion("1.0.24.0")]
+[assembly:InternalsVisibleTo("ObjectSerialization.UT")]
+[assembly: AssemblyVersion("1.0.25.0")]
+[assembly: AssemblyFileVersion("1.0.25.0")]
