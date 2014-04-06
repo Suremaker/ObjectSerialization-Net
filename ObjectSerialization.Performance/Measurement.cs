@@ -42,7 +42,7 @@ namespace ObjectSerialization.Performance
             return _values.OrderBy(v => v)
                           .Skip(valuesCountToSkip)
                           .Take(Count - 2 * valuesCountToSkip)
-                          .Average(v => (double)v);
+                          .Average();
         }
 
         public void Compact()
