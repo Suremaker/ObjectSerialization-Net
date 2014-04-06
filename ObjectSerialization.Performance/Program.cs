@@ -135,7 +135,9 @@ namespace ObjectSerialization.Performance
             monitor.MeasureFor(Case.For("Instance of class with sealed member type", new SealedHolder { Value = new SealedClass { Double = 3.65, Number = 99999, Text = "abcdef" } }));
             monitor.MeasureFor(Case.For("Instance of class without parameterless ctor", new ClassWithoutParameterlessCtor(32)));
             monitor.MeasureFor(Case.For("Instance of class with readonly field", new ClassWithReadonlyField(12)));
-            monitor.MeasureFor(Case.For("Instance of class with all fields referring to the same object", new ClassWithFieldsReferringToTheSameValue(new SimpleClass { Text = "a" })));            
+            monitor.MeasureFor(Case.For("Instance of class with all fields referring to the same object", new ClassWithFieldsReferringToTheSameValue(new SimpleClass { Text = "a" })));
+
+            monitor.Summarize();
         }
 
         private static void WriteResult(DateTime date, ResultPresenter presenter)

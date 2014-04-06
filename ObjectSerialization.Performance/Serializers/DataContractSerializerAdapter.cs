@@ -7,24 +7,18 @@ namespace ObjectSerialization.Performance.Serializers
     {
         #region ISerializerAdapter Members
 
-        public byte[] Serialize<T>(T value, out long operationTime)
-        {
-            var serializer = new DataContractSerializer(typeof(T));
-            using (var stream = new MemoryStream())
-            {
-                ExecutionTimer.Measure(() => serializer.WriteObject(stream, value), out operationTime);
-                return stream.ToArray();
-            }
-        }
-
-        public T Deserialize<T>(byte[] data, out long operationTime)
-        {
-            var serializer = new DataContractSerializer(typeof(T));
-            using (var stream = new MemoryStream(data))
-                return ExecutionTimer.Measure(() => (T)serializer.ReadObject(stream), out operationTime);
-        }
-
         public string Name { get { return "DataContractSerializer"; } }
+        public T Deserialize<T>(Stream stream, out long operationTime)
+        {
+            var serializer = new DataContractSerializer(typeof(T));
+            return ExecutionTimer.Measure(() => (T)serializer.ReadObject(stream), out operationTime);
+        }
+
+        public void Serialize<T>(Stream stream, T value, out long operationTime)
+        {
+            var serializer = new DataContractSerializer(typeof(T));
+            ExecutionTimer.Measure(() => serializer.WriteObject(stream, value), out operationTime);
+        }
 
         #endregion
     }

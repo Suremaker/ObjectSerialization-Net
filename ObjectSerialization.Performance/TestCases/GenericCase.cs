@@ -1,3 +1,4 @@
+using System.IO;
 using ObjectSerialization.Performance.Serializers;
 
 namespace ObjectSerialization.Performance.TestCases
@@ -18,9 +19,13 @@ namespace ObjectSerialization.Performance.TestCases
             _value = value;
         }
 
-        protected override object Deserialize(ISerializerAdapter serializer, byte[] data, out long operationTime)
+        protected override object Deserialize(ISerializerAdapter serializer, Stream stream, out long operationTime)
         {
-            return serializer.Deserialize<T>(data, out operationTime);
+            try
+            {
+                return serializer.Deserialize<T>(stream, out operationTime);
+            }
+            finally { stream.Seek(0, SeekOrigin.Begin); }
         }
 
         protected override object GetValue()
@@ -28,9 +33,13 @@ namespace ObjectSerialization.Performance.TestCases
             return _value;
         }
 
-        protected override byte[] Serialize(ISerializerAdapter serializer, out long operationTime)
+        protected override void Serialize(ISerializerAdapter serializer, Stream stream, out long operationTime)
         {
-            return serializer.Serialize(_value, out operationTime);
+            try
+            {
+                serializer.Serialize(stream, _value, out operationTime);
+            }
+            finally { stream.Seek(0, SeekOrigin.Begin); }
         }
     }
 }

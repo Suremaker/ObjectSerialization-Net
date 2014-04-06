@@ -7,6 +7,7 @@
         public string Failure { get; set; }
         public Measurement SerializeTime { get; private set; }
         public string SerializerName { get; private set; }
+        public int MeasurementCount { get; private set; }
         public long Size { get; set; }
         public string TestCase { get; private set; }
 
@@ -16,6 +17,7 @@
             DeserializeTime = new Measurement(measurementCount);
             TestCase = testCase;
             SerializerName = serializerName;
+            MeasurementCount = measurementCount;
         }
 
         public override string ToString()

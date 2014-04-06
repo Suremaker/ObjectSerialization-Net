@@ -15,6 +15,7 @@ namespace ObjectSerialization.Performance
         public long Max { get { return _values.DefaultIfEmpty().Max(); } }
         public long Min { get { return _values.DefaultIfEmpty().Min(); } }
         public long Total { get { return _values.Sum(); } }
+        public IEnumerable<long> Values { get { return _values; } }
 
         public Measurement(int measurementCount)
         {

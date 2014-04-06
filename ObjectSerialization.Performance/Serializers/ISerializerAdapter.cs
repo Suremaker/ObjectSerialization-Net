@@ -1,9 +1,11 @@
-﻿namespace ObjectSerialization.Performance.Serializers
+﻿using System.IO;
+
+namespace ObjectSerialization.Performance.Serializers
 {
     internal interface ISerializerAdapter
     {
         string Name { get; }
-        T Deserialize<T>(byte[] data, out long operationTime);
-        byte[] Serialize<T>(T value, out long operationTime);
+        T Deserialize<T>(Stream stream, out long operationTime);
+        void Serialize<T>(Stream stream,T value, out long operationTime);
     }
 }

@@ -9,22 +9,16 @@ namespace ObjectSerialization.Performance.Serializers
 
         #region ISerializerAdapter Members
 
-        public byte[] Serialize<T>(T value, out long operationTime)
-        {
-            using (var stream = new MemoryStream())
-            {
-                ExecutionTimer.Measure(() => _formatter.Serialize(stream, value), out operationTime);
-                return stream.ToArray();
-            }
-        }
-
-        public T Deserialize<T>(byte[] data, out long operationTime)
-        {
-            using (var stream = new MemoryStream(data))
-                return ExecutionTimer.Measure(() => (T)_formatter.Deserialize(stream), out operationTime);
-        }
-
         public string Name { get { return "BinaryFormatter"; } }
+        public T Deserialize<T>(Stream stream, out long operationTime)
+        {
+            return ExecutionTimer.Measure(() => (T)_formatter.Deserialize(stream), out operationTime);
+        }
+
+        public void Serialize<T>(Stream stream, T value, out long operationTime)
+        {
+            ExecutionTimer.Measure(() => _formatter.Serialize(stream, value), out operationTime);
+        }
 
         #endregion
     }
