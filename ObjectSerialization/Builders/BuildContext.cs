@@ -8,76 +8,78 @@ using ObjectSerialization.Builders.Types;
 
 namespace ObjectSerialization.Builders
 {
-    internal class BuildContext<T>
-    {
-        public readonly LabelTarget ReadReturnLabel = Expression.Label(typeof(object), "ret");
-        public readonly ParameterExpression ReaderObject = Expression.Parameter(typeof(BinaryReader), "r");
+	internal class BuildContext<T>
+	{
+		public readonly LabelTarget ReadReturnLabel = Expression.Label(typeof(T), "ret");
+		public readonly ParameterExpression ReaderObject = Expression.Parameter(typeof(BinaryReader), "r");
 
-        public readonly ParameterExpression WriteObject = Expression.Variable(typeof(T), "v");
-        public readonly ParameterExpression WriterObject = Expression.Parameter(typeof(BinaryWriter), "w");
-        private readonly List<Expression> _readExpressions = new List<Expression>();
-        private readonly List<Expression> _writeExpressions = new List<Expression>();
-        private readonly ParameterExpression _writeParameter = Expression.Parameter(typeof(object), "o");
-        public ParameterExpression ReadResultObject { get; private set; }
+		public readonly ParameterExpression WriteObject = Expression.Parameter(typeof(T), "o");
+		public readonly ParameterExpression WriterObject = Expression.Parameter(typeof(BinaryWriter), "w");
+		private readonly List<Expression> _readExpressions = new List<Expression>();
+		private readonly List<Expression> _writeExpressions = new List<Expression>();
+		public ParameterExpression ReadResultObject { get; private set; }
 
-        public BuildContext()
-        {
-            _writeExpressions.Add(Expression.Assign(WriteObject, Expression.Convert(_writeParameter, typeof(T))));
-        }
+		public BuildContext()
+		{
+		}
 
-        public BuildContext(ParameterExpression readResult)
-            : this()
-        {
-            ReadResultObject = readResult;
-            _readExpressions.Add(Expression.Assign(ReadResultObject, BaseTypeSerializer.InstantiateNew(typeof(T))));
-        }
+		public BuildContext(ParameterExpression readResult)
+			: this()
+		{
+			ReadResultObject = readResult;
+			_readExpressions.Add(Expression.Assign(ReadResultObject, BaseTypeSerializer.InstantiateNew(typeof(T))));
+		}
 
-        public void AddReadExpression(Expression expr)
-        {
-            _readExpressions.Add(expr);
-        }
+		public void AddReadExpression(Expression expr)
+		{
+			_readExpressions.Add(expr);
+		}
 
-        public void AddWriteExpression(Expression expr)
-        {
-            _writeExpressions.Add(expr);
-        }
+		public void AddWriteExpression(Expression expr)
+		{
+			_writeExpressions.Add(expr);
+		}
 
-        public Func<BinaryReader, object> GetDeserializeFn()
-        {
-            if (ReadResultObject != null)
-                _readExpressions.Add(ReturnValue(ReadResultObject));
+		public Func<BinaryReader, T> GetDeserializeFn()
+		{
+			if (ReadResultObject != null)
+				_readExpressions.Add(ReturnValue(ReadResultObject));
 
-            List<Expression> expressions = _readExpressions.ToList();
+			List<Expression> expressions = _readExpressions.ToList();
 
-            expressions.Add(Expression.Label(ReadReturnLabel, Expression.Convert(Expression.Default(typeof(T)), typeof(object))));
-            Expression body = Expression.Block(ReadResultObject == null ? null : new[] { ReadResultObject }, expressions);
-            Expression<Func<BinaryReader, object>> expression = Expression.Lambda<Func<BinaryReader, object>>(body, ReaderObject);
+			expressions.Add(Expression.Label(ReadReturnLabel, Expression.Default(typeof(T))));
+			Expression body = Expression.Block(ReadResultObject == null ? null : new[] { ReadResultObject }, expressions);
+			Expression<Func<BinaryReader, T>> expression = Expression.Lambda<Func<BinaryReader, T>>(body, ReaderObject);
 #if DEBUG
 			DumpExpression("Deserialize", expression);
 #endif
-            return expression.Compile();
-        }
+			return expression.Compile();
+		}
 
-        public Action<BinaryWriter, object> GetSerializeFn()
-        {
-            BlockExpression blockExpression = Expression.Block(new[] { WriteObject }, _writeExpressions);
-            Expression<Action<BinaryWriter, object>> expression = Expression.Lambda<Action<BinaryWriter, object>>(blockExpression, WriterObject, _writeParameter);
+		public Action<BinaryWriter, T> GetSerializeFn()
+		{
+			Expression body = !_writeExpressions.Any()
+								  ? Expression.Empty()
+								  : (_writeExpressions.Count == 1)
+									? _writeExpressions[0]
+									: Expression.Block(_writeExpressions);
+			Expression<Action<BinaryWriter, T>> expression = Expression.Lambda<Action<BinaryWriter, T>>(body, WriterObject, WriteObject);
 #if DEBUG
 			DumpExpression("Serialize", expression);
 #endif
-            return expression.Compile();
-        }
+			return expression.Compile();
+		}
 
-        public Expression ReturnValue(Expression result)
-        {
-            return Expression.Return(ReadReturnLabel, Expression.Convert(result, typeof(object)), typeof(object));
-        }
+		public Expression ReturnValue(Expression result)
+		{
+			return Expression.Return(ReadReturnLabel, result, typeof(T));
+		}
 
-        private void DumpExpression(string operation, Expression expression)
-        {
-            object value = typeof(Expression).GetProperty("DebugView", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
-                      .GetValue(expression, null);
-            Console.Write("{0} {1}: {2}\n", typeof(T).Name, operation, value);
-        }
-    }
+		private void DumpExpression(string operation, Expression expression)
+		{
+			object value = typeof(Expression).GetProperty("DebugView", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+					  .GetValue(expression, null);
+			Console.Write("{0} {1}: {2}\n", typeof(T).Name, operation, value);
+		}
+	}
 }

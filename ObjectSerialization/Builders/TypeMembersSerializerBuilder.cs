@@ -11,10 +11,10 @@ namespace ObjectSerialization.Builders
 {
     internal class TypeMembersSerializerBuilder<T> : SerializerBuilder
     {
-        private static Func<BinaryReader, object> _deserializeFn;
-        private static Action<BinaryWriter, object> _serializeFn;
+        private static Func<BinaryReader, T> _deserializeFn;
+        private static Action<BinaryWriter, T> _serializeFn;
 
-        public static Func<BinaryReader, object> DeserializeFn
+        public static Func<BinaryReader, T> DeserializeFn
         {
             get
             {
@@ -24,7 +24,7 @@ namespace ObjectSerialization.Builders
             }
         }
 
-        public static Action<BinaryWriter, object> SerializeFn
+        public static Action<BinaryWriter, T> SerializeFn
         {
             get
             {

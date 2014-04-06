@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using ObjectSerialization.Builders;
 using ObjectSerialization.Types;
 
 namespace ObjectSerialization.Factories
@@ -8,12 +9,17 @@ namespace ObjectSerialization.Factories
     {
         public static Func<BinaryReader, object> GetDeserializer(string typeFullName)
         {
-			return TypeInfoRepository.GetTypeInfo(typeFullName).Deserializer;
+            return TypeInfoRepository.GetTypeInfo(typeFullName).Deserializer;
         }
 
         public static Func<BinaryReader, object> GetDeserializer(Type type)
         {
-			return TypeInfoRepository.GetTypeInfo(type).Deserializer;
+            return TypeInfoRepository.GetTypeInfo(type).Deserializer;
+        }
+
+        public static Func<BinaryReader, T> GetDeserializer<T>()
+        {
+            return TypeSerializerBuilder<T>.DeserializeFn;
         }
 
         public static Action<BinaryWriter, object> GetSerializer(string typeFullName)
@@ -24,6 +30,11 @@ namespace ObjectSerialization.Factories
         public static Action<BinaryWriter, object> GetSerializer(Type type)
         {
             return TypeInfoRepository.GetTypeInfo(type).Serializer;
+        }
+
+        public static Action<BinaryWriter, T> GetSerializer<T>()
+        {
+            return TypeSerializerBuilder<T>.SerializeFn;
         }
     }
 }

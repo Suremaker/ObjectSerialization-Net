@@ -24,7 +24,7 @@ namespace ObjectSerialization.Builders.Types
             if (v!= null)
             {
 				w.Write(v.Count);
-	            int s = TypeSerializerFactory.GetSerializer(typeof(T));
+	            int s = TypeSerializerFactory.GetSerializer<T>();
 	            IEnumerator<T> e = v.GetEnumerator();
 
 	            try
@@ -59,7 +59,7 @@ namespace ObjectSerialization.Builders.Types
                 return null;
                 
             TCollection<T> v=new TCollection<T>();
-            int s = TypeSerializerFactory.GetDeserializer(typeof(T));
+            int s = TypeSerializerFactory.GetDeserializer<T>();
             for(var i=0 ; i < c; ++i)
                 v.Add(s.Invoke(r));
             return v;*/
@@ -92,7 +92,7 @@ namespace ObjectSerialization.Builders.Types
         private Expression CreateReadLoop(Expression readerObject, Type expectedValueType, ParameterExpression count)
         {
             ParameterExpression index = Expression.Parameter(typeof(int), "i");
-            ParameterExpression deserializer = Expression.Parameter(typeof(Func<BinaryReader, object>), "s");
+			ParameterExpression deserializer = Expression.Parameter(GetReadSerializerDelegateType(GetCollectionItemType(expectedValueType)), "s");
             ParameterExpression result = Expression.Parameter(expectedValueType, "v");
             LabelTarget loopEndLabel = Expression.Label(expectedValueType);
 
@@ -100,12 +100,12 @@ namespace ObjectSerialization.Builders.Types
                 new[] { index, result, deserializer },
                 Expression.Assign(result, InstantiateNew(expectedValueType)),
                 Expression.Assign(index, Expression.Constant(0, typeof(int))),
-                Expression.Assign(deserializer, GetDeserializer<TypeSerializerFactory>(Expression.Constant(GetCollectionItemType(expectedValueType)))),
+                Expression.Assign(deserializer, GetDeserializer<TypeSerializerFactory>(GetCollectionItemType(expectedValueType))),
                 Expression.Loop(
                     Expression.IfThenElse(
                         Expression.LessThan(index, count),
                         Expression.Block(
-                            Expression.Call(Expression.TypeAs(result, GetCollectionType(expectedValueType)), "Add", null, CallDeserialize(deserializer, GetCollectionItemType(expectedValueType), readerObject)),
+                            Expression.Call(Expression.TypeAs(result, GetCollectionType(expectedValueType)), "Add", null, CallDeserialize(deserializer, readerObject)),
                             Expression.PreIncrementAssign(index)),
                         Expression.Break(loopEndLabel, result)),
                     loopEndLabel));
@@ -117,18 +117,18 @@ namespace ObjectSerialization.Builders.Types
         {
             Type enumeratorType = GetEnumeratorType(valueType);
             ParameterExpression enumerator = Expression.Parameter(enumeratorType, "e");
-            ParameterExpression serializer = Expression.Parameter(typeof(Action<BinaryWriter, object>), "s");
+			ParameterExpression serializer = Expression.Parameter(GetWriteSerializerDelegateType(GetCollectionItemType(valueType)), "s");
             LabelTarget loopEndLabel = Expression.Label();
 
             return Expression.Block(
                 new[] { enumerator, serializer },
-                Expression.Assign(serializer, GetSerializer<TypeSerializerFactory>(Expression.Constant(GetCollectionItemType(valueType)))),
+                Expression.Assign(serializer, GetSerializer<TypeSerializerFactory>(GetCollectionItemType(valueType))),
                 Expression.Assign(enumerator, Expression.Convert(Expression.Call(value, "GetEnumerator", null), enumeratorType)),
                 Expression.TryFinally(
                     Expression.Loop(
                         Expression.IfThenElse(
                             Expression.Call(Expression.TypeAs(enumerator, typeof(IEnumerator)), "MoveNext", null),
-                            CallSerializeWithConvert(serializer, Expression.Property(enumerator, "Current"), writerObject),
+                            CallSerialize(serializer, Expression.Property(enumerator, "Current"), writerObject),
                             Expression.Break(loopEndLabel)),
                         loopEndLabel),
                     Expression.Call(Expression.TypeAs(enumerator, typeof(IDisposable)), "Dispose", null)));

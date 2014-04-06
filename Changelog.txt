@@ -1,6 +1,10 @@
 ObjectSerialization
 ===========================================
 
+Version 1.0.27
+-------------------------------------------
++ Optimized collections / arrays serialization by using generic methods of TypeSerializerFactory
+
 Version 1.0.26
 -------------------------------------------
 + ensured proper and constant order of registered types with TypeInfoRepository.RegisterPredefinedUsingSerializableFrom

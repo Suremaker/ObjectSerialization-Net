@@ -63,8 +63,8 @@ namespace ObjectSerialization.Builders.Types
 
             ParameterExpression flag = Expression.Variable(typeof(byte), "b");
             BinaryExpression readFlag = Expression.Assign(flag, GetReadExpression("ReadByte", readerObject));
-            Expression deserializeClass = CallDeserialize(GetDirectDeserializer(typeof(TypeMembersSerializerBuilder<>), expectedValueType), expectedValueType, readerObject);
-            Expression deserializePolymorphic = CallDeserialize(GetDeserializerField(ReadTypeInfo(readerObject)), expectedValueType, readerObject);
+            Expression deserializeClass = CallDeserialize(GetDirectDeserializer(typeof(TypeMembersSerializerBuilder<>), expectedValueType), readerObject);
+            Expression deserializePolymorphic = CallDeserializeWithConvert(GetDeserializerField(ReadTypeInfo(readerObject)), expectedValueType, readerObject);
 
             ConditionalExpression deserialization = Expression.Condition(
                 Expression.Equal(flag, Expression.Constant((byte)0)),

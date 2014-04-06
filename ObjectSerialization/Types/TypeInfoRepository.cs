@@ -115,8 +115,8 @@ namespace ObjectSerialization.Types
 				Type = type,
 				LongTypeId = type.FullName,
 				ShortTypeId = null,
-				Serializer = (Action<BinaryWriter, object>)builderType.GetProperty("SerializeFn", BindingFlags.Static | BindingFlags.Public).GetValue(null, null),
-				Deserializer = (Func<BinaryReader, object>)builderType.GetProperty("DeserializeFn", BindingFlags.Static | BindingFlags.Public).GetValue(null, null)
+				Serializer = (Action<BinaryWriter, object>)Delegate.CreateDelegate(typeof(Action<BinaryWriter, object>), builderType.GetMethod("SerializeWithCast", BindingFlags.Static | BindingFlags.Public)),
+				Deserializer = (Func<BinaryReader, object>)Delegate.CreateDelegate(typeof(Func<BinaryReader, object>), builderType.GetMethod("DeserializeWithCast", BindingFlags.Static | BindingFlags.Public))
 			};
 		}
 	}

@@ -16,18 +16,18 @@ namespace ObjectSerialization.Builders.Types
 
         public Expression Write(Expression writerObject, Expression value, Type valueType)
         {
-			/*BinaryWriter w;
+            /*BinaryWriter w;
             T[] v;
             if (v != null)
             {
-				w.Write(v.Length);
-				int c = v.Length;
-				int s = TypeSerializerFactory.GetSerializer(typeof(T));
-				for (var i = 0; i < c; ++i)
-					s.Invoke(w, v[i]);                
+                w.Write(v.Length);
+                int c = v.Length;
+                int s = TypeSerializerFactory.GetSerializer<T>();
+                for (var i = 0; i < c; ++i)
+                    s.Invoke(w, v[i]);                
             }
             else
-				w.Write(-1);*/
+                w.Write(-1);*/
 
             Expression checkNotNull = CheckNotNull(value, valueType);
 
@@ -45,7 +45,7 @@ namespace ObjectSerialization.Builders.Types
 		        return null;
             
             T[]v=new T[c];
-            int s = TypeSerializerFactory.GetDeserializer(typeof (T));
+            int s = TypeSerializerFactory.GetDeserializer<T>();
             for(var i=0 ; i < c; ++i)
                 v[i] = s.Invoke(r);
             return v;
@@ -69,19 +69,19 @@ namespace ObjectSerialization.Builders.Types
         {
             ParameterExpression index = Expression.Parameter(typeof(int), "i");
             ParameterExpression count = Expression.Parameter(typeof(int), "c");
-            ParameterExpression serializer = Expression.Parameter(typeof(Action<BinaryWriter, object>), "s");
+            ParameterExpression serializer = Expression.Parameter(GetWriteSerializerDelegateType(valueType.GetElementType()), "s");
             LabelTarget loopEndLabel = Expression.Label();
 
             return Expression.Block(
                 new[] { index, count, serializer },
                 Expression.Assign(index, Expression.Constant(0, typeof(int))),
                 Expression.Assign(count, Expression.Property(value, "Length")),
-                Expression.Assign(serializer, GetSerializer<TypeSerializerFactory>(Expression.Constant(valueType.GetElementType()))),
+                Expression.Assign(serializer, GetSerializer<TypeSerializerFactory>(valueType.GetElementType())),
                 Expression.Loop(
                     Expression.IfThenElse(
                         Expression.LessThan(index, count),
                         Expression.Block(
-                            CallSerializeWithConvert(serializer, Expression.ArrayAccess(value, index), writerObject),
+                            CallSerialize(serializer, Expression.ArrayAccess(value, index), writerObject),
                             Expression.PreIncrementAssign(index)),
                         Expression.Break(loopEndLabel)),
                     loopEndLabel));
@@ -90,7 +90,7 @@ namespace ObjectSerialization.Builders.Types
         private Expression CreateReadLoop(Expression readerObject, Type expectedValueType, ParameterExpression count)
         {
             ParameterExpression index = Expression.Parameter(typeof(int), "i");
-            ParameterExpression deserializer = Expression.Parameter(typeof(Func<BinaryReader, object>), "s");
+            ParameterExpression deserializer = Expression.Parameter(GetReadSerializerDelegateType(expectedValueType.GetElementType()), "s");
             ParameterExpression result = Expression.Parameter(expectedValueType, "r");
             LabelTarget loopEndLabel = Expression.Label(expectedValueType);
 
@@ -98,17 +98,19 @@ namespace ObjectSerialization.Builders.Types
                 new[] { index, result, deserializer },
                 Expression.Assign(result, Expression.NewArrayBounds(expectedValueType.GetElementType(), count)),
                 Expression.Assign(index, Expression.Constant(0, typeof(int))),
-                Expression.Assign(deserializer, GetDeserializer<TypeSerializerFactory>(Expression.Constant(expectedValueType.GetElementType()))),
+                Expression.Assign(deserializer, GetDeserializer<TypeSerializerFactory>(expectedValueType.GetElementType())),
                 Expression.Loop(
                     Expression.IfThenElse(
                         Expression.LessThan(index, count),
                         Expression.Block(
-                            Expression.Assign(Expression.ArrayAccess(result, index), CallDeserialize(deserializer, expectedValueType.GetElementType(), readerObject)),
+                            Expression.Assign(Expression.ArrayAccess(result, index), CallDeserialize(deserializer, readerObject)),
                             Expression.PreIncrementAssign(index)),
                         Expression.Break(loopEndLabel, result)),
                     loopEndLabel));
 
             return forLoop;
         }
+
+
     }
 }

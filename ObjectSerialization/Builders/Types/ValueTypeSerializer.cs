@@ -19,7 +19,7 @@ namespace ObjectSerialization.Builders.Types
 			TypeMembersSerializerBuilder<T>.SerializeFn.Invoke(w, v);
 			*/
 
-			return CallSerializeWithConvert(GetDirectSerializer(typeof(TypeMembersSerializerBuilder<>),valueType), value, writerObject);
+			return CallSerialize(GetDirectSerializer(typeof(TypeMembersSerializerBuilder<>),valueType), value, writerObject);
         }
 
         public Expression Read(Expression readerObject, Type expectedValueType)
@@ -27,7 +27,7 @@ namespace ObjectSerialization.Builders.Types
 			/*BinaryReader r;
 			return TypeMembersSerializerBuilder<T>.DeserializeFn.Invoke(r)
 			*/
-			return CallDeserialize(GetDirectDeserializer(typeof(TypeMembersSerializerBuilder<>), expectedValueType), expectedValueType, readerObject);
+			return CallDeserialize(GetDirectDeserializer(typeof(TypeMembersSerializerBuilder<>), expectedValueType), readerObject);
         }
 
         #endregion
