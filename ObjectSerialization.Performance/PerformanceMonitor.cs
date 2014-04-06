@@ -45,11 +45,11 @@ namespace ObjectSerialization.Performance
 
         private PerformanceResult CreateSummary(IGrouping<string, PerformanceResult> group)
         {
-            var performanceResult = new PerformanceResult("Summary", group.Key, group.Sum(g => g.MeasurementCount));
+            var performanceResult = new PerformanceResult("Summary", group.Key, group.Count());
             performanceResult.Size = group.Sum(g => g.Size);
-            foreach (var value in group.Select(g => g.SerializeTime).SelectMany(s => s.Values))
+            foreach (var value in group.Select(g => g.SerializeTime).Select(s => s.Avg))
                 performanceResult.SerializeTime.Add(value);
-            foreach (var value in group.Select(g => g.DeserializeTime).SelectMany(s => s.Values))
+            foreach (var value in group.Select(g => g.DeserializeTime).Select(s => s.Avg))
                 performanceResult.DeserializeTime.Add(value);
             return performanceResult;
         }

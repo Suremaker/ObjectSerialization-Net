@@ -7,24 +7,28 @@ namespace ObjectSerialization.Performance
 {
     internal class Measurement
     {
-        private readonly List<long> _values;
-
-        public double Avg { get { return CalculateAvg(); } }
-
-        public int Count { get { return _values.Count; } }
-        public long Max { get { return _values.DefaultIfEmpty().Max(); } }
-        public long Min { get { return _values.DefaultIfEmpty().Min(); } }
-        public long Total { get { return _values.Sum(); } }
-        public IEnumerable<long> Values { get { return _values; } }
+        private List<double> _values;
+        public double Avg { get; private set; }
+        public int Count { get; private set; }
+        public double Max { get; private set; }
+        public double Min { get; private set; }
+        public double Total { get; private set; }
 
         public Measurement(int measurementCount)
         {
-            _values = new List<long>(measurementCount);
+            _values = new List<double>(measurementCount);
+            Min = double.MaxValue;
         }
 
-        public void Add(long value)
+        public void Add(double value)
         {
+            if (_values == null)
+                throw new InvalidOperationException("Values are already compacted");
             _values.Add(value);
+            ++Count;
+            Max = Math.Max(Max, value);
+            Min = Math.Min(Min, value);
+            Total += value;
         }
 
         public override string ToString()
@@ -39,6 +43,12 @@ namespace ObjectSerialization.Performance
                           .Skip(valuesCountToSkip)
                           .Take(Count - 2 * valuesCountToSkip)
                           .Average(v => (double)v);
+        }
+
+        public void Compact()
+        {
+            Avg = CalculateAvg();
+            _values = null;
         }
     }
 }
