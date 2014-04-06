@@ -142,7 +142,6 @@ namespace ObjectSerialization.Performance
             monitor.MeasureFor(Case.For("Instance of class with readonly field", new ClassWithReadonlyField(12)));
             monitor.MeasureFor(Case.For("Instance of class with all fields referring to the same object", new ClassWithFieldsReferringToTheSameValue(new SimpleClass { Text = "a" })));
             monitor.MeasureFor(Case.For("Instance of int", 32));
-            monitor.Summarize();
         }
 
         private static void WriteResult(DateTime date, ResultPresenter presenter)
