@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using ObjectSerialization.Performance.Results;
 using ObjectSerialization.Performance.Serializers;
 using ObjectSerialization.Performance.TestCases;
@@ -19,6 +20,10 @@ namespace ObjectSerialization.Performance
                 new ProtoBufAdapter(),
                 new NewtonBsonAdapter(),
                 new DataContractSerializerAdapter());
+
+            Console.WriteLine("Press enter to start");
+            Console.ReadLine();
+            Thread.CurrentThread.Priority = ThreadPriority.Highest;
 
             PerformMeasurement(monitor);
 
@@ -136,7 +141,7 @@ namespace ObjectSerialization.Performance
             monitor.MeasureFor(Case.For("Instance of class without parameterless ctor", new ClassWithoutParameterlessCtor(32)));
             monitor.MeasureFor(Case.For("Instance of class with readonly field", new ClassWithReadonlyField(12)));
             monitor.MeasureFor(Case.For("Instance of class with all fields referring to the same object", new ClassWithFieldsReferringToTheSameValue(new SimpleClass { Text = "a" })));
-
+            monitor.MeasureFor(Case.For("Instance of int", 32));
             monitor.Summarize();
         }
 
