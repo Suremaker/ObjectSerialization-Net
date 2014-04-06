@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using ObjectSerialization.Performance.Serializers;
 
@@ -7,7 +8,7 @@ namespace ObjectSerialization.Performance.TestCases
 {
     abstract class TestCase
     {
-        private const int _measurementCount = 10000;
+        private const int _measurementCount = 500000;
         public abstract string Name { get; }
         public PerformanceResult Measure(ISerializerAdapter serializer)
         {
@@ -23,31 +24,35 @@ namespace ObjectSerialization.Performance.TestCases
             return result;
         }
 
-        protected abstract object Deserialize(ISerializerAdapter serializer, byte[] data, out long operationTime);
+        protected abstract object Deserialize(ISerializerAdapter serializer, Stream stream, out long operationTime);
         protected abstract object GetValue();
-        protected abstract byte[] Serialize(ISerializerAdapter serializer, out long operationTime);
+        protected abstract void Serialize(ISerializerAdapter serializer, Stream stream, out long operationTime);
 
         private void Measure(ISerializerAdapter serializer, PerformanceResult result)
         {
-            ValidateSerializer(serializer, result);
-
-            for (int i = 0; i < _measurementCount; ++i)
+            GC.Collect();
+            using (var stream = new MemoryStream())
             {
-                long operationTime;
-                byte[] data = Serialize(serializer, out operationTime);
-                result.SerializeTime.Add(operationTime);
+                ValidateSerializer(serializer, stream, result);
 
-                Deserialize(serializer, data, out operationTime);
-                result.DeserializeTime.Add(operationTime);
+                for (int i = 0; i < _measurementCount; ++i)
+                {
+                    long operationTime;
+                    Serialize(serializer, stream, out operationTime);
+                    result.SerializeTime.Add(operationTime);
+
+                    Deserialize(serializer, stream, out operationTime);
+                    result.DeserializeTime.Add(operationTime);
+                }
             }
         }
 
-        private void ValidateSerializer(ISerializerAdapter serializer, PerformanceResult result)
+        private void ValidateSerializer(ISerializerAdapter serializer, MemoryStream stream, PerformanceResult result)
         {
             long operationTime;
-            byte[] serializedData = Serialize(serializer, out operationTime);
-            result.Size = serializedData.Length;
-            object deserialized = Deserialize(serializer, serializedData, out operationTime);
+            Serialize(serializer, stream, out operationTime);
+            result.Size = stream.Length;
+            object deserialized = Deserialize(serializer, stream, out operationTime);
             var deserializedEnumerable = deserialized as IEnumerable;
 
             if (deserializedEnumerable != null)
@@ -57,6 +62,7 @@ namespace ObjectSerialization.Performance.TestCases
             }
             else if (!Equals(deserialized, GetValue()))
                 throw new Exception("Deserialized object does not equal expected one");
+
         }
     }
 }
