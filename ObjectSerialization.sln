@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialization", "ObjectSerialization\ObjectSerialization.csproj", "{32D2BED8-AE96-4E80-A981-5188FEB260D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialization.UT", "ObjectSerialization.UT\ObjectSerialization.UT.csproj", "{25015080-9E1B-49F2-9F1F-D22C1418B25F}"
@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialization.Performance", "ObjectSerialization.Performance\ObjectSerialization.Performance.csproj", "{724404A9-0638-4378-A0BC-D76B62FB0E3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBuilder", "..\CodeBuilder\CodeBuilder\CodeBuilder.csproj", "{22256B91-E772-40A0-BED3-AA6E10EEF1E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBuilder.UT", "..\CodeBuilder\CodeBuilder.UT\CodeBuilder.UT.csproj", "{900FC247-1330-4CBA-A1C7-A450993065C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,26 @@ Global
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Release|x86.ActiveCfg = Release|x86
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Release|x86.Build.0 = Release|x86
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{22256B91-E772-40A0-BED3-AA6E10EEF1E5}.Release|x86.ActiveCfg = Release|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{900FC247-1330-4CBA-A1C7-A450993065C5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

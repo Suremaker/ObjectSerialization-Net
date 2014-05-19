@@ -15,11 +15,11 @@ namespace ObjectSerialization.Performance
         static void Main()
         {
             var monitor = new PerformanceMonitor(
-                new ObjectSerializerAdapter(),
+                new ObjectSerializerAdapter()/*,
                 new BinaryFormatterAdapter(),
                 new ProtoBufAdapter(),
                 new NewtonBsonAdapter(),
-                new DataContractSerializerAdapter());
+                new DataContractSerializerAdapter()*/);
 
             Console.WriteLine("Press enter to start");
             Console.ReadLine();

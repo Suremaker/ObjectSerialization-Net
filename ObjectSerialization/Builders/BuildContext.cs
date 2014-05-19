@@ -1,85 +1,82 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+using System.Reflection.Emit;
+using CodeBuilder;
+using CodeBuilder.Expressions;
 using ObjectSerialization.Builders.Types;
 
 namespace ObjectSerialization.Builders
 {
-	internal class BuildContext<T>
-	{
-		public readonly LabelTarget ReadReturnLabel = Expression.Label(typeof(T), "ret");
-		public readonly ParameterExpression ReaderObject = Expression.Parameter(typeof(BinaryReader), "r");
+    internal class BuildContext<T>
+    {
+        private readonly string _suffix;
+        public readonly Expression ReaderObject = Expr.Parameter(0, typeof(BinaryReader));
 
-		public readonly ParameterExpression WriteObject = Expression.Parameter(typeof(T), "o");
-		public readonly ParameterExpression WriterObject = Expression.Parameter(typeof(BinaryWriter), "w");
-		private readonly List<Expression> _readExpressions = new List<Expression>();
-		private readonly List<Expression> _writeExpressions = new List<Expression>();
-		public ParameterExpression ReadResultObject { get; private set; }
+        public readonly Expression WriteObject = Expr.Parameter(1, typeof(T));
+        public readonly Expression WriterObject = Expr.Parameter(0, typeof(BinaryWriter));
+        private readonly List<Expression> _readExpressions = new List<Expression>();
+        private readonly List<Expression> _writeExpressions = new List<Expression>();
+        public LocalVariable ReadResultObject { get; private set; }
 
-		public BuildContext()
-		{
-		}
+        public BuildContext(string suffix)
+        {
+            _suffix = suffix;
+        }
 
-		public BuildContext(ParameterExpression readResult)
-			: this()
-		{
-			ReadResultObject = readResult;
-			_readExpressions.Add(Expression.Assign(ReadResultObject, BaseTypeSerializer.InstantiateNew(typeof(T))));
-		}
+        public BuildContext(LocalVariable readResult, string suffix)
+            : this(suffix)
+        {
+            ReadResultObject = readResult;
+            _readExpressions.Add(Expr.DeclareLocal(ReadResultObject, BaseTypeSerializer.InstantiateNew(typeof(T))));
+        }
 
-		public void AddReadExpression(Expression expr)
-		{
-			_readExpressions.Add(expr);
-		}
+        public void AddReadExpression(Expression expr)
+        {
+            _readExpressions.Add(expr);
+        }
 
-		public void AddWriteExpression(Expression expr)
-		{
-			_writeExpressions.Add(expr);
-		}
+        public void AddWriteExpression(Expression expr)
+        {
+            _writeExpressions.Add(expr);
+        }
 
-		public Func<BinaryReader, T> GetDeserializeFn()
-		{
-			if (ReadResultObject != null)
-				_readExpressions.Add(ReturnValue(ReadResultObject));
+        public Func<BinaryReader, T> GetDeserializeFn()
+        {
+            if (ReadResultObject != null)
+                _readExpressions.Add(Expr.Return(Expr.ReadLocal(ReadResultObject)));
 
-			List<Expression> expressions = _readExpressions.ToList();
+            return DefineMethod<Func<BinaryReader, T>>("Deserialize", typeof(T), new[] { typeof(BinaryReader) }, _readExpressions.ToArray());
 
-			expressions.Add(Expression.Label(ReadReturnLabel, Expression.Default(typeof(T))));
-			Expression body = Expression.Block(ReadResultObject == null ? null : new[] { ReadResultObject }, expressions);
-			Expression<Func<BinaryReader, T>> expression = Expression.Lambda<Func<BinaryReader, T>>(body, ReaderObject);
+        }
+
+        public Action<BinaryWriter, T> GetSerializeFn()
+        {
+            return DefineMethod<Action<BinaryWriter, T>>("Serialize", typeof(void), new[] { typeof(BinaryWriter), typeof(T) }, _writeExpressions.ToArray());
+        }
+
+        public Expression ReturnValue(Expression result)
+        {
+            return Expr.Return(result);
+        }
+
+        private void DumpExpression(DynamicMethod method, MethodBodyBuilder builder)
+        {
+            Console.Write("{0} {1}:\n{2}\n\n", typeof(T).Name, method.Name, builder);
+        }
+
+        private T DefineMethod<T>(string name, Type returnType, Type[] parameters, params Expression[] body)
+        {
+            var method = new DynamicMethod(name + _suffix, returnType, parameters, true);
+
+            var bodyBuilder = new MethodBodyBuilder(method, parameters);
+            bodyBuilder.AddStatements(body);
 #if DEBUG
-			DumpExpression("Deserialize", expression);
+            DumpExpression(method, bodyBuilder);
 #endif
-			return expression.Compile();
-		}
+            bodyBuilder.Compile();
 
-		public Action<BinaryWriter, T> GetSerializeFn()
-		{
-			Expression body = !_writeExpressions.Any()
-								  ? Expression.Empty()
-								  : (_writeExpressions.Count == 1)
-									? _writeExpressions[0]
-									: Expression.Block(_writeExpressions);
-			Expression<Action<BinaryWriter, T>> expression = Expression.Lambda<Action<BinaryWriter, T>>(body, WriterObject, WriteObject);
-#if DEBUG
-			DumpExpression("Serialize", expression);
-#endif
-			return expression.Compile();
-		}
-
-		public Expression ReturnValue(Expression result)
-		{
-			return Expression.Return(ReadReturnLabel, result, typeof(T));
-		}
-
-		private void DumpExpression(string operation, Expression expression)
-		{
-			object value = typeof(Expression).GetProperty("DebugView", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
-					  .GetValue(expression, null);
-			Console.Write("{0} {1}: {2}\n", typeof(T).Name, operation, value);
-		}
-	}
+            return (T)(object)method.CreateDelegate(typeof(T));
+        }
+    }
 }

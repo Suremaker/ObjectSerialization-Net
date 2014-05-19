@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using CodeBuilder;
+using CodeBuilder.Expressions;
 
 namespace ObjectSerialization.Builders.Types
 {
@@ -26,9 +27,9 @@ namespace ObjectSerialization.Builders.Types
 
 			Expression notNull = CheckNotNull(value, valueType);
 
-			return Expression.Block(
+			return Expr.Block(
 				GetWriteExpression(notNull, writerObject),
-				Expression.IfThen(
+				Expr.IfThen(
 					notNull,
 					GetWriteExpression(value, writerObject)));
 		}
@@ -39,10 +40,10 @@ namespace ObjectSerialization.Builders.Types
 			BinaryReader r;
 			return r.ReadBoolean()?r.ReadString():null;*/
 
-			return Expression.Condition(
+			return Expr.IfThenElse(
 				GetReadExpression("ReadBoolean", readerObject),
 				GetReadExpression("Read" + expectedValueType.Name, readerObject),
-				Expression.Constant(null, expectedValueType));
+				Expr.Null(expectedValueType));
 		}
 
 	    #endregion

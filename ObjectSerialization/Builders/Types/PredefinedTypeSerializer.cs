@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using CodeBuilder.Expressions;
 
 namespace ObjectSerialization.Builders.Types
 {

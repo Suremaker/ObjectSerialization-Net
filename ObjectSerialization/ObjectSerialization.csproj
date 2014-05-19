@@ -55,6 +55,12 @@
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeBuilder\CodeBuilder\CodeBuilder.csproj">
+      <Project>{22256B91-E772-40A0-BED3-AA6E10EEF1E5}</Project>
+      <Name>CodeBuilder</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

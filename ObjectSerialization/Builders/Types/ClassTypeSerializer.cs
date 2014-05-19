@@ -1,5 +1,6 @@
 using System;
-using System.Linq.Expressions;
+using CodeBuilder;
+using CodeBuilder.Expressions;
 using ObjectSerialization.Types;
 
 namespace ObjectSerialization.Builders.Types
@@ -35,19 +36,19 @@ namespace ObjectSerialization.Builders.Types
 
 
             Expression checkNotNull = CheckNotNull(value, valueType);
-            BlockExpression serializeClass = Expression.Block(
-                GetWriteExpression(Expression.Constant((byte)1), writerObject),
+            BlockExpression serializeClass = Expr.Block(
+                GetWriteExpression(Expr.Constant((byte)1), writerObject),
                 CallSerialize(GetDirectSerializer(typeof(TypeMembersSerializerBuilder<>), valueType), value, writerObject));
 
-            BlockExpression serializePolymorphicClass = Expression.Block(
-                GetWriteExpression(Expression.Constant((byte)2), writerObject),
+            BlockExpression serializePolymorphicClass = Expr.Block(
+                GetWriteExpression(Expr.Constant((byte)2), writerObject),
                 CallSerialize(GetSerializerField(WriteTypeInfo(writerObject, value)), value, writerObject));
 
             Expression serializationExpression = GetSerializationExpression(value, valueType, serializeClass, serializePolymorphicClass);
 
-            return Expression.IfThenElse(checkNotNull,
+            return Expr.IfThenElse(checkNotNull,
                 serializationExpression,
-                GetWriteExpression(Expression.Constant((byte)0), writerObject));
+                GetWriteExpression(Expr.Constant((byte)0), writerObject));
 
         }
 
@@ -61,30 +62,30 @@ namespace ObjectSerialization.Builders.Types
                     ? TypeMembersSerializerBuilder<T>.DeserializeFn.Invoke(r)
                     :TypeInfoWriter.ReadInfo(r).Deserializer.Invoke(r));*/
 
-            ParameterExpression flag = Expression.Variable(typeof(byte), "b");
-            BinaryExpression readFlag = Expression.Assign(flag, GetReadExpression("ReadByte", readerObject));
+            var flag = Expr.LocalVariable(typeof(byte), "b");
+            var readFlag = Expr.DeclareLocal(flag, GetReadExpression("ReadByte", readerObject));
             Expression deserializeClass = CallDeserialize(GetDirectDeserializer(typeof(TypeMembersSerializerBuilder<>), expectedValueType), readerObject);
             Expression deserializePolymorphic = CallDeserializeWithConvert(GetDeserializerField(ReadTypeInfo(readerObject)), expectedValueType, readerObject);
 
-            ConditionalExpression deserialization = Expression.Condition(
-                Expression.Equal(flag, Expression.Constant((byte)0)),
-                Expression.Constant(null, expectedValueType),
-                GetDeserializationExpression(flag,expectedValueType, deserializeClass, deserializePolymorphic));
+            var deserialization = Expr.IfThenElse(
+                Expr.ReadLocal(flag),
+                GetDeserializationExpression(Expr.ReadLocal(flag), expectedValueType, deserializeClass, deserializePolymorphic),
+                Expr.Null(expectedValueType));
 
-            return Expression.Block(new[] { flag }, readFlag, deserialization);
+            return Expr.ValueBlock(expectedValueType, readFlag, deserialization);
         }
 
         #endregion
 
-        private static Expression GetDeserializationExpression(ParameterExpression flag, Type expectedValueType, Expression deserializeClass, Expression deserializePolymorphic)
+        private static Expression GetDeserializationExpression(Expression flag, Type expectedValueType, Expression deserializeClass, Expression deserializePolymorphic)
         {
             if (expectedValueType.IsSealed)
                 return deserializeClass;
             if (IsPurePolymorphic(expectedValueType))
                 return deserializePolymorphic;
 
-            return Expression.Condition(
-                Expression.Equal(flag, Expression.Constant((byte)1)),
+            return Expr.IfThenElse(
+                Expr.Equal(flag, Expr.Constant((byte)1)),
                 deserializeClass,
                 deserializePolymorphic);
         }
@@ -97,8 +98,8 @@ namespace ObjectSerialization.Builders.Types
             if (IsPurePolymorphic(valueType))
                 return serializePolymorphicClass;
 
-            return Expression.IfThenElse(
-                Expression.Equal(GetActualValueType(value), Expression.Constant(valueType)),
+            return Expr.IfThenElse(
+                Expr.Equal(GetActualValueType(value), Expr.Constant(valueType)),
                 serializeClass,
                 serializePolymorphicClass
                 );
@@ -111,22 +112,22 @@ namespace ObjectSerialization.Builders.Types
 
         private Expression GetDeserializerField(Expression typeInfo)
         {
-            return Expression.Field(typeInfo, "Deserializer");
+            return Expr.ReadField(typeInfo, "Deserializer");
         }
 
         private Expression GetSerializerField(Expression typeInfo)
         {
-            return Expression.Field(typeInfo, "Serializer");
+            return Expr.ReadField(typeInfo, "Serializer");
         }
 
-        private MethodCallExpression ReadTypeInfo(Expression readerObject)
+        private CallExpression ReadTypeInfo(Expression readerObject)
         {
-            return Expression.Call(typeof(TypeInfoWriter), "ReadInfo", null, readerObject);
+            return Expr.Call(typeof(TypeInfoWriter), "ReadInfo", readerObject);
         }
 
         private Expression WriteTypeInfo(Expression writerObject, Expression value)
         {
-            return Expression.Call(typeof(TypeInfoWriter), "WriteInfo", null, writerObject, GetActualValueType(value));
+            return Expr.Call(typeof(TypeInfoWriter), "WriteInfo", writerObject, GetActualValueType(value));
         }
     }
 }

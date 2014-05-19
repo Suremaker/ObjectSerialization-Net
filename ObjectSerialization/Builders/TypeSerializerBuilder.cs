@@ -42,7 +42,7 @@ namespace ObjectSerialization.Builders
 
         private static void Build()
         {
-            var ctx = new BuildContext<T>();
+            var ctx = new BuildContext<T>("");
             BuildTypeSerializer(typeof(T), ctx);
             _serializeFn = ctx.GetSerializeFn();
             _deserializeFn = ctx.GetDeserializeFn();

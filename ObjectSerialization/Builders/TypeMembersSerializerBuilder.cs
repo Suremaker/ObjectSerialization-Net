@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
+using CodeBuilder;
+using CodeBuilder.Expressions;
 using ObjectSerialization.Builders.Types;
 
 namespace ObjectSerialization.Builders
@@ -47,7 +48,7 @@ namespace ObjectSerialization.Builders
         {
             try
             {
-                var ctx = new BuildContext<T>(Expression.Variable(typeof(T), "o"));
+                var ctx = new BuildContext<T>(Expr.LocalVariable(typeof(T), "o"), "Members");
 
                 IOrderedEnumerable<FieldInfo> fields = GetFields(typeof(T))
                     .Where(ShouldBePersisted)
@@ -72,12 +73,12 @@ namespace ObjectSerialization.Builders
 
             ISerializer serializer = Serializers.First(s => s.IsSupported(field.FieldType));
             ctx.AddWriteExpression(serializer.Write(ctx.WriterObject, GetFieldValue(ctx.WriteObject, field), field.FieldType));
-            ctx.AddReadExpression(SetFieldValue(ctx.ReadResultObject, field, serializer.Read(ctx.ReaderObject, field.FieldType)));
+            ctx.AddReadExpression(SetFieldValue(Expr.ReadLocal(ctx.ReadResultObject), field, serializer.Read(ctx.ReaderObject, field.FieldType)));
         }
 
         private static Expression GetFieldValue(Expression instance, FieldInfo field)
         {
-            return Expression.Field(instance, field);
+            return Expr.ReadField(instance, field);
         }
 
         private static PropertyInfo GetPropertyForBackingField(FieldInfo field)
@@ -89,7 +90,7 @@ namespace ObjectSerialization.Builders
 
         private static Expression SetFieldValue(Expression instance, FieldInfo field, Expression valueExpression)
         {
-            return Expression.Assign(Expression.Field(instance, field), valueExpression);
+            return Expr.WriteField(instance, field, valueExpression);
         }
 
         private static bool ShouldBePersisted(FieldInfo field)

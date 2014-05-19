@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq.Expressions;
+using CodeBuilder.Expressions;
 
 namespace ObjectSerialization.Builders.Types
 {

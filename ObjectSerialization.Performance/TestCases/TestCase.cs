@@ -8,7 +8,7 @@ namespace ObjectSerialization.Performance.TestCases
 {
     abstract class TestCase
     {
-        private const int _measurementCount = 250000;
+        private const int _measurementCount = 200000;
         public abstract string Name { get; }
         public PerformanceResult Measure(ISerializerAdapter serializer)
         {

@@ -1,6 +1,6 @@
 using System;
-using System.IO;
-using System.Linq.Expressions;
+using CodeBuilder;
+using CodeBuilder.Expressions;
 using ObjectSerialization.Factories;
 
 namespace ObjectSerialization.Builders.Types
@@ -29,12 +29,12 @@ namespace ObjectSerialization.Builders.Types
             else
                 w.Write(-1);*/
 
-            Expression checkNotNull = CheckNotNull(value, valueType);
+            var checkNotNull = CheckNotNull(value, valueType);
 
-            BlockExpression forLoop = CreateWriteLoop(writerObject, value, valueType);
-            BlockExpression arrayWrite = Expression.Block(GetWriteExpression(Expression.Property(value, "Length"), writerObject), forLoop);
+            var forLoop = CreateWriteLoop(writerObject, value, valueType);
+            var arrayWrite = Expr.Block(GetWriteExpression(Expr.ArrayLength(value), writerObject), forLoop);
 
-            return Expression.IfThenElse(checkNotNull, arrayWrite, GetWriteExpression(Expression.Constant(-1), writerObject));
+            return Expr.IfThenElse(checkNotNull, arrayWrite, GetWriteExpression(Expr.Constant(-1), writerObject));
         }
 
         public Expression Read(Expression readerObject, Type expectedValueType)
@@ -51,66 +51,62 @@ namespace ObjectSerialization.Builders.Types
             return v;
             */
 
-            ParameterExpression count = Expression.Variable(typeof(int), "c");
-            BinaryExpression countRead = Expression.Assign(count, GetReadExpression("ReadInt32", readerObject));
+            var count = Expr.LocalVariable(typeof(int), "c");
+            var countRead = Expr.DeclareLocal(count, GetReadExpression("ReadInt32", readerObject));
 
-            BlockExpression expression = Expression.Block(new[] { count },
+            var expression = Expr.ValueBlock(
+                expectedValueType,
                 countRead,
-                Expression.Condition(
-                    Expression.Equal(count, Expression.Constant(-1)),
-                    Expression.Constant(null, expectedValueType),
+                Expr.IfThenElse(
+                    Expr.Equal(Expr.ReadLocal(count), Expr.Constant(-1)),
+                    Expr.Null(expectedValueType),
                     CreateReadLoop(readerObject, expectedValueType, count)));
             return expression;
         }
 
         #endregion
 
-        private static BlockExpression CreateWriteLoop(Expression writerObject, Expression value, Type valueType)
+        private static Expression CreateWriteLoop(Expression writerObject, Expression value, Type valueType)
         {
-            ParameterExpression index = Expression.Parameter(typeof(int), "i");
-            ParameterExpression count = Expression.Parameter(typeof(int), "c");
-            ParameterExpression serializer = Expression.Parameter(GetWriteSerializerDelegateType(valueType.GetElementType()), "s");
-            LabelTarget loopEndLabel = Expression.Label();
+            var index = Expr.LocalVariable(typeof(int), "i");
+            var count = Expr.LocalVariable(typeof(int), "c");
+            var serializer = Expr.LocalVariable(GetWriteSerializerDelegateType(valueType.GetElementType()), "s");
 
-            return Expression.Block(
-                new[] { index, count, serializer },
-                Expression.Assign(index, Expression.Constant(0, typeof(int))),
-                Expression.Assign(count, Expression.Property(value, "Length")),
-                Expression.Assign(serializer, GetSerializer<TypeSerializerFactory>(valueType.GetElementType())),
-                Expression.Loop(
-                    Expression.IfThenElse(
-                        Expression.LessThan(index, count),
-                        Expression.Block(
-                            CallSerialize(serializer, Expression.ArrayAccess(value, index), writerObject),
-                            Expression.PreIncrementAssign(index)),
-                        Expression.Break(loopEndLabel)),
-                    loopEndLabel));
+            return Expr.Block(
+                Expr.DeclareLocal(index, Expr.Constant(0)),
+                Expr.DeclareLocal(count, Expr.ArrayLength(value)),
+                Expr.DeclareLocal(serializer, GetSerializer<TypeSerializerFactory>(valueType.GetElementType())),
+                Expr.Loop(
+                    Expr.IfThenElse(
+                        Expr.Less(Expr.ReadLocal(index), Expr.ReadLocal(count)),
+                        Expr.Block(
+                            CallSerialize(Expr.ReadLocal(serializer), Expr.ReadArray(value, Expr.ReadLocal(index)), writerObject),
+                            Expr.WriteLocal(index, Expr.Add(Expr.ReadLocal(index), Expr.Constant(1)))),
+                        Expr.LoopBreak())));
         }
 
-        private Expression CreateReadLoop(Expression readerObject, Type expectedValueType, ParameterExpression count)
+        private Expression CreateReadLoop(Expression readerObject, Type expectedValueType, LocalVariable count)
         {
-            ParameterExpression index = Expression.Parameter(typeof(int), "i");
-            ParameterExpression deserializer = Expression.Parameter(GetReadSerializerDelegateType(expectedValueType.GetElementType()), "s");
-            ParameterExpression result = Expression.Parameter(expectedValueType, "r");
-            LabelTarget loopEndLabel = Expression.Label(expectedValueType);
+            var index = Expr.LocalVariable(typeof(int), "i");
+            var deserializer = Expr.LocalVariable(GetReadSerializerDelegateType(expectedValueType.GetElementType()), "s");
+            var result = Expr.LocalVariable(expectedValueType, "r");
 
-            BlockExpression forLoop = Expression.Block(
-                new[] { index, result, deserializer },
-                Expression.Assign(result, Expression.NewArrayBounds(expectedValueType.GetElementType(), count)),
-                Expression.Assign(index, Expression.Constant(0, typeof(int))),
-                Expression.Assign(deserializer, GetDeserializer<TypeSerializerFactory>(expectedValueType.GetElementType())),
-                Expression.Loop(
-                    Expression.IfThenElse(
-                        Expression.LessThan(index, count),
-                        Expression.Block(
-                            Expression.Assign(Expression.ArrayAccess(result, index), CallDeserialize(deserializer, readerObject)),
-                            Expression.PreIncrementAssign(index)),
-                        Expression.Break(loopEndLabel, result)),
-                    loopEndLabel));
+            var forLoop = Expr.ValueBlock(
+                expectedValueType,
+                Expr.DeclareLocal(result, Expr.NewArray(expectedValueType.GetElementType(), Expr.ReadLocal(count))),
+                Expr.DeclareLocal(index, Expr.Constant(0)),
+                Expr.DeclareLocal(deserializer, GetDeserializer<TypeSerializerFactory>(expectedValueType.GetElementType())),
+                Expr.Loop(
+                    Expr.IfThenElse(
+                        Expr.Less(Expr.ReadLocal(index), Expr.ReadLocal(count)),
+                        Expr.Block(
+                            Expr.WriteArray(Expr.ReadLocal(result), Expr.ReadLocal(index), CallDeserialize(Expr.ReadLocal(deserializer), readerObject)),
+                            Expr.WriteLocal(index, Expr.Add(Expr.ReadLocal(index), Expr.Constant(1)))),
+                        Expr.LoopBreak())),
+                Expr.ReadLocal(result));
 
             return forLoop;
         }
-
 
     }
 }

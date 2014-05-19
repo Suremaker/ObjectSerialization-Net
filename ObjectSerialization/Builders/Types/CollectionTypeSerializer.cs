@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
+using CodeBuilder;
+using CodeBuilder.Expressions;
 using ObjectSerialization.Factories;
 
 namespace ObjectSerialization.Builders.Types
@@ -44,11 +44,11 @@ namespace ObjectSerialization.Builders.Types
 
             Expression checkNotNull = CheckNotNull(value, valueType);
 
-            BlockExpression collectionWrite = Expression.Block(
-                GetWriteExpression(Expression.Property(value, "Count"), writerObject),
+            BlockExpression collectionWrite = Expr.Block(
+                GetWriteExpression(Expr.ReadProperty(value, "Count"), writerObject),
                 CreateWriteLoop(writerObject, value, valueType));
 
-            return Expression.IfThenElse(checkNotNull, collectionWrite, GetWriteExpression(Expression.Constant(-1), writerObject));
+            return Expr.IfThenElse(checkNotNull, collectionWrite, GetWriteExpression(Expr.Constant(-1), writerObject));
         }
 
         public Expression Read(Expression readerObject, Type expectedValueType)
@@ -64,15 +64,16 @@ namespace ObjectSerialization.Builders.Types
                 v.Add(s.Invoke(r));
             return v;*/
 
-            ParameterExpression count = Expression.Variable(typeof(int), "c");
-            BinaryExpression countRead = Expression.Assign(count, GetReadExpression("ReadInt32", readerObject));
+            var count = Expr.LocalVariable(typeof(int), "c");
+            var countRead = Expr.DeclareLocal(count, GetReadExpression("ReadInt32", readerObject));
 
-            BlockExpression expression = Expression.Block(new[] { count },
+            var expression = Expr.ValueBlock(
+                expectedValueType,
                 countRead,
-                Expression.Condition(
-                    Expression.Equal(count, Expression.Constant(-1)),
-                    Expression.Constant(null, expectedValueType),
-                    CreateReadLoop(readerObject, expectedValueType, count)));
+                Expr.IfThenElse(
+                    Expr.Equal(Expr.ReadLocal(count), Expr.Constant(-1)),
+                    Expr.Null(expectedValueType),
+                    CreateReadLoop(readerObject, expectedValueType, Expr.ReadLocal(count))));
             return expression;
         }
 
@@ -89,26 +90,25 @@ namespace ObjectSerialization.Builders.Types
             return type.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICollection<>));
         }
 
-        private Expression CreateReadLoop(Expression readerObject, Type expectedValueType, ParameterExpression count)
+        private Expression CreateReadLoop(Expression readerObject, Type expectedValueType, Expression count)
         {
-            ParameterExpression index = Expression.Parameter(typeof(int), "i");
-			ParameterExpression deserializer = Expression.Parameter(GetReadSerializerDelegateType(GetCollectionItemType(expectedValueType)), "s");
-            ParameterExpression result = Expression.Parameter(expectedValueType, "v");
-            LabelTarget loopEndLabel = Expression.Label(expectedValueType);
+            var index = Expr.LocalVariable(typeof(int), "i");
+            var deserializer = Expr.LocalVariable(GetReadSerializerDelegateType(GetCollectionItemType(expectedValueType)), "s");
+            var result = Expr.LocalVariable(expectedValueType, "v");
 
-            BlockExpression forLoop = Expression.Block(
-                new[] { index, result, deserializer },
-                Expression.Assign(result, InstantiateNew(expectedValueType)),
-                Expression.Assign(index, Expression.Constant(0, typeof(int))),
-                Expression.Assign(deserializer, GetDeserializer<TypeSerializerFactory>(GetCollectionItemType(expectedValueType))),
-                Expression.Loop(
-                    Expression.IfThenElse(
-                        Expression.LessThan(index, count),
-                        Expression.Block(
-                            Expression.Call(Expression.TypeAs(result, GetCollectionType(expectedValueType)), "Add", null, CallDeserialize(deserializer, readerObject)),
-                            Expression.PreIncrementAssign(index)),
-                        Expression.Break(loopEndLabel, result)),
-                    loopEndLabel));
+            var forLoop = Expr.ValueBlock(
+                expectedValueType,
+                Expr.DeclareLocal(result, InstantiateNew(expectedValueType)),
+                Expr.DeclareLocal(index, Expr.Constant(0)),
+                Expr.DeclareLocal(deserializer, GetDeserializer<TypeSerializerFactory>(GetCollectionItemType(expectedValueType))),
+                Expr.Loop(
+                    Expr.IfThenElse(
+                        Expr.Less(Expr.ReadLocal(index), count),
+                        Expr.Block(
+                            Expr.Call(Expr.Convert(Expr.ReadLocal(result), GetCollectionType(expectedValueType)), "Add", CallDeserialize(Expr.ReadLocal(deserializer), readerObject)),
+                            Expr.WriteLocal(index,Expr.Add(Expr.ReadLocal(index),Expr.Constant(1)))),
+                        Expr.LoopBreak())),
+                Expr.ReadLocal(result));
 
             return forLoop;
         }
@@ -116,22 +116,19 @@ namespace ObjectSerialization.Builders.Types
         private Expression CreateWriteLoop(Expression writerObject, Expression value, Type valueType)
         {
             Type enumeratorType = GetEnumeratorType(valueType);
-            ParameterExpression enumerator = Expression.Parameter(enumeratorType, "e");
-			ParameterExpression serializer = Expression.Parameter(GetWriteSerializerDelegateType(GetCollectionItemType(valueType)), "s");
-            LabelTarget loopEndLabel = Expression.Label();
+            var enumerator = Expr.LocalVariable(enumeratorType, "e");
+            var serializer = Expr.LocalVariable(GetWriteSerializerDelegateType(GetCollectionItemType(valueType)), "s");
 
-            return Expression.Block(
-                new[] { enumerator, serializer },
-                Expression.Assign(serializer, GetSerializer<TypeSerializerFactory>(GetCollectionItemType(valueType))),
-                Expression.Assign(enumerator, Expression.Convert(Expression.Call(value, "GetEnumerator", null), enumeratorType)),
-                Expression.TryFinally(
-                    Expression.Loop(
-                        Expression.IfThenElse(
-                            Expression.Call(Expression.TypeAs(enumerator, typeof(IEnumerator)), "MoveNext", null),
-                            CallSerialize(serializer, Expression.Property(enumerator, "Current"), writerObject),
-                            Expression.Break(loopEndLabel)),
-                        loopEndLabel),
-                    Expression.Call(Expression.TypeAs(enumerator, typeof(IDisposable)), "Dispose", null)));
+            return Expr.Block(
+                Expr.DeclareLocal(serializer, GetSerializer<TypeSerializerFactory>(GetCollectionItemType(valueType))),
+                Expr.DeclareLocal(enumerator, Expr.Convert(Expr.Call(value, "GetEnumerator"), enumeratorType)),
+                Expr.TryFinally(
+                    Expr.Loop(
+                        Expr.IfThenElse(
+                            Expr.Call(Expr.Convert(Expr.ReadLocal(enumerator), typeof(IEnumerator)), "MoveNext"),
+                            CallSerialize(Expr.ReadLocal(serializer), Expr.ReadProperty(Expr.ReadLocal(enumerator), "Current"), writerObject),
+                            Expr.LoopBreak())),
+                    Expr.Call(Expr.Convert(Expr.ReadLocal(enumerator), typeof(IDisposable)), "Dispose")));
         }
 
         private Type GetEnumeratorType(Type collectionType)
