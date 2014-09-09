@@ -43,6 +43,7 @@
     <Compile Include="Helpers\BaseClassWithTransientMembers.cs" />
     <Compile Include="Helpers\BasicTypes.cs" />
     <Compile Include="Helpers\ClassWithoutEmptyCtor.cs" />
+    <Compile Include="Helpers\CollectionHolder.cs" />
     <Compile Include="Helpers\ComplexStruct.cs" />
     <Compile Include="Helpers\DerivedClassWithOverriddenTransientMembers.cs" />
     <Compile Include="Helpers\DerivedClassWithTransientMembers.cs" />

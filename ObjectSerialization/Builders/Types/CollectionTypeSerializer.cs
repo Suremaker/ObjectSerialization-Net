@@ -14,7 +14,7 @@ namespace ObjectSerialization.Builders.Types
 
         public bool IsSupported(Type type)
         {
-            return GetCollectionType(type) != null;
+            return !type.IsAbstract && !type.IsInterface && GetCollectionType(type) != null;
         }
 
         public Expression Write(Expression writerObject, Expression value, Type valueType)

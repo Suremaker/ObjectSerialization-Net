@@ -390,5 +390,20 @@ namespace ObjectSerialization.UT
             var actual = _serializer.Deserialize<object>(serialized);
             Assert.That(actual, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void ShouldSerializeFieldsReferringToCollectionsViaInterfaceTypes()
+        {
+            AssertCollectionHolder(new CollectionHolder { List = new List<int> { 1, 2, 3 }, Collection = new List<int> { 4, 5, 6 }, Enumerable = new List<int> { 7, 8, 9 } });
+            AssertCollectionHolder(new CollectionHolder { List = new[] { 1, 2, 3 }, Collection = new[] { 4, 5, 6 }, Enumerable = new[] { 7, 8, 9 } });
+        }
+
+        private void AssertCollectionHolder(CollectionHolder holder)
+        {
+            var result = _serializer.Deserialize<CollectionHolder>(_serializer.Serialize(holder));
+            Assert.That(result.List, Is.EqualTo(holder.List));
+            Assert.That(result.Collection, Is.EqualTo(holder.Collection));
+            Assert.That(result.Enumerable, Is.EqualTo(holder.Enumerable));
+        }
     }
 }
