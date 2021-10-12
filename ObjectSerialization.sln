@@ -1,9 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialization", "ObjectSerialization\ObjectSerialization.csproj", "{32D2BED8-AE96-4E80-A981-5188FEB260D4}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectSerialization", "ObjectSerialization\ObjectSerialization.csproj", "{32D2BED8-AE96-4E80-A981-5188FEB260D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialization.UT", "ObjectSerialization.UT\ObjectSerialization.UT.csproj", "{25015080-9E1B-49F2-9F1F-D22C1418B25F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectSerialization.UT", "ObjectSerialization.UT\ObjectSerialization.UT.csproj", "{25015080-9E1B-49F2-9F1F-D22C1418B25F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9ED67244-9589-4908-9F8E-56EA1E7556CF}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.txt = LICENSE.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectSerialization.Performance", "ObjectSerialization.Performance\ObjectSerialization.Performance.csproj", "{724404A9-0638-4378-A0BC-D76B62FB0E3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectSerialization.Performance", "ObjectSerialization.Performance\ObjectSerialization.Performance.csproj", "{724404A9-0638-4378-A0BC-D76B62FB0E3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,12 +45,14 @@ Global
 		{25015080-9E1B-49F2-9F1F-D22C1418B25F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{25015080-9E1B-49F2-9F1F-D22C1418B25F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{25015080-9E1B-49F2-9F1F-D22C1418B25F}.Release|x86.ActiveCfg = Release|Any CPU
-		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Debug|x86.ActiveCfg = Debug|x86
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Debug|x86.Build.0 = Debug|x86
-		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Release|Any CPU.ActiveCfg = Release|x86
+		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{724404A9-0638-4378-A0BC-D76B62FB0E3A}.Release|x86.ActiveCfg = Release|x86
@@ -56,5 +60,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D2B8A1A2-773D-48F1-9433-58AB09331BBB}
 	EndGlobalSection
 EndGlobal

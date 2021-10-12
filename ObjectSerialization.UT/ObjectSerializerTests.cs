@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
@@ -27,20 +28,6 @@ namespace ObjectSerialization.UT
             Assert.That(actual, Is.Not.Null);
             foreach (PropertyInfo prop in typeof(T).GetProperties())
                 Assert.That(prop.GetValue(actual, null), Is.EqualTo(prop.GetValue(expected, null)), prop.Name);
-        }
-
-        [Test]
-        public void ShouldDisallowReadonlyFieldSerializationInClass()
-        {
-            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyClass(66)));
-            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field ReadOnlyInt in type ObjectSerialization.UT.Helpers.ReadOnlyClass. Please mark it with NonSerialized attribute or remove readonly modifier."));
-        }
-
-        [Test]
-        public void ShouldDisallowReadonlyFieldSerializationInStruct()
-        {
-            var ex = Assert.Throws<SerializationException>(() => _serializer.Serialize(new ReadOnlyStruct(32, 66)));
-            Assert.That(ex.Message, Is.EqualTo("Unable to serialize readonly field _readOnlyInt in type ObjectSerialization.UT.Helpers.ReadOnlyStruct. Please mark it with NonSerialized attribute or remove readonly modifier."));
         }
 
         [Test]
@@ -108,11 +95,11 @@ namespace ObjectSerialization.UT
         public void ShouldSerializeArrayMember()
         {
             var expected = new ArrayHolder
-                {
-                    ByteArray = new byte[] { 1, 2, 3 },
-                    SimpleTypeArray = new[] { new SimpleType { TextA = "11", TextB = "12" }, new SimpleType2 { TextA = "21" } },
-                    ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test" }
-                };
+            {
+                ByteArray = new byte[] { 1, 2, 3 },
+                SimpleTypeArray = new[] { new SimpleType { TextA = "11", TextB = "12" }, new SimpleType2 { TextA = "21" } },
+                ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test" }
+            };
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<ArrayHolder>(serialized);
             AssertProperties(expected, actual);
@@ -235,10 +222,10 @@ namespace ObjectSerialization.UT
         public void ShouldSerializeNullArrayMember()
         {
             var expected = new ArrayHolder
-                {
-                    ByteArray = new byte[] { 1, 2, 3 },
-                    ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test", null }
-                };
+            {
+                ByteArray = new byte[] { 1, 2, 3 },
+                ObjectArray = new object[] { new SimpleType { TextA = "a", TextB = "b" }, 5, "test", null }
+            };
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<ArrayHolder>(serialized);
             AssertProperties(expected, actual);
@@ -292,11 +279,11 @@ namespace ObjectSerialization.UT
         public void ShouldSerializePolymorphicMemberTypes()
         {
             var expected = new PolyHolder
-                {
-                    IntPoly = new PolyImpl { Int = 1, Text = "a" },
-                    AbsPoly = new PolyImpl { Int = 2, Text = "b" },
-                    ObjPoly = new PolyImpl { Int = 3, Text = "c" }
-                };
+            {
+                IntPoly = new PolyImpl { Int = 1, Text = "a" },
+                AbsPoly = new PolyImpl { Int = 2, Text = "b" },
+                ObjPoly = new PolyImpl { Int = 3, Text = "c" }
+            };
             byte[] serialized = _serializer.Serialize(expected);
             var actual = _serializer.Deserialize<PolyHolder>(serialized);
             AssertProperties(expected, actual);
@@ -396,6 +383,24 @@ namespace ObjectSerialization.UT
         {
             AssertCollectionHolder(new CollectionHolder { List = new List<int> { 1, 2, 3 }, Collection = new List<int> { 4, 5, 6 }, Enumerable = new List<int> { 7, 8, 9 } });
             AssertCollectionHolder(new CollectionHolder { List = new[] { 1, 2, 3 }, Collection = new[] { 4, 5, 6 }, Enumerable = new[] { 7, 8, 9 } });
+        }
+
+        [Test]
+        public void ShouldSerializeReadonlyFieldsInClass()
+        {
+            var expected = new ClassWithReadOnlyFields(55, "abc");
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<ClassWithReadOnlyFields>(serialized);
+            AssertProperties(expected, actual);
+        }
+
+        [Test]
+        public void ShouldSerializeReadonlyFieldsInStruct()
+        {
+            var expected = new StructWithReadOnlyFields(55, "abc");
+            byte[] serialized = _serializer.Serialize(expected);
+            var actual = _serializer.Deserialize<StructWithReadOnlyFields>(serialized);
+            AssertProperties(expected, actual);
         }
 
         private void AssertCollectionHolder(CollectionHolder holder)

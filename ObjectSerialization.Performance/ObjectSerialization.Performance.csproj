@@ -1,112 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{724404A9-0638-4378-A0BC-D76B62FB0E3A}</ProjectGuid>
+    <TargetFrameworks>net4.0;net5.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ObjectSerialization.Performance</RootNamespace>
-    <AssemblyName>ObjectSerialization.Performance</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Newtonsoft.Json" Version="6.0.2" />
+    <PackageReference Include="protobuf-net" Version="2.0.0.668" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Measurement.cs" />
-    <Compile Include="PerformanceMonitor.cs" />
-    <Compile Include="PerformanceResult.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Results\CsvResultPresenter.cs" />
-    <Compile Include="Results\HtmlResultPresenter.cs" />
-    <Compile Include="Results\ResultPresenter.cs" />
-    <Compile Include="Results\TextResultPresenter.cs" />
-    <Compile Include="Serializers\BinaryFormatterAdapter.cs" />
-    <Compile Include="Serializers\DataContractSerializerAdapter.cs" />
-    <Compile Include="Serializers\ExecutionTimer.cs" />
-    <Compile Include="Serializers\NewtonBsonAdapter.cs" />
-    <Compile Include="Serializers\ObjectSerializerAdapter.cs" />
-    <Compile Include="Serializers\ISerializerAdapter.cs" />
-    <Compile Include="Serializers\ProtoBufAdapter.cs" />
-    <Compile Include="TestCases\Case.cs" />
-    <Compile Include="TestCases\GenericCase.cs" />
-    <Compile Include="TestCases\TestCase.cs" />
-    <Compile Include="TestObjects\BaseType.cs" />
-    <Compile Include="TestObjects\BasicTypes.cs" />
-    <Compile Include="TestObjects\ClassWithFieldsReferringToTheSameValue.cs" />
-    <Compile Include="TestObjects\ClassWithoutParameterlessCtor.cs" />
-    <Compile Include="TestObjects\ClassWithReadonlyField.cs" />
-    <Compile Include="TestObjects\ComplexTypeWithObject.cs" />
-    <Compile Include="TestObjects\ComplexType.cs" />
-    <Compile Include="TestObjects\CustomStruct.cs" />
-    <Compile Include="TestObjects\Derived.cs" />
-    <Compile Include="TestObjects\Derived2.cs" />
-    <Compile Include="TestObjects\IInterface.cs" />
-    <Compile Include="TestObjects\Impl.cs" />
-    <Compile Include="TestObjects\POCO.cs" />
-    <Compile Include="TestObjects\PolymorphicHolder.cs" />
-    <Compile Include="TestObjects\RegisteredSimpleClass.cs" />
-    <Compile Include="TestObjects\SealedClass.cs" />
-    <Compile Include="TestObjects\SealedHolder.cs" />
-    <Compile Include="TestObjects\SimpleClass.cs" />
-    <Compile Include="TestObjects\SimpleHolder.cs" />
-    <Compile Include="TestObjects\StructureHolder.cs" />
+    <ProjectReference Include="..\ObjectSerialization\ObjectSerialization.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ObjectSerialization\ObjectSerialization.csproj">
-      <Project>{32D2BED8-AE96-4E80-A981-5188FEB260D4}</Project>
-      <Name>ObjectSerialization</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
