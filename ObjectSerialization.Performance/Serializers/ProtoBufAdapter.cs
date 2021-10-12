@@ -7,7 +7,7 @@ namespace ObjectSerialization.Performance.Serializers
     {
         #region ISerializerAdapter Members
 
-        public string Name { get { return "ProtoBuf"; } }
+        public string Name { get { return "ProtoBuf 3.0"; } }
         public T Deserialize<T>(Stream stream, out long operationTime)
         {
             return ExecutionTimer.Measure(() => Serializer.Deserialize<T>(stream), out operationTime);

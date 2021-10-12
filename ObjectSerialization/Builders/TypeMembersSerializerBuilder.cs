@@ -67,9 +67,6 @@ namespace ObjectSerialization.Builders
 
         private static void BuildFieldSerializer(FieldInfo field, BuildContext<T> ctx)
         {
-            if (field.IsInitOnly)
-                throw new InvalidOperationException(string.Format("Unable to serialize readonly field {0} in type {1}. Please mark it with NonSerialized attribute or remove readonly modifier.", field.Name, typeof(T).FullName));
-
             ISerializer serializer = Serializers.First(s => s.IsSupported(field.FieldType));
             ctx.AddWriteExpression(serializer.Write(ctx.WriterObject, GetFieldValue(ctx.WriteObject, field), field.FieldType));
             ctx.AddReadExpression(SetFieldValue(ctx.ReadResultObject, field, serializer.Read(ctx.ReaderObject, field.FieldType)));
@@ -89,6 +86,8 @@ namespace ObjectSerialization.Builders
 
         private static Expression SetFieldValue(Expression instance, FieldInfo field, Expression valueExpression)
         {
+            if (field.IsInitOnly)
+                return Expression.Invoke(Expression.Constant(InitOnlyFieldSetter.GetMethod(field)), instance, valueExpression);
             return Expression.Assign(Expression.Field(instance, field), valueExpression);
         }
 

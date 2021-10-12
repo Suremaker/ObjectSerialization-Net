@@ -1,91 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{25015080-9E1B-49F2-9F1F-D22C1418B25F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ObjectSerialization.UT</RootNamespace>
-    <AssemblyName>ObjectSerialization.UT</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFrameworks>net461;net5</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\APoly.cs" />
-    <Compile Include="Helpers\ArrayHolder.cs" />
-    <Compile Include="Helpers\BaseClassWithTransientMembers.cs" />
-    <Compile Include="Helpers\BasicTypes.cs" />
-    <Compile Include="Helpers\ClassWithoutEmptyCtor.cs" />
-    <Compile Include="Helpers\CollectionHolder.cs" />
-    <Compile Include="Helpers\ComplexStruct.cs" />
-    <Compile Include="Helpers\DerivedClassWithOverriddenTransientMembers.cs" />
-    <Compile Include="Helpers\DerivedClassWithTransientMembers.cs" />
-    <Compile Include="Helpers\EmptyClass.cs" />
-    <Compile Include="Helpers\EmptyStruct.cs" />
-    <Compile Include="Helpers\IPoly.cs" />
-    <Compile Include="Helpers\NestedType.cs" />
-    <Compile Include="Helpers\ObjectHolder.cs" />
-    <Compile Include="Helpers\OtherType.cs" />
-    <Compile Include="Helpers\PolyHolder.cs" />
-    <Compile Include="Helpers\PolyImpl.cs" />
-    <Compile Include="Helpers\PrivateSerializableType.cs" />
-    <Compile Include="Helpers\ReadOnlyClass.cs" />
-    <Compile Include="Helpers\ClassWithTransientMembers.cs" />
-    <Compile Include="Helpers\ReadOnlyStruct.cs" />
-    <Compile Include="Helpers\SealedSimpleType.cs" />
-    <Compile Include="Helpers\SealedHolder.cs" />
-    <Compile Include="Helpers\SerializableType.cs" />
-    <Compile Include="Helpers\StructWithTransientMembers.cs" />
-    <Compile Include="Helpers\SimpleType.cs" />
-    <Compile Include="Helpers\SimpleType2.cs" />
-    <Compile Include="Helpers\StructHolder.cs" />
-    <Compile Include="ObjectSerializerTests.cs" />
-    <Compile Include="ObjectSerializerToStreamTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeInfoRepositoryTests.cs" />
+    <ProjectReference Include="..\ObjectSerialization\ObjectSerialization.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ObjectSerialization\ObjectSerialization.csproj">
-      <Project>{32D2BED8-AE96-4E80-A981-5188FEB260D4}</Project>
-      <Name>ObjectSerialization</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
