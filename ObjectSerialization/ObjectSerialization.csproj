@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net4.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard2.1</TargetFrameworks>
     <Description>A fast object graph binary serialization for .NET</Description>
     <Copyright>Copyright © Wojciech Kotlarski 2013-2021</Copyright>
     <Version>1.0.28.0</Version>
