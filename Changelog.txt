@@ -1,6 +1,11 @@
 ObjectSerialization
 ===========================================
 
+Version 1.1.0
+-------------------------------------------
++ updated library support to cover .net461 and .net5.0
++ added support for deserializing readonly fields
+
 Version 1.0.27
 -------------------------------------------
 + corrected bug #1 Collection serialization issue, where objects having fields of interface type like IList<> were not serializing

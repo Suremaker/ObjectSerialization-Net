@@ -31,7 +31,6 @@ MyClass deserialized = serializer.Deserialize<MyClass>(serializedData);
 ## Limitations:
 * if multiple fields refers to the same object instance, after deserialization each would be referring to own copy of it;
 * serialization of object with circular references is not supported (because of above);
-* serialization of `readonly` fields is not supported (such field has to be marked with `NonSerializedAttribute` or `readonly` modifier has to be removed);
 * if class does not contain parameter-less constructor, it would be instantiated without any constructor call;
 
 ## Performance and serialized data size:

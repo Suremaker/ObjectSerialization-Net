@@ -3,6 +3,6 @@
     <TargetFrameworks>net461;netstandard2.1</TargetFrameworks>
     <Description>A fast object graph binary serialization for .NET</Description>
     <Copyright>Copyright © Wojciech Kotlarski 2013-2021</Copyright>
-    <Version>1.0.28.0</Version>
+    <Version>1.1.0.0</Version>
   </PropertyGroup>
 </Project>
