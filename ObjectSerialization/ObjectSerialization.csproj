@@ -1,8 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.1</TargetFrameworks>
-    <Description>A fast object graph binary serialization for .NET</Description>
+    <Description>A fast object graph binary serialization for .NET with support for:
+* serialization of classes, structures and primitives at root or type member level;
+* serialization of derived types referenced by interface, base class or abstract class type;
+* serialization of POCO objects;
+* standard NonSerializedAttribute and dedicated NonSerializedBackendAttribute for automatic properties;
+* serialization of classes without parameter-less constructor;
+* serialization of arrays and collections implementing ICollection&lt;T&gt;</Description>
     <Copyright>Copyright © Wojciech Kotlarski 2013-2021</Copyright>
     <Version>1.1.0.0</Version>
+    <PackageId>ObjectSerialization-Net</PackageId>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Suremaker/ObjectSerialization-Net</PackageProjectUrl>
+    <Authors>Wojciech Kotlarski</Authors>
+    <PackageTags>binary serialization</PackageTags>
+    <RepositoryUrl>https://github.com/Suremaker/ObjectSerialization-Net</RepositoryUrl>
+    <PackageReleaseNotes>+ updated library support to cover .net461 and .netstandard2.1
++ added support for deserializing readonly fields</PackageReleaseNotes>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\Changelog.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 </Project>

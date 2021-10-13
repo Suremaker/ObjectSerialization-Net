@@ -3,7 +3,7 @@ ObjectSerialization
 
 Version 1.1.0
 -------------------------------------------
-+ updated library support to cover .net461 and .net5.0
++ updated library support to cover .net461 and .netstandard2.1
 + added support for deserializing readonly fields
 
 Version 1.0.27

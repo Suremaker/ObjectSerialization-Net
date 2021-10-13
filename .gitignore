@@ -1,6 +1,7 @@
 .vs/
-bin
-obj
+bin/
+obj/
+packages/
 *.user
 *.userprefs
 *.suo

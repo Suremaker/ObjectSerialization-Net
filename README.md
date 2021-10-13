@@ -32,6 +32,7 @@ MyClass deserialized = serializer.Deserialize<MyClass>(serializedData);
 * if multiple fields refers to the same object instance, after deserialization each would be referring to own copy of it;
 * serialization of object with circular references is not supported (because of above);
 * if class does not contain parameter-less constructor, it would be instantiated without any constructor call;
+* data serialized on .NetFramework may not be properly or accurately deserialized on .NetCore / .Net5 runtime (and vice versa)
 
 ## Performance and serialized data size:
 
